@@ -1,2 +1,2 @@
-UD-Pool for ulord
+Coinpool
 ==================
