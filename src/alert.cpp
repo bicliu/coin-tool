@@ -1,25 +1,16 @@
 //#include<iostream>
-#include "net.h"
-#include "chainparams.h"
+#include "util.h"
 
-
-#include<string> 
 
 using namespace std;
 
 int main(int argc, char* argv[])
 {
-	CChainParams *pCurrentParams = 0;
+	map<string, string> mapAlertArgs;
+	map<string, vector<string> > mapMultiAlertArgs;
 
-	if(argc < 2)
-	{
-		cout << "args error number is " << argc << endl;
-	}
-
-	string strnetpara = string(argv[1]);
-
-	pCurrentParams = &Params(strnetpara);
-
+	ReadFile(mapAlertArgs, mapMultiAlertArgs, "alertarg.conf");
+	
 	return 0;
 }
 
