@@ -137,20 +137,20 @@ endif()
 #  message(FATAL_ERROR "LibConfig not found!")
 #endif()
 
-find_package(Glog)
-if(NOT GLOG_FOUND)
-message(FATAL_ERROR "Glog not found!")
-endif()
+#find_package(Glog)
+#if(NOT GLOG_FOUND)
+#message(FATAL_ERROR "Glog not found!")
+#endif()
 
 find_package(libzmq)
 if(NOT LIBZMQ_FOUND)
   message(FATAL_ERROR "libzmq not found!")
 endif()
 
-find_package(CURL)
-if(NOT CURL_FOUND)
-  message(FATAL_ERROR "libcurl not found!")
-endif()
+#find_package(CURL)
+#if(NOT CURL_FOUND)
+#  message(FATAL_ERROR "libcurl not found!")
+#endif()
 
 find_package(LibEvent)
 if(NOT LibEvent_FOUND)
@@ -162,37 +162,35 @@ if(NOT Boost_FOUND)
   message(FATAL_ERROR "Boost not found!")
 endif()
 
-find_package(ZookeeperC)
-if(NOT ZOOKEEPER_FOUND)
-  message(FATAL_ERROR "libzookeeper-mt not found!")
-endif()
+#find_package(ZookeeperC)
+#if(NOT ZOOKEEPER_FOUND)
+#  message(FATAL_ERROR "libzookeeper-mt not found!")
+#endif()
 
-find_package(LibGMP)
-if(NOT GMP_FOUND)
-  message(FATAL_ERROR "libgmp not found!")
-endif()
+#find_package(LibGMP)
+#if(NOT GMP_FOUND)
+#  message(FATAL_ERROR "libgmp not found!")
+#endif()
 
 find_package(LibPthread)
 if(NOT PTHREAD_FOUND)
   message(FATAL_ERROR "libpthread not found!")
 endif()
 
-find_package(KafkaC)
-if(NOT KAFKA_FOUND)
-  message(FATAL_ERROR "librdkafka not found!")
-endif()
+#find_package(KafkaC)
+#if(NOT KAFKA_FOUND)
+#  message(FATAL_ERROR "librdkafka not found!")
+#endif()
 message("") # add an empty line
 
 ###################################### Targets ######################################
 message("") # empty line
 message("------------------------------- Targets -------------------------------")
 
-include_directories(src test ${CHAIN_SRC_ROOT}/src ${CHAIN_SRC_ROOT}/src/config ${CHAIN_SRC_ROOT}/src/secp256k1/include
-                    ${OPENSSL_INCLUDE_DIR} ${Boost_INCLUDE_DIRS} ${LIBZMQ_INCLUDE_DIR} ${GLOG_INCLUDE_DIRS}
-                    ${LIBEVENT_INCLUDE_DIR})
-set(THIRD_LIBRARIES ${BITCOIN_LIBRARIES} ${OPENSSL_CRYPTO_LIBRARY} ${OPENSSL_SSL_LIBRARY} ${Boost_LIBRARIES} ${LIBCONFIGPP_LIBRARY}
-                    ${LIBZMQ_LIBRARIES} ${GLOG_LIBRARIES} ${CURL_LIBRARIES} ${ZOOKEEPER_LIBRARIES} ${KAFKA_LIBRARIES} ${LIBEVENT_LIB}
-                    ${LIBEVENT_PTHREADS_LIB} ${secp256k1_LIBRARIES} ${PTHREAD_LIBRARIES} ${GMP_LIBRARIES})
+include_directories(src ${CHAIN_SRC_ROOT}/src ${CHAIN_SRC_ROOT}/src/config ${CHAIN_SRC_ROOT}/src/secp256k1/include
+                    ${OPENSSL_INCLUDE_DIR} ${Boost_INCLUDE_DIRS} ${LIBZMQ_INCLUDE_DIR} ${LIBEVENT_INCLUDE_DIR})
+set(THIRD_LIBRARIES ${BITCOIN_LIBRARIES} ${OPENSSL_CRYPTO_LIBRARY} ${OPENSSL_SSL_LIBRARY} ${Boost_LIBRARIES}
+                    ${LIBZMQ_LIBRARIES} ${LIBEVENT_LIB} ${LIBEVENT_PTHREADS_LIB} ${secp256k1_LIBRARIES} ${PTHREAD_LIBRARIES})
 
 message("target::alert ******")
 file(GLOB ALERT_SRC src/alert.cpp)
