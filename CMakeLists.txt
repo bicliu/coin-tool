@@ -27,7 +27,29 @@ ELSE()
   message("-- Some other build type.")
 ENDIF()
 
-list(APPEND CMAKE_CXX_FLAGSs " -pthread ")
+set(CXX_FLAGS
+ -g
+ -DCHECK_PTHREAD_RETURN_VALUE
+ -D_FILE_OFFSET_BITS=64
+ -Wall
+ -Wextra
+ -Wsign-compare
+# -Werror
+# -Wconversion
+-Wunused-variable
+ -Wno-unused-parameter
+# -Wold-style-cast
+ -Woverloaded-virtual
+ -Wpointer-arith
+# -Wshadow
+ -Wwrite-strings
+ -march=native
+ # -MMD
+ -std=c++0x
+ -rdynamic
+ -pthread
+# -fPIC
+ )
 
 # compiler options
 set(CMAKE_CXX_COMPILER "g++")
