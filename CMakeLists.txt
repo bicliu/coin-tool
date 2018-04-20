@@ -41,7 +41,7 @@ list(APPEND CMAKE_CXX_FLAGS
             "-rdynamic"
             " -pthread ")
 
-list(LENGTH CMAKE_CXX_FLAGS <CXX_FLAG_LEN>)
+list(LENGTH CMAKE_CXX_FLAGS CXX_FLAG_LEN)
 message("-- CMAKE_CXX_FLAGS list length = " ${CXX_FLAG_LEN})
 
 # compiler options
