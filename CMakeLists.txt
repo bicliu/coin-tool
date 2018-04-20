@@ -27,30 +27,11 @@ ELSE()
   message("-- Some other build type.")
 ENDIF()
 
-list(APPEND CMAKE_CXX_FLAGS 
-            "-DCHECK_PTHREAD_RETURN_VALUE"
-            "-D_FILE_OFFSET_BITS=64"
-            "-Wextra"
-            "-Wsign-compare"
-            "-Wunused-variable"
-            "-Wno-unused-parameter"
-            "-Woverloaded-virtual"
-            "-Wpointer-arith"
-            "-Wwrite-strings"
-            "-march=native"
-            "-rdynamic"
-            " -pthread ")
-
-list(LENGTH CMAKE_CXX_FLAGS CXX_FLAG_LEN)
-message("-- CMAKE_CXX_FLAGS list length = " ${CXX_FLAG_LEN})
-foreach(FLAG ${CMAKE_CXX_FLAGS})
-message("--CMAKE_CXX_FLAGS: " ${FLAG})
-endforeach(FLAG)
-
 # compiler options
 set(CMAKE_CXX_COMPILER "g++")
 set(CMAKE_C_COMPILER "gcc")
-set(CMAKE_CXX_COMPILER_ARG1 "-std=c++0x")
+set(CMAKE_CXX_COMPILER_ARG1 
+"-std=c++0x -DCHECK_PTHREAD_RETURN_VALUE -D_FILE_OFFSET_BITS=64 -Wextra -Wsign-compare -Wunused-variable -Wno-unused-parameter -Woverloaded-virtual -Wpointer-arith -Wwrite-strings -march=native -rdynamic -pthread ")
 
 # The number of concurrent jobs when compiling a third-party library
 if(JOBS)
