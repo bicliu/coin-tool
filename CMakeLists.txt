@@ -13,15 +13,18 @@ message("------------------------------- Options -------------------------------
 # Default: Debug
 #
 if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Debug)
+  set(CMAKE_BUILD_TYPE Release)
 endif()
 message("-- Build Type: ${CMAKE_BUILD_TYPE} (-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE})")
 IF(CMAKE_BUILD_TYPE MATCHES Debug)
   set(CMAKE_CXX_FLAGS "-g -O0 -Wall -pthread ")
+  message("Debug build.")
 ELSEIF(CMAKE_BUILD_TYPE MATCHES Release)
   set(CMAKE_CXX_FLAGS "-g -O2 -Wall -pthread ")
+  message("Release build.")
 ELSE()
   set(CMAKE_CXX_FLAGS "-g -Wall -pthread ")
+  message("Some other build type.")
 ENDIF()
 
 # compiler options
