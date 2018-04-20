@@ -45,7 +45,7 @@ list(LENGTH CMAKE_CXX_FLAGS CXX_FLAG_LEN)
 message("-- CMAKE_CXX_FLAGS list length = " ${CXX_FLAG_LEN})
 foreach(FLAG ${CMAKE_CXX_FLAGS})
 message("--CMAKE_CXX_FLAGS: " ${FLAG})
-endforeach
+endforeach(FLAG)
 
 # compiler options
 set(CMAKE_CXX_COMPILER "g++")
