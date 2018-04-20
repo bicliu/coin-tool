@@ -27,29 +27,22 @@ ELSE()
   message("-- Some other build type.")
 ENDIF()
 
-set(CXX_FLAGS
- -g
- -DCHECK_PTHREAD_RETURN_VALUE
- -D_FILE_OFFSET_BITS=64
- -Wall
- -Wextra
- -Wsign-compare
-# -Werror
-# -Wconversion
--Wunused-variable
- -Wno-unused-parameter
-# -Wold-style-cast
- -Woverloaded-virtual
- -Wpointer-arith
-# -Wshadow
- -Wwrite-strings
- -march=native
- # -MMD
- -std=c++0x
- -rdynamic
- -pthread
-# -fPIC
- )
+list(APPEND CMAKE_CXX_FLAGS 
+            "-DCHECK_PTHREAD_RETURN_VALUE"
+            "-D_FILE_OFFSET_BITS=64"
+            "-Wextra"
+            "-Wsign-compare"
+            "-Wunused-variable"
+            "-Wno-unused-parameter"
+            "-Woverloaded-virtual"
+            "-Wpointer-arith"
+            "-Wwrite-strings"
+            "-march=native"
+            "-rdynamic"
+            " -pthread ")
+
+list(LENGTH CMAKE_CXX_FLAGS <CXX_FLAG_LEN>)
+message("-- CMAKE_CXX_FLAGS list length = " ${CXX_FLAG_LEN})
 
 # compiler options
 set(CMAKE_CXX_COMPILER "g++")
