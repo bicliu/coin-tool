@@ -57,12 +57,12 @@ endif()
 # Ulord
 if (CHAIN_TYPE STREQUAL "UD")
   set(CHAIN_NAME "ulord Core")
-  set(POOL__DEB_PACKNAME_POSTFIX "${POOL__DEB_PACKNAME_POSTFIX}-ulord")
-  set(POOL__DEFAULT_INSTALL_PREFIX "/work/udpool.ulord")
+  #set(POOL__DEB_PACKNAME_POSTFIX "${POOL__DEB_PACKNAME_POSTFIX}-ulord")
+  #set(POOL__DEFAULT_INSTALL_PREFIX "/work/udpool.ulord")
 
-  add_definitions(-DCHAIN_TYPE_BTC)
-  add_definitions(-DKAFKA_TOPIC_PREFIX="") # for compatibility with old deployments, let it empty.
-  add_definitions(-DZOOKEEPER_NODE_POSTFIX="") # for compatibility with old deployments, let it empty.
+  #add_definitions(-DCHAIN_TYPE_BTC)
+  #add_definitions(-DKAFKA_TOPIC_PREFIX="") # for compatibility with old deployments, let it empty.
+  #add_definitions(-DZOOKEEPER_NODE_POSTFIX="") # for compatibility with old deployments, let it empty.
 
 # Unknown
 else()
@@ -71,6 +71,9 @@ else()
 endif()
 
 message("-- Chain Type: ${CHAIN_NAME} (-DCHAIN_TYPE=${CHAIN_TYPE})")
+
+# add a macro that needed by chain's source code
+add_definitions(-DHAVE_CONFIG_H)
 
 #
 # Root Dir of Chain's Source Code
