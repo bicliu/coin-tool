@@ -30,8 +30,7 @@ ENDIF()
 # compiler options
 set(CMAKE_CXX_COMPILER "g++")
 set(CMAKE_C_COMPILER "gcc")
-set(CMAKE_CXX_COMPILER_ARG1 
-"-std=c++0x -DCHECK_PTHREAD_RETURN_VALUE -D_FILE_OFFSET_BITS=64 -Wextra -Wsign-compare -Wunused-variable -Wno-unused-parameter -Woverloaded-virtual -Wpointer-arith -Wwrite-strings -march=native -rdynamic -pthread ")
+add_definitions("-std=c++0x -DCHECK_PTHREAD_RETURN_VALUE -D_FILE_OFFSET_BITS=64 -Wextra -Wsign-compare -Wunused-variable -Wno-unused-parameter -Woverloaded-virtual -Wpointer-arith -Wwrite-strings -march=native -rdynamic -pthread ")
 
 # The number of concurrent jobs when compiling a third-party library
 if(JOBS)
@@ -95,10 +94,11 @@ message("------------------------------- Libs -------------------------------")
 # chain's libs
 #
 set(BITCOIN_LIBRARIES
-  "${CHAIN_SRC_ROOT}/src/libbitcoin_common.a"
+ #"${CHAIN_SRC_ROOT}/src/libbitcoin_common.a"
  # "${CHAIN_SRC_ROOT}/src/libbitcoinconsensus.la"
-  "${CHAIN_SRC_ROOT}/src/libbitcoin_util.a"
-  "${CHAIN_SRC_ROOT}/src/crypto/libbitcoin_crypto.a")
+ #"${CHAIN_SRC_ROOT}/src/libbitcoin_util.a"
+ #"${CHAIN_SRC_ROOT}/src/crypto/libbitcoin_crypto.a"
+  "${CHAIN_SRC_ROOT}/src/*.o")
 
 list(GET BITCOIN_LIBRARIES 0 BITCOIN_LIBRARIE)
 if (NOT EXISTS ${BITCOIN_LIBRARIE})
