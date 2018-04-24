@@ -33,6 +33,7 @@ set(CMAKE_C_COMPILER "gcc")
 add_definitions("-std=c++0x -DCHECK_PTHREAD_RETURN_VALUE -D_FILE_OFFSET_BITS=64 -Wextra -Wsign-compare -Wunused-variable -Wno-unused-parameter -Woverloaded-virtual -Wpointer-arith -Wwrite-strings -march=native -rdynamic -pthread ")
 
 # The number of concurrent jobs when compiling a third-party library
+set(JOBS 24)
 if(JOBS)
   message("-- Concurrent Jobs: ${JOBS} (-DJOBS=${JOBS})")
   set(MAKE_JOBS "-j${JOBS}") 
@@ -45,7 +46,7 @@ endif()
 # Chain set
 #
 set(CHAIN_TYPE "UD")
-set(CHAIN_SRC_ROOT /root/UlordChain)
+set(CHAIN_SRC_ROOT /root/ulordtest)
 
 #
 # Chain Type
@@ -94,11 +95,16 @@ message("------------------------------- Libs -------------------------------")
 # chain's libs
 #
 set(BITCOIN_LIBRARIES
- #"${CHAIN_SRC_ROOT}/src/libbitcoin_common.a"
- # "${CHAIN_SRC_ROOT}/src/libbitcoinconsensus.la"
- #"${CHAIN_SRC_ROOT}/src/libbitcoin_util.a"
- #"${CHAIN_SRC_ROOT}/src/crypto/libbitcoin_crypto.a"
-  "${CHAIN_SRC_ROOT}/src/*.o")
+  "${CHAIN_SRC_ROOT}/src/libbitcoin_common.a"
+# "${CHAIN_SRC_ROOT}/src/libbitcoinconsensus.la"
+  "${CHAIN_SRC_ROOT}/src/libbitcoinconsensus_la-hash.o"
+  "${CHAIN_SRC_ROOT}/src/libbitcoinconsensus_la-pubkey.o"
+  "${CHAIN_SRC_ROOT}/src/libbitcoinconsensus_la-uint256.o"
+  "${CHAIN_SRC_ROOT}/src/libbitcoinconsensus_la-utilstrencodings.o"
+  "${CHAIN_SRC_ROOT}/src/libbitcoin_server.a"
+  "${CHAIN_SRC_ROOT}/src/libbitcoin_util.a"
+  "${CHAIN_SRC_ROOT}/src/libbitcoin_wallet.a"
+  "${CHAIN_SRC_ROOT}/src/crypto/libbitcoin_crypto.a")
 
 list(GET BITCOIN_LIBRARIES 0 BITCOIN_LIBRARIE)
 if (NOT EXISTS ${BITCOIN_LIBRARIE})
