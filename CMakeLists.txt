@@ -45,7 +45,7 @@ endif()
 # Chain set
 #
 set(CHAIN_TYPE "UD")
-set(CHAIN_SRC_ROOT /root/ulordtest)
+set(CHAIN_SRC_ROOT /root/UlordChain)
 
 #
 # Chain Type
