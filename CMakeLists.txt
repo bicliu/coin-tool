@@ -101,13 +101,13 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 set(BITCOIN_LIBRARIES
   "${CHAIN_SRC_ROOT}/src/libbitcoin_common.a"
 # "${CHAIN_SRC_ROOT}/src/libbitcoinconsensus.la"
-  "${CHAIN_SRC_ROOT}/src/libbitcoinconsensus_la-hash.o"
-  "${CHAIN_SRC_ROOT}/src/libbitcoinconsensus_la-pubkey.o"
-  "${CHAIN_SRC_ROOT}/src/libbitcoinconsensus_la-uint256.o"
-  "${CHAIN_SRC_ROOT}/src/libbitcoinconsensus_la-utilstrencodings.o"
+# "${CHAIN_SRC_ROOT}/src/libbitcoinconsensus_la-hash.o"
+# "${CHAIN_SRC_ROOT}/src/libbitcoinconsensus_la-pubkey.o"
+# "${CHAIN_SRC_ROOT}/src/libbitcoinconsensus_la-uint256.o"
+# "${CHAIN_SRC_ROOT}/src/libbitcoinconsensus_la-utilstrencodings.o"
   "${CHAIN_SRC_ROOT}/src/libbitcoin_server.a"
   "${CHAIN_SRC_ROOT}/src/libbitcoin_util.a"
-# "${CHAIN_SRC_ROOT}/src/libbitcoin_wallet.a"
+  "${CHAIN_SRC_ROOT}/src/libbitcoin_wallet.a"
   "${CHAIN_SRC_ROOT}/src/crypto/libbitcoin_crypto.a")
 
 list(GET BITCOIN_LIBRARIES 0 BITCOIN_LIBRARIE)
@@ -142,6 +142,30 @@ if (NOT EXISTS ${secp256k1_LIBRARIES})
 endif()
 if (NOT EXISTS ${secp256k1_LIBRARIES})
   message(FATAL_ERROR "build secp256k1 failed!")
+endif()
+
+#
+# libunivalue
+#
+set(univalue_DIR "${CHAIN_SRC_ROOT}/src/univalue")
+set(univalue_LIBRARIES "${univalue_DIR}/.libs/libunivalue.a")
+if (NOT EXISTS ${univalue_LIBRARIES})
+  message(STATUS "build univalue...")
+  execute_process(WORKING_DIRECTORY "${univalue_DIR}" COMMAND ./autogen.sh)
+  execute_process(WORKING_DIRECTORY "${univalue_DIR}" COMMAND ./configure --enable-module-recovery)
+  execute_process(WORKING_DIRECTORY "${univalue_DIR}" COMMAND make ${MAKE_JOBS})
+endif()
+if (NOT EXISTS ${univalue_LIBRARIES})
+  message(FATAL_ERROR "build univalue failed!")
+endif()
+
+#
+# libleveldb
+#
+set(leveldb_DIR "${CHAIN_SRC_ROOT}/src/leveldb")
+set(leveldb_LIBRARIES "${leveldb_DIR}/libleveldb.a")
+if (NOT EXISTS ${leveldb_LIBRARIES})
+  message(FATAL_ERROR "find leveldb failed!")
 endif()
 
 find_package(OpenSSL)
@@ -199,9 +223,9 @@ endif()
 #  message(FATAL_ERROR "librdkafka not found!")
 #endif()
 
-message("--Coin tools libs")
+message("-- Coin tools libs")
 file(GLOB LIB_COMMON common/*.cpp)
-add_library(tool-common STATIC ${LIB_COMMON})
+add_library(TOOLCOMMON_LIBS STATIC ${LIB_COMMON})
 
 message("") # add an empty line
 
@@ -209,10 +233,10 @@ message("") # add an empty line
 message("") # empty line
 message("------------------------------- Targets -------------------------------")
 
-include_directories(src ${CHAIN_SRC_ROOT}/src ${CHAIN_SRC_ROOT}/src/config ${CHAIN_SRC_ROOT}/src/secp256k1/include
+include_directories(common ${CHAIN_SRC_ROOT}/src ${CHAIN_SRC_ROOT}/src/config ${secp256k1_DIR}/include ${univalue_DIR}/include ${leveldb_DIR}/include
                     ${OPENSSL_INCLUDE_DIR} ${Boost_INCLUDE_DIRS} ${LIBZMQ_INCLUDE_DIR} ${LIBEVENT_INCLUDE_DIR})
-set(THIRD_LIBRARIES ${BITCOIN_LIBRARIES} ${OPENSSL_CRYPTO_LIBRARY} ${OPENSSL_SSL_LIBRARY} ${Boost_LIBRARIES}
-                    ${LIBZMQ_LIBRARIES} ${LIBEVENT_LIB} ${LIBEVENT_PTHREADS_LIB} ${secp256k1_LIBRARIES} ${PTHREAD_LIBRARIES})
+set(THIRD_LIBRARIES ${BITCOIN_LIBRARIES} ${OPENSSL_CRYPTO_LIBRARY} ${OPENSSL_SSL_LIBRARY} ${Boost_LIBRARIES} ${univalue_LIBRARIES} ${leveldb_LIBRARIES}
+                    ${LIBZMQ_LIBRARIES} ${LIBEVENT_LIB} ${LIBEVENT_PTHREADS_LIB} ${secp256k1_LIBRARIES} ${PTHREAD_LIBRARIES} ${TOOLCOMMON_LIBS})
 
 message("target start")
 #add_executable(alert ${ALERT_SRC})

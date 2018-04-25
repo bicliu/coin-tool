@@ -1,11 +1,22 @@
+message("") # empty line
+message("------------------------------- sendalert -------------------------------")
+message("-- target sendalert")
+
+message("-- include path ${PROJECT_SOURCE_DIR}/common")
 include_directories( ${PROJECT_SOURCE_DIR}/common )
 link_directories( ${PROJECT_BINARY_DIR}/lib )
 
-set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
+#set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 
-set(IMPORTLIB ${BITCOIN_LIBRARIES} ${THIRD_LIBRARIES})
+set(IMPORTLIB ${BITCOIN_LIBRARIES} ${THIRD_LIBRARIES} boost_system boost_filesystem boost_program_options boost_thread boost_log_setup boost_serialization
+	pthread  db_cxx-4.8
+	m
+)
 
 file(GLOB TOOL_HEADERS "*.h" )
 file(GLOB TOOL_SRC "*.cpp"  "*.cc")
 add_executable(sendalert ${TOOL_SRC} ${TOOL_HEADERS})
 target_link_libraries(sendalert ${IMPORTLIB})
+
+message("-- sendalert end")
+message("") # empty line 
