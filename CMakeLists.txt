@@ -107,7 +107,7 @@ set(BITCOIN_LIBRARIES
   "${CHAIN_SRC_ROOT}/src/libbitcoinconsensus_la-utilstrencodings.o"
   "${CHAIN_SRC_ROOT}/src/libbitcoin_server.a"
   "${CHAIN_SRC_ROOT}/src/libbitcoin_util.a"
-  "${CHAIN_SRC_ROOT}/src/libbitcoin_wallet.a"
+# "${CHAIN_SRC_ROOT}/src/libbitcoin_wallet.a"
   "${CHAIN_SRC_ROOT}/src/crypto/libbitcoin_crypto.a")
 
 list(GET BITCOIN_LIBRARIES 0 BITCOIN_LIBRARIE)
