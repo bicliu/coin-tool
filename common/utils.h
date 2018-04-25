@@ -9,4 +9,5 @@ void ReadFile(std::map<std::string, std::string>& mapSettingsRet,
               const std::string & strfile);
 bool AddOneNode(const std::string & strNode);
 bool GetKeysFromSecret(std::string strSecret, CKey& keyRet, CPubKey& pubkeyRet);
+
 #endif

@@ -12,10 +12,10 @@ using namespace std;
 boost::filesystem::path GetCoinToolDir()
 {
     namespace fs = boost::filesystem;
-    // Windows < Vista: C:\Documents and Settings\Username\Application Data\UlordCore
-    // Windows >= Vista: C:\Users\Username\AppData\Roaming\UlordCore
-    // Mac: ~/Library/Application Support/UlordCore
-    // Unix: ~/.ulordcore
+    // Windows < Vista: C:\Documents and Settings\Username\Application Data\CoinTool
+    // Windows >= Vista: C:\Users\Username\AppData\Roaming\CoinTools
+    // Mac: ~/Library/Application Support/CoinTool
+    // Unix: ~/.cointools
 #ifdef WIN32
     // Windows
     return GetSpecialFolderPath(CSIDL_APPDATA) / "CoinTool";
