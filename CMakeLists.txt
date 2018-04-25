@@ -215,6 +215,6 @@ set(THIRD_LIBRARIES ${BITCOIN_LIBRARIES} ${OPENSSL_CRYPTO_LIBRARY} ${OPENSSL_SSL
                     ${LIBZMQ_LIBRARIES} ${LIBEVENT_LIB} ${LIBEVENT_PTHREADS_LIB} ${secp256k1_LIBRARIES} ${PTHREAD_LIBRARIES})
 
 message("target start")
-//add_executable(alert ${ALERT_SRC})
-//target_link_libraries(alert ${THIRD_LIBRARIES})
+#add_executable(alert ${ALERT_SRC})
+#target_link_libraries(alert ${THIRD_LIBRARIES})
 add_subdirectory(sendAlert)
