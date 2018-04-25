@@ -1,7 +1,8 @@
-#include "base58.h"
 #include "utils.h"
 #include "alert.h"
 #include "net.h"
+
+using namespace std;
 
 int main()
 {

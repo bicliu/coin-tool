@@ -199,7 +199,7 @@ endif()
 #  message(FATAL_ERROR "librdkafka not found!")
 #endif()
 
-message("Coin tools libs")
+message("--Coin tools libs")
 file(GLOB LIB_COMMON common/*.cpp)
 add_library(tool-common STATIC ${LIB_COMMON})
 

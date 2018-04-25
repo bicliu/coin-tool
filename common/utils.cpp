@@ -81,3 +81,15 @@ bool AddOneNode(const string & strNode)
 	return OpenNetworkConnection(addr, NULL, strNode.c_str());
 }
 
+bool GetKeysFromSecret(std::string strSecret, CKey& keyRet, CPubKey& pubkeyRet)
+{
+    CBitcoinSecret vchSecret;
+
+    if(!vchSecret.SetString(strSecret)) return false;
+
+    keyRet = vchSecret.GetKey();
+    pubkeyRet = keyRet.GetPubKey();
+
+    return true;
+}
+
