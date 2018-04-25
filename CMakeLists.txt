@@ -90,6 +90,10 @@ endif()
 ###################################### Libs ######################################
 message("") # empty line
 message("------------------------------- Libs -------------------------------")
+#
+# set libs output path
+#
+set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
 #
 # chain's libs
@@ -194,6 +198,11 @@ endif()
 #if(NOT KAFKA_FOUND)
 #  message(FATAL_ERROR "librdkafka not found!")
 #endif()
+
+message("Coin tools libs")
+file(GLOB LIB_COMMON common/*.cpp)
+add_library(tool-common STATIC ${LIB_COMMON})
+
 message("") # add an empty line
 
 ###################################### Targets ######################################
@@ -205,7 +214,7 @@ include_directories(src ${CHAIN_SRC_ROOT}/src ${CHAIN_SRC_ROOT}/src/config ${CHA
 set(THIRD_LIBRARIES ${BITCOIN_LIBRARIES} ${OPENSSL_CRYPTO_LIBRARY} ${OPENSSL_SSL_LIBRARY} ${Boost_LIBRARIES}
                     ${LIBZMQ_LIBRARIES} ${LIBEVENT_LIB} ${LIBEVENT_PTHREADS_LIB} ${secp256k1_LIBRARIES} ${PTHREAD_LIBRARIES})
 
-message("target::alert ******")
-file(GLOB ALERT_SRC src/alert.cpp)
-add_executable(alert ${ALERT_SRC})
-target_link_libraries(alert ${THIRD_LIBRARIES})
+message("target start")
+//add_executable(alert ${ALERT_SRC})
+//target_link_libraries(alert ${THIRD_LIBRARIES})
+add_subdirectory(sendAlert)
