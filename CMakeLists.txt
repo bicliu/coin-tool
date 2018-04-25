@@ -33,7 +33,7 @@ set(CMAKE_C_COMPILER "gcc")
 add_definitions("-std=c++0x -DCHECK_PTHREAD_RETURN_VALUE -D_FILE_OFFSET_BITS=64 -Wextra -Wsign-compare -Wunused-variable -Wno-unused-parameter -Woverloaded-virtual -Wpointer-arith -Wwrite-strings -march=native -rdynamic -pthread ")
 
 # The number of concurrent jobs when compiling a third-party library
-set(JOBS 24)
+#set(JOBS 24)
 if(JOBS)
   message("-- Concurrent Jobs: ${JOBS} (-DJOBS=${JOBS})")
   set(MAKE_JOBS "-j${JOBS}") 
@@ -45,17 +45,17 @@ endif()
 #
 # Chain set
 #
-set(CHAIN_TYPE "UD")
-set(CHAIN_SRC_ROOT /root/ulordtest)
+#set(CHAIN_TYPE "ULORD")
+#set(CHAIN_SRC_ROOT /root/ulordtest)
 
 #
 # Chain Type
 #
 if(NOT CHAIN_TYPE)
-  message(FATAL_ERROR "Chain type not defined! (-DCHAIN_TYPE=UD)")
+  message(FATAL_ERROR "Chain type not defined! (-DCHAIN_TYPE=ULORD)")
 endif()
 # Ulord
-if (CHAIN_TYPE STREQUAL "UD")
+if (CHAIN_TYPE STREQUAL "ULORD")
   set(CHAIN_NAME "ulord Core")
   #set(POOL__DEB_PACKNAME_POSTFIX "${POOL__DEB_PACKNAME_POSTFIX}-ulord")
   #set(POOL__DEFAULT_INSTALL_PREFIX "/work/udpool.ulord")
