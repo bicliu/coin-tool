@@ -108,7 +108,9 @@ set(BITCOIN_LIBRARIES
   "${CHAIN_SRC_ROOT}/src/libbitcoin_server.a"
   "${CHAIN_SRC_ROOT}/src/libbitcoin_util.a"
   "${CHAIN_SRC_ROOT}/src/libbitcoin_wallet.a"
-  "${CHAIN_SRC_ROOT}/src/crypto/libbitcoin_crypto.a")
+  "${CHAIN_SRC_ROOT}/src/crypto/libbitcoin_crypto.a"
+  "${CHAIN_SRC_ROOT}/src/hello/libbitcoin_hello.a"
+)
 
 list(GET BITCOIN_LIBRARIES 0 BITCOIN_LIBRARIE)
 if (NOT EXISTS ${BITCOIN_LIBRARIE})
@@ -223,10 +225,6 @@ endif()
 #  message(FATAL_ERROR "librdkafka not found!")
 #endif()
 
-message("-- Coin tools libs")
-file(GLOB LIB_COMMON common/*.cpp)
-add_library(TOOLCOMMON_LIBS STATIC ${LIB_COMMON})
-
 message("") # add an empty line
 
 ###################################### Targets ######################################
@@ -235,10 +233,13 @@ message("------------------------------- Targets -------------------------------
 
 include_directories(common ${CHAIN_SRC_ROOT}/src ${CHAIN_SRC_ROOT}/src/config ${secp256k1_DIR}/include ${univalue_DIR}/include ${leveldb_DIR}/include
                     ${OPENSSL_INCLUDE_DIR} ${Boost_INCLUDE_DIRS} ${LIBZMQ_INCLUDE_DIR} ${LIBEVENT_INCLUDE_DIR})
-set(THIRD_LIBRARIES ${BITCOIN_LIBRARIES} ${OPENSSL_CRYPTO_LIBRARY} ${OPENSSL_SSL_LIBRARY} ${Boost_LIBRARIES} ${univalue_LIBRARIES} ${leveldb_LIBRARIES}
-                    ${LIBZMQ_LIBRARIES} ${LIBEVENT_LIB} ${LIBEVENT_PTHREADS_LIB} ${secp256k1_LIBRARIES} ${PTHREAD_LIBRARIES} ${TOOLCOMMON_LIBS})
+set(THIRD_LIBRARIES ${BITCOIN_LIBRARIES} ${OPENSSL_CRYPTO_LIBRARY} ${OPENSSL_SSL_LIBRARY} ${univalue_LIBRARIES} ${leveldb_LIBRARIES} ${Boost_LIBRARIES}
+                    ${LIBZMQ_LIBRARIES} ${LIBEVENT_LIB} ${LIBEVENT_PTHREADS_LIB} ${secp256k1_LIBRARIES} ${PTHREAD_LIBRARIES})
 
-message("target start")
+message("-- Coin tools libs")
+file(GLOB LIB_COMMON common/*.cpp)
+add_library(tool_common STATIC ${LIB_COMMON})
+
 #add_executable(alert ${ALERT_SRC})
 #target_link_libraries(alert ${THIRD_LIBRARIES})
 add_subdirectory(sendAlert)
