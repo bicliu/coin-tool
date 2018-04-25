@@ -1,7 +1,11 @@
 #include "utils.h"
+#include "protocol.h"
+#include "net.h"
 
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
+#include <boost/program_options/detail/config_file.hpp>
+#include <boost/program_options/parsers.hpp>
 
 using namespace std;
 
@@ -42,7 +46,7 @@ boost::filesystem::path GetFile(const std::string & filename)
     return pathConfigFile;
 }
 
-
+extern void InterpretNegativeSetting(std::string& strKey, std::string& strValue);
 void ReadFile(map<string, string>& mapSettingsRet,
               map<string, vector<string> >& mapMultiSettingsRet,
               const std::string & strfile)

@@ -6,6 +6,6 @@
 void ReadFile(std::map<std::string, std::string>& mapSettingsRet,
               std::map<std::string, std::vector<std::string> >& mapMultiSettingsRet,
               const std::string & strfile);
-bool AddOneNode(const string & strNode);
+bool AddOneNode(const std::string & strNode);
 
 #endif
