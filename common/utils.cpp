@@ -39,7 +39,12 @@ boost::filesystem::path GetCoinToolDir()
 #endif
 }
 
-
+void SetFilePath(const std::string & filename)
+{
+    mapArgs["-datadir"] = GetCoinToolDir();
+    mapArgs["-conf"] = GetCoinToolDir() / filename;
+}
+#if 0
 boost::filesystem::path GetFile(const std::string & filename)
 {
     boost::filesystem::path pathConfigFile(filename);
@@ -91,7 +96,7 @@ void ReadFile(const std::string & strfile)
         mapMultiArgs[strKey].push_back(strValue);
     }
 }
-
+#endif
 bool AddOneNode(const string & strNode)
 {
 	CAddress addr;
@@ -109,13 +114,6 @@ bool GetKeysFromSecret(std::string strSecret, CKey& keyRet, CPubKey& pubkeyRet)
 
     return true;
 }
-
-/*bool GetBoolToolArg(const std::string& strArg, bool fDefault)
-{
-    if (mapArgs.count(strArg))
-        return InterpretBool(mapArgs[strArg]);
-    return fDefault;
-}*/
 
 void SetParams()
 {

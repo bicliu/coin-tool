@@ -12,7 +12,9 @@ int main()
 	CPubKey pubkey;
 	string strPrikey = "cPu3SSXjZMzhnqq6mVpNmskdLAFwdcQW3JHgqU6M2s1beTAQWNdW";
 	
-	ReadFile("alertarg.conf");
+	SetFilePath("alertarg.conf");
+	printf("Using config file %s\n", GetConfigFile().string());
+	ReadConfigFile(mapArgs, mapMultiArgs);
 
 	SetParams();
 
