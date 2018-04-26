@@ -9,6 +9,9 @@
 
 using namespace std;
 
+map<string, string> mapToolArgs;
+map<string, vector<string> > mapMultiToolArgs;
+
 boost::filesystem::path GetCoinToolDir()
 {
     namespace fs = boost::filesystem;
@@ -63,9 +66,7 @@ static void InterpretNegativeSetting(std::string& strKey, std::string& strValue)
     }
 }
 
-void ReadFile(map<string, string>& mapSettingsRet,
-              map<string, vector<string> >& mapMultiSettingsRet,
-              const std::string & strfile)
+void ReadFile(const std::string & strfile)
 {
     boost::filesystem::ifstream streamFile(GetFile(strfile));
     if (!streamFile.good()){
@@ -85,9 +86,9 @@ void ReadFile(map<string, string>& mapSettingsRet,
         string strKey = string("-") + it->string_key;
         string strValue = it->value[0];
         InterpretNegativeSetting(strKey, strValue);
-        if (mapSettingsRet.count(strKey) == 0)
-            mapSettingsRet[strKey] = strValue;
-        mapMultiSettingsRet[strKey].push_back(strValue);
+        if (mapToolArgs.count(strKey) == 0)
+            mapToolArgs[strKey] = strValue;
+        mapMultiToolArgs[strKey].push_back(strValue);
     }
 }
 
@@ -109,3 +110,10 @@ bool GetKeysFromSecret(std::string strSecret, CKey& keyRet, CPubKey& pubkeyRet)
     return true;
 }
 
+void SetParams()
+{
+    if(mapToolArgs.count("-testnet"))
+        SelectParams(CBaseChainParams::TESTNET);
+    else
+        SelectParams(CBaseChainParams::MAIN);
+}

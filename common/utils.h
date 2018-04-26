@@ -4,10 +4,12 @@
 #include "base58.h"
 #include "util.h"
 
-void ReadFile(std::map<std::string, std::string>& mapSettingsRet,
-              std::map<std::string, std::vector<std::string> >& mapMultiSettingsRet,
-              const std::string & strfile);
+extern std::map<std::string, std::string> mapToolArgs;
+extern std::map<std::string, std::vector<std::string> > mapMultiToolArgs;
+
+void ReadFile(const std::string & strfile);
 bool AddOneNode(const std::string & strNode);
 bool GetKeysFromSecret(std::string strSecret, CKey& keyRet, CPubKey& pubkeyRet);
+void SetParams();
 
 #endif

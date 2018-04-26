@@ -11,85 +11,83 @@ int main()
 	CKey prikey;
 	CPubKey pubkey;
 	string strPrikey = "cPu3SSXjZMzhnqq6mVpNmskdLAFwdcQW3JHgqU6M2s1beTAQWNdW";
-	map<string, string> mapAlertArgs;
-	map<string, vector<string> > mapMultiAlertArgs;
+	
+	ReadFile("alertarg.conf");
 
-	ReadFile(mapAlertArgs, mapMultiAlertArgs, "alertarg.conf");
-
-    if(mapAlertArgs.count("-privkey"))
-        strPrikey = mapAlertArgs["-privkey"];
+    if(mapToolArgs.count("-privkey"))
+        strPrikey = mapToolArgs["-privkey"];
     else
         strPrikey = "cPu3SSXjZMzhnqq6mVpNmskdLAFwdcQW3JHgqU6M2s1beTAQWNdW";
 
-    if (mapAlertArgs.count("-version"))
-		alert.nVersion = atoi(mapAlertArgs["-version"]);
+    if (mapToolArgs.count("-version"))
+		alert.nVersion = atoi(mapToolArgs["-version"]);
 	else
 		alert.nVersion = PROTOCOL_VERSION;
 
-	if (mapAlertArgs.count("-relayuntil"))
-		alert.nRelayUntil = atoi64(mapAlertArgs["-relayuntil"]);
+	if (mapToolArgs.count("-relayuntil"))
+		alert.nRelayUntil = atoi64(mapToolArgs["-relayuntil"]);
 	else
 		alert.nRelayUntil = 4070908800ULL;
 	
-	if (mapAlertArgs.count("-expiration"))
-		alert.nExpiration = atoi64(mapAlertArgs["-expiration"]);
+	if (mapToolArgs.count("-expiration"))
+		alert.nExpiration = atoi64(mapToolArgs["-expiration"]);
 	else
 		alert.nExpiration = 4070908800ULL;
 
-	if (mapAlertArgs.count("-id"))
-		alert.nID = atoi(mapAlertArgs["-id"]);
+	if (mapToolArgs.count("-id"))
+		alert.nID = atoi(mapToolArgs["-id"]);
 	else
 		alert.nID = 1;
 
-	if (mapAlertArgs.count("-cancel"))
-		alert.nCancel = atoi(mapAlertArgs["-cancel"]);
+	if (mapToolArgs.count("-cancel"))
+		alert.nCancel = atoi(mapToolArgs["-cancel"]);
 	else
 		alert.nCancel = 0;
 	
 	//alert.setCancel.insert(alert.nID);
-	if (mapAlertArgs.count("-setcancel"))
+	if (mapToolArgs.count("-setcancel"))
 	{
-		for(string str : mapMultiAlertArgs["-setcancel"])
+		for(string str : mapMultiToolArgs["-setcancel"])
 			alert.setCancel.insert(atoi(str));
 	}
 
-	if (mapAlertArgs.count("-minver"))
-		alert.nMinVer = atoi(mapAlertArgs["-minver"]);
+	if (mapToolArgs.count("-minver"))
+		alert.nMinVer = atoi(mapToolArgs["-minver"]);
 	else
 		alert.nMinVer = 0;
 
-	if (mapAlertArgs.count("-maxver"))
-		alert.nMaxVer = atoi(mapAlertArgs["-maxver"]);
+	if (mapToolArgs.count("-maxver"))
+		alert.nMaxVer = atoi(mapToolArgs["-maxver"]);
 	else
 		alert.nMaxVer = 0x7fffffff;
 	
 	//alert.setSubVer.insert(FormatSubVersion(CLIENT_NAME, CLIENT_VERSION, std::vector<std::string>()));
-	if (mapAlertArgs.count("-setsubver"))
+	if (mapToolArgs.count("-setsubver"))
 	{
-		for(string str : mapMultiAlertArgs["-setsubver"])
+		for(string str : mapMultiToolArgs["-setsubver"])
 			alert.setSubVer.insert(str);
 	}
 
-	if (mapAlertArgs.count("-priority"))
-		alert.nPriority = atoi(mapAlertArgs["-priority"]);
+	if (mapToolArgs.count("-priority"))
+		alert.nPriority = atoi(mapToolArgs["-priority"]);
 	else
 		alert.nPriority = 1;
 
-	if (mapAlertArgs.count("-comment"))
-		alert.strComment = mapAlertArgs["-comment"];
+	if (mapToolArgs.count("-comment"))
+		alert.strComment = mapToolArgs["-comment"];
 	else
 		alert.strComment = "TEST: alert test";
 
-	if (mapAlertArgs.count("-statusbar"))
-		alert.strStatusBar = mapAlertArgs["-statusbar"];
+	if (mapToolArgs.count("-statusbar"))
+		alert.strStatusBar = mapToolArgs["-statusbar"];
 	else
 		alert.strStatusBar = "URGENT: Alert key compromised, upgrade required";
 
 	cout << "alert message " << endl << alert.ToString() << endl;
     
-    if (mapAlertArgs.count("-addnode"))
+    if (mapToolArgs.count("-addnode"))
 	{
-		for(string strNode : mapMultiAlertArgs["-addnode"])
+		for(string strNode : mapMultiToolArgs["-addnode"])
         {
             if(!AddOneNode(strNode))
                 cout << "add node failed : " << strNode << endl;
