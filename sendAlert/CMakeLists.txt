@@ -1,8 +1,8 @@
 message("") # empty line
-message("------------------------------- sendalert -------------------------------")
-message("-- target sendalert")
+message("--   ********* sendalert *********")
+message("--   target sendalert")
 
-message("-- include path ${PROJECT_SOURCE_DIR}/common")
+message("--   include path ${PROJECT_SOURCE_DIR}/common")
 include_directories( ${PROJECT_SOURCE_DIR}/common )
 link_directories( ${PROJECT_BINARY_DIR}/lib )
 
@@ -19,5 +19,5 @@ file(GLOB TOOL_SRC "*.cpp"  "*.cc")
 add_executable(sendalert ${TOOL_SRC} ${TOOL_HEADERS})
 target_link_libraries(sendalert ${IMPORTLIB} tool_common)
 
-message("-- sendalert end")
+message("--   ********* sendalert end *********")
 message("") # empty line 

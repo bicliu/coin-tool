@@ -108,6 +108,7 @@ set(BITCOIN_LIBRARIES
   "${CHAIN_SRC_ROOT}/src/libbitcoin_server.a"
   "${CHAIN_SRC_ROOT}/src/libbitcoin_util.a"
   "${CHAIN_SRC_ROOT}/src/libbitcoin_wallet.a"
+  "${CHAIN_SRC_ROOT}/src/libbitcoin_zmq.a"
   "${CHAIN_SRC_ROOT}/src/crypto/libbitcoin_crypto.a"
   "${CHAIN_SRC_ROOT}/src/hello/libbitcoin_hello.a"
 )
@@ -160,7 +161,7 @@ endif()
 # libleveldb
 #
 set(leveldb_DIR "${CHAIN_SRC_ROOT}/src/leveldb")
-set(leveldb_LIBRARIES "${leveldb_DIR}/libleveldb.a")
+set(leveldb_LIBRARIES "${leveldb_DIR}/libleveldb.a" "${leveldb_DIR}/libmemenv.a")
 if (NOT EXISTS ${leveldb_LIBRARIES})
   message(FATAL_ERROR "find leveldb failed!")
 endif()
