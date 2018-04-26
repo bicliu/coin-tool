@@ -17,6 +17,7 @@ int main()
 
 	SetParams();
 	ECC_Start();
+	ECCVerifyHandle globalVerifyHandle;
 
     if(mapArgs.count("-privkey"))
         strPrikey = mapArgs["-privkey"];
