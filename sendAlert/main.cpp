@@ -158,5 +158,7 @@ int main()
 			cout << "Send success to Node " << pnode->addr.ToString() << endl;
     }
 
+	cout << "send alert finished. total send to " << vNodes.szie() << " nodes." << endl;
+
     return 0;
 }

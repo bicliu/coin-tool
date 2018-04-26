@@ -8,7 +8,6 @@
 //extern std::map<std::string, std::vector<std::string> > mapMultiToolArgs;
 
 void SetFilePath(const std::string & filename);
-//void ReadFile(const std::string & strfile);
 bool AddOneNode(const std::string & strNode);
 bool GetKeysFromSecret(std::string strSecret, CKey& keyRet, CPubKey& pubkeyRet);
 void SetParams();
