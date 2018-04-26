@@ -87,9 +87,9 @@ int main()
 
 	cout << "alert message " << endl << alert.ToString() << endl;
     
-    if (mapAlertArgs.count("-node"))
+    if (mapAlertArgs.count("-addnode"))
 	{
-		for(string strNode : mapMultiAlertArgs["-node"])
+		for(string strNode : mapMultiAlertArgs["-addnode"])
         {
             if(!AddOneNode(strNode))
                 cout << "add node failed : " << strNode << endl;
