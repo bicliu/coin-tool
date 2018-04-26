@@ -67,7 +67,7 @@ if (CHAIN_TYPE STREQUAL "ULORD")
 # Unknown
 else()
   message("Unknown chain type! (-DCHAIN_TYPE=${CHAIN_TYPE})")
-  message(FATAL_ERROR "Supported chain type: BTC|BCH|UBTC|SBTC")
+  message(FATAL_ERROR "Supported chain type: ULORD")
 endif()
 
 message("-- Chain Type: ${CHAIN_NAME} (-DCHAIN_TYPE=${CHAIN_TYPE})")
@@ -125,11 +125,6 @@ foreach(BITCOIN_LIBRARIE ${BITCOIN_LIBRARIES})
     message(FATAL_ERROR "${BITCOIN_LIBRARIE} not exists!")
   endif()
 endforeach()
-
-find_package(LibPthread)
-if(NOT PTHREAD_FOUND)
-  message(FATAL_ERROR "libpthread not found!")
-endif()
 
 #
 # libsecp256k1
