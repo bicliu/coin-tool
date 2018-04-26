@@ -1,6 +1,6 @@
 #include "utils.h"
 #include "protocol.h"
-#include "net.h"
+#include "addrman.h"
 
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
@@ -46,24 +46,24 @@ void SetFilePath(const std::string & filename)
     cout << "Using config file " << GetConfigFile().string() << endl;
 }
 
-bool AddOneNode(const string & strNode)
+bool AddOneNode(const string & strNode, bool fConnectToMasternode)
 {
 	//CAddress addr;
 	//return OpenNetworkConnection(addr, NULL, strNode.c_str());
     CService destaddr = CService(strNode);
     bool proxyConnectionFailed = false;
     SOCKET hSocket;
-    if(ConnectSocket(checkServeraddr, hSocket, DEFAULT_CONNECT_TIMEOUT, &proxyConnectionFailed))
+    if(ConnectSocket(destaddr, hSocket, DEFAULT_CONNECT_TIMEOUT, &proxyConnectionFailed))
     {
         if (!IsSelectableSocket(hSocket)) {
             cout << "Cannot create connection: non-selectable socket created (fd >= FD_SETSIZE ?)" << endl;
             CloseSocket(hSocket);
             return false;
         }
-        addrman.Attempt(addrConnect);
+        addrman.Attempt(destaddr);
 
         // Add node
-        CNode* pnode = new CNode(hSocket, addrConnect, "", false, true);
+        CNode* pnode = new CNode(hSocket, destaddr, "", false, true);
 
         pnode->nTimeConnected = GetTime();
         if(fConnectToMasternode) {
