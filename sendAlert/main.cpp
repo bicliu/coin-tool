@@ -16,6 +16,7 @@ int main()
 	ReadConfigFile(mapArgs, mapMultiArgs);
 
 	SetParams();
+	ECC_Start();
 
     if(mapArgs.count("-privkey"))
         strPrikey = mapArgs["-privkey"];
