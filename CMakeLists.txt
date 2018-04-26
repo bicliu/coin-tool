@@ -30,7 +30,11 @@ ENDIF()
 # compiler options
 set(CMAKE_CXX_COMPILER "g++")
 set(CMAKE_C_COMPILER "gcc")
-add_definitions("-std=c++0x -DCHECK_PTHREAD_RETURN_VALUE -D_FILE_OFFSET_BITS=64 -Wextra -Wsign-compare -Wunused-variable -Wno-unused-parameter -Woverloaded-virtual -Wpointer-arith -Wwrite-strings -march=native -rdynamic -pthread ")
+add_definitions(
+    "-std=c++0x -DCHECK_PTHREAD_RETURN_VALUE -D_FILE_OFFSET_BITS=64 -Wextra -Wsign-compare 
+    -Wunused-variable -Wno-unused-parameter -Woverloaded-virtual -Wpointer-arith -Wwrite-strings 
+    -march=native -rdynamic -pthread -anl"
+)
 
 # The number of concurrent jobs when compiling a third-party library
 #set(JOBS 24)
