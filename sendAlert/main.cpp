@@ -102,7 +102,7 @@ int main()
 	}
     else
     {
-        cout << "add one node by config node=10.175.0.100:9888 frist in config file" << endl;
+        cout << "add one node by write as :  node=10.175.0.100:9888   in config file frist" << endl;
         return 0;
     }
 
