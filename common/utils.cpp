@@ -119,7 +119,7 @@ bool GetBoolArg(const std::string& strArg, bool fDefault)
 
 void SetParams()
 {
-    if(GetBoolArg("-testnet", faulse))
+    if(GetBoolArg("-testnet", false))
         SelectParams(CBaseChainParams::TESTNET);
     else
         SelectParams(CBaseChainParams::MAIN);
