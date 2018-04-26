@@ -9,7 +9,7 @@ link_directories( ${PROJECT_BINARY_DIR}/lib )
 #set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 
 set(IMPORTLIB ${BITCOIN_LIBRARIES} ${THIRD_LIBRARIES}
-	pthread  db_cxx-4.8
+	pthread  db_cxx-4.8 anl
 )
 
 message("--    ${IMPORTLIB}")
