@@ -9,6 +9,7 @@
 
 void SetFilePath(const std::string & filename);
 bool AddOneNode(const std::string & strNode);
+void FreeNode(CNode* pnode);
 bool GetKeysFromSecret(std::string strSecret, CKey& keyRet, CPubKey& pubkeyRet);
 void SetParams();
 

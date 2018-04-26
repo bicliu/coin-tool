@@ -156,6 +156,8 @@ int main()
             cout << "Send failed to Node " << pnode->addr.ToString() << endl;
     	else
 			cout << "Send success to Node " << pnode->addr.ToString() << endl;
+		
+		FreeNode(pnode);
     }
 
 	cout << "send alert finished. total send to " << vNodes.size() << " nodes." << endl;

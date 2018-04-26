@@ -79,6 +79,12 @@ bool AddOneNode(const string & strNode)
     return false;
 }
 
+void FreeNode(CNode* pnode)
+{
+    pNode->fDisconnect = true;
+    CloseSocket(pNode->hSocket);
+}
+
 bool GetKeysFromSecret(std::string strSecret, CKey& keyRet, CPubKey& pubkeyRet)
 {
     CBitcoinSecret vchSecret;
