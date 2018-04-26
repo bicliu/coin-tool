@@ -149,17 +149,23 @@ int main()
     	return 0;
 	}
 
+	int iSuccess = 0;
+
     LOCK(cs_vNodes);
     BOOST_FOREACH(CNode* pnode, vNodes)
     {
     	if(!alert.RelayTo(pnode))
             cout << "Send failed to Node " << pnode->addr.ToString() << endl;
     	else
+		{
 			cout << "Send success to Node " << pnode->addr.ToString() << endl;
+			iSuccess++;
+		}
     }
 
-	cout << "send alert finished. total send to " << vNodes.size() << " nodes." << endl;
+	cout << "send alert finished. total send to " << vNodes.size() << " nodes. " << iSuccess << " successes!" endl;
 
+	MilliSleep(10000);
 	FreeNode();
 
     return 0;
