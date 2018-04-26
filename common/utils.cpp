@@ -48,8 +48,35 @@ void SetFilePath(const std::string & filename)
 
 bool AddOneNode(const string & strNode)
 {
-	CAddress addr;
-	return OpenNetworkConnection(addr, NULL, strNode.c_str());
+	//CAddress addr;
+	//return OpenNetworkConnection(addr, NULL, strNode.c_str());
+    CService destaddr = CService(strNode);
+    bool proxyConnectionFailed = false;
+    SOCKET hSocket;
+    if(ConnectSocket(checkServeraddr, hSocket, DEFAULT_CONNECT_TIMEOUT, &proxyConnectionFailed))
+    {
+        if (!IsSelectableSocket(hSocket)) {
+            cout << "Cannot create connection: non-selectable socket created (fd >= FD_SETSIZE ?)" << endl;
+            CloseSocket(hSocket);
+            return false;
+        }
+        addrman.Attempt(addrConnect);
+
+        // Add node
+        CNode* pnode = new CNode(hSocket, addrConnect, "", false, true);
+
+        pnode->nTimeConnected = GetTime();
+        if(fConnectToMasternode) {
+            pnode->AddRef();
+            pnode->fMasternode = true;
+        }
+
+        LOCK(cs_vNodes);
+        vNodes.push_back(pnode);
+        return true;
+    }
+    cout << "ConnectSocket failed!" << endl;
+    return false;
 }
 
 bool GetKeysFromSecret(std::string strSecret, CKey& keyRet, CPubKey& pubkeyRet)
