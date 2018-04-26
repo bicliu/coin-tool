@@ -43,10 +43,10 @@ void SetFilePath(const std::string & filename)
 {
     mapArgs["-datadir"] = GetCoinToolDir().string();
 
-    boost::filesystem::path = GetCoinToolDir() / filename
+    boost::filesystem::path = GetCoinToolDir() / filename;
     mapArgs["-conf"] = path.string();
 
-    printf("Using config file %s\n", GetConfigFile().string());
+    cout << "Using config file " << GetConfigFile().string() << endl;
 }
 #if 0
 boost::filesystem::path GetFile(const std::string & filename)
