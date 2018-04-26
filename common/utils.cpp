@@ -67,6 +67,7 @@ bool AddOneNode(const string & strNode, bool fConnectToMasternode)
         CNode* pnode = new CNode(hSocket, (CAddress)destaddr, "", false, true);
 
         pnode->nTimeConnected = GetTime();
+		pnode->nVersion = PROTOCOL_VERSION;
         if(fConnectToMasternode) {
             pnode->AddRef();
             pnode->fMasternode = true;
