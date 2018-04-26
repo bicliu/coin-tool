@@ -110,9 +110,16 @@ bool GetKeysFromSecret(std::string strSecret, CKey& keyRet, CPubKey& pubkeyRet)
     return true;
 }
 
+bool GetBoolArg(const std::string& strArg, bool fDefault)
+{
+    if (mapToolArgs.count(strArg))
+        return InterpretBool(mapToolArgs[strArg]);
+    return fDefault;
+}
+
 void SetParams()
 {
-    if(mapToolArgs.count("-testnet"))
+    if(GetBoolArg("-testnet", faulse))
         SelectParams(CBaseChainParams::TESTNET);
     else
         SelectParams(CBaseChainParams::MAIN);
