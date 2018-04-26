@@ -195,7 +195,7 @@ if(NOT LibEvent_FOUND)
   message(FATAL_ERROR "libevent2 not found!")
 endif()
 
-find_package(Boost 1.36.0 COMPONENTS thread filesystem system regex program_options)
+find_package(Boost 1.36.0 COMPONENTS log system filesystem program_options thread regex serialization)
 if(NOT Boost_FOUND)
   message(FATAL_ERROR "Boost not found!")
 endif()
