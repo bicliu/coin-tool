@@ -163,10 +163,10 @@ int main()
 		}
     }
 
-	cout << "send alert finished. total send to " << vNodes.size() << " nodes. " << iSuccess << " successes!" endl;
+	cout << "wait for message sending " << endl;
 
-	MilliSleep(10000);
+	MilliSleep(1000);
+	cout << "send alert finished. total send to " << vNodes.size() << " nodes. " << iSuccess << " successes!" << endl;
 	FreeNode();
-
     return 0;
 }
