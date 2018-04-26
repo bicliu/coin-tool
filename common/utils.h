@@ -4,8 +4,8 @@
 #include "base58.h"
 #include "util.h"
 
-extern std::map<std::string, std::string> mapToolArgs;
-extern std::map<std::string, std::vector<std::string> > mapMultiToolArgs;
+//extern std::map<std::string, std::string> mapToolArgs;
+//extern std::map<std::string, std::vector<std::string> > mapMultiToolArgs;
 
 void ReadFile(const std::string & strfile);
 bool AddOneNode(const std::string & strNode);
