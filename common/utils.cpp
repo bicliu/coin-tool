@@ -1,5 +1,6 @@
 #include "utils.h"
 #include "protocol.h"
+#include "net.h"
 #include "addrman.h"
 
 #include <boost/filesystem.hpp>
@@ -79,10 +80,14 @@ bool AddOneNode(const string & strNode, bool fConnectToMasternode)
     return false;
 }
 
-void FreeNode(CNode* pnode)
+void FreeNode()
 {
-    pNode->fDisconnect = true;
-    CloseSocket(pNode->hSocket);
+    LOCK(cs_vNodes);
+    BOOST_FOREACH(CNode* pnode, vNodes)
+    {
+        pNode->fDisconnect = true;
+        CloseSocket(pNode->hSocket);
+    }
 }
 
 bool GetKeysFromSecret(std::string strSecret, CKey& keyRet, CPubKey& pubkeyRet)
