@@ -10,7 +10,7 @@ int main()
 	
 	CKey prikey;
 	CPubKey pubkey;
-	string strPrikey = "cRZyST127HW1wyKZUFgr5hykxKR7YJCcVS4nSF17A2N2nwLiLXtN";
+	string strPrikey = "cPu3SSXjZMzhnqq6mVpNmskdLAFwdcQW3JHgqU6M2s1beTAQWNdW";
 	map<string, string> mapAlertArgs;
 	map<string, vector<string> > mapMultiAlertArgs;
 
@@ -19,7 +19,7 @@ int main()
     if(mapAlertArgs.count("-privkey"))
         strPrikey = mapAlertArgs["-privkey"];
     else
-        strPrikey = "cRZyST127HW1wyKZUFgr5hykxKR7YJCcVS4nSF17A2N2nwLiLXtN";
+        strPrikey = "cPu3SSXjZMzhnqq6mVpNmskdLAFwdcQW3JHgqU6M2s1beTAQWNdW";
 
     if (mapAlertArgs.count("-version"))
 		alert.nVersion = atoi(mapAlertArgs["-version"]);
@@ -84,6 +84,8 @@ int main()
 		alert.strStatusBar = mapAlertArgs["-statusbar"];
 	else
 		alert.strStatusBar = "URGENT: Alert key compromised, upgrade required";
+
+	cout << "alert message " << endl << alert.ToString() << endl;
     
     if (mapAlertArgs.count("-node"))
 	{
@@ -91,6 +93,8 @@ int main()
         {
             if(!AddOneNode(strNode))
                 cout << "add node failed : " << strNode << endl;
+			else
+				cout << "add node : " << strNode << endl;
         }
 	}
     else
