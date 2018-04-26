@@ -12,13 +12,13 @@ using namespace std;
 boost::filesystem::path GetCoinToolDir()
 {
     namespace fs = boost::filesystem;
-    // Windows < Vista: C:\Documents and Settings\Username\Application Data\CoinTool
+    // Windows < Vista: C:\Documents and Settings\Username\Application Data\CoinTools
     // Windows >= Vista: C:\Users\Username\AppData\Roaming\CoinTools
-    // Mac: ~/Library/Application Support/CoinTool
+    // Mac: ~/Library/Application Support/CoinTools
     // Unix: ~/.cointools
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "CoinTool";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "CoinTools";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -28,10 +28,10 @@ boost::filesystem::path GetCoinToolDir()
         pathRet = fs::path(pszHome);
 #ifdef MAC_OSX
     // Mac
-    return pathRet / "Library/Application Support/CoinTool";
+    return pathRet / "Library/Application Support/CoinTools";
 #else
     // Unix
-    return pathRet / ".cointool";
+    return pathRet / ".cointools";
 #endif
 #endif
 }
