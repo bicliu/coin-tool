@@ -64,7 +64,7 @@ bool AddOneNode(const string & strNode, bool fConnectToMasternode)
         addrman.Attempt(destaddr);
 
         // Add node
-        CNode* pnode = new CNode(hSocket, destaddr, " ", false, true);
+        CNode* pnode = new CNode(hSocket, (CAddress)destaddr, " ", false, true);
 
         pnode->nTimeConnected = GetTime();
         if(fConnectToMasternode) {
