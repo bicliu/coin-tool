@@ -9,8 +9,7 @@ link_directories( ${PROJECT_BINARY_DIR}/lib )
 #set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 
 set(IMPORTLIB ${BITCOIN_LIBRARIES} ${THIRD_LIBRARIES}
-	pthread  db_cxx-4.8 #"${CHAIN_SRC_ROOT}/src/libbitcoin_server_a-alert.o" "${CHAIN_SRC_ROOT}/src/libbitcoin_server_a-net.o"
-	m
+	pthread  db_cxx-4.8
 )
 
 message("--    ${IMPORTLIB}")
