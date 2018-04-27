@@ -1,6 +1,10 @@
 message("") # empty line
-message("--   ********* sendalert *********")
-message("--   target sendalert")
+message("--   ********* ucenter *********")
+message("--   target ucenter")
+
+if(NOT MYSQL)
+	message(FATAL_ERROR "MYSQL not defined! (-DMYSQL)")
+endif()
 
 message("--   include path ${PROJECT_SOURCE_DIR}/common")
 include_directories( ${PROJECT_SOURCE_DIR}/common )
@@ -14,8 +18,8 @@ set(IMPORTLIB ${BITCOIN_LIBRARIES} ${THIRD_LIBRARIES}
 
 file(GLOB TOOL_HEADERS "*.h" )
 file(GLOB TOOL_SRC "*.cpp"  "*.cc")
-add_executable(sendalert ${TOOL_SRC} ${TOOL_HEADERS})
-target_link_libraries(sendalert ${IMPORTLIB} tool_common)
+add_executable(ucenter ${TOOL_SRC} ${TOOL_HEADERS})
+target_link_libraries(ucenter ${IMPORTLIB} tool_common)
 
-message("--   ********* sendalert end *********")
+message("--   ********* ucenter end *********")
 message("") # empty line 
