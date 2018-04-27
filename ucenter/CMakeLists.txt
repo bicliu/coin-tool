@@ -3,16 +3,16 @@ message("--   ********* ucenter *********")
 message("--   target ucenter")
 
 if(NOT MYSQL)
-	message(FATAL_ERROR "MYSQL not defined! (-DMYSQL)")
+	message(FATAL_ERROR "MYSQL not defined! (-DMYSQL=1)")
 endif()
 
 message("--   include path ${PROJECT_SOURCE_DIR}/common")
-include_directories( ${PROJECT_SOURCE_DIR}/common )
+include_directories( ${PROJECT_SOURCE_DIR}/common ${MYSQL_INCLUDE})
 link_directories( ${PROJECT_BINARY_DIR}/lib )
 
 #set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 
-set(IMPORTLIB ${BITCOIN_LIBRARIES} ${THIRD_LIBRARIES}
+set(IMPORTLIB ${THIRD_LIBRARIES} ${MYSQL_LIB}
 	pthread  db_cxx-4.8 anl miniupnpc
 )
 
