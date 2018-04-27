@@ -88,7 +88,10 @@ void FreeNode()
     {
         pnode->fDisconnect = true;
         CloseSocket(pnode->hSocket);
+        //vNodes->erase(pnode);
+        delete pnode;
     }
+    vNodes.clear();
 }
 
 bool GetKeysFromSecret(std::string strSecret, CKey& keyRet, CPubKey& pubkeyRet)
