@@ -12,7 +12,7 @@ link_directories( ${PROJECT_BINARY_DIR}/lib )
 
 #set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 
-set(IMPORTLIB ${THIRD_LIBRARIES} ${MYSQL_LIB}
+set(IMPORTLIB ${BITCOIN_LIBRARIES} ${THIRD_LIBRARIES} ${MYSQL_LIB}
 	pthread  db_cxx-4.8 anl miniupnpc
 )
 
