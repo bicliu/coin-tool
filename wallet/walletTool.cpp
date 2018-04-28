@@ -7,24 +7,27 @@ extern CWallet* pwalletMain;
 extern secp256k1_context* secp256k1_context_sign;
 
 
-bool Get2TypePubKey(const CKey & secret)
+bool Get2TypePubKey(const CKey & secret, CPubKey & result_compressed, CPubKey & result_uncompressed)
 {
     if(!secret.IsValid())
         return showerror("Get2TypePubKey:secret.fValid");
     secp256k1_pubkey pubkey;
     size_t clen = 65;
-    CPubKey result_compressed;
-    CPubKey result_uncompressed;
+
     int ret = secp256k1_ec_pubkey_create(secp256k1_context_sign, &pubkey, secret.begin());
     if(!ret)
         return showerror("Get2TypePubKey:secp256k1_ec_pubkey_create return %d", ret);
     secp256k1_ec_pubkey_serialize(secp256k1_context_sign, (unsigned char*)result_compressed.begin(), &clen, &pubkey, SECP256K1_EC_COMPRESSED);
-    assert(result_compressed.size() == clen);
-    assert(result_compressed.IsValid());
+    if(result_compressed.size() != clen)
+        return showerror("get invalid compressed pubkey length = %d", result_compressed.size());
+    if(!result_compressed.IsValid())
+        return showerror("get invalid compressed pubkey");
 
     secp256k1_ec_pubkey_serialize(secp256k1_context_sign, (unsigned char*)result_uncompressed.begin(), &clen, &pubkey, SECP256K1_EC_UNCOMPRESSED);
-    assert(result_uncompressed.size() == clen);
-    assert(result_uncompressed.IsValid());
+    if(result_uncompressed.size() != clen)
+        return showerror("get invalid compressed pubkey length = %d", result_uncompressed.size());
+    if(!result_uncompressed.IsValid())
+        return showerror("get invalid compressed pubkey");
 
     return true;
 }
@@ -40,9 +43,20 @@ bool MakeNewKey()
     if (fCompressed)
         pwalletMain->SetMinVersion(FEATURE_COMPRPUBKEY);
 
-    CPubKey pubkey = secret.GetPubKey();
-    if(!secret.VerifyPubKey(pubkey))
+    //CPubKey pubkey = secret.GetPubKey();
+    CPubKey pubkeys;
+    CPubKey pubkeyl;
+
+    if(!Get2TypePubKey(secret, pubkeys, pubkeyl))
         return false;
+    
+    if(!secret.VerifyPubKey(pubkeys))
+        return showerror("VerifyPubKey failed %s", pubkeys.toString().c_str());
+
+    if(!secret.VerifyPubKey(pubkeyl))
+        return showerror("VerifyPubKey failed %s", pubkeyl.toString().c_str());
+
+    cout << "privkey : " << HexStr(secret) << endl << "pubkey short : " << HexStr(pubkeys) << endl << "pubkey long : " << HexStr(pubkeyl) << endl;
 
     return true;
 }
