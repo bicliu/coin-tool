@@ -186,7 +186,7 @@ bool GetKeysFromSecret(std::string strSecret, CKey& keyRet, CPubKey& pubkeyRet)
     return true;
 }
 
-extern secp256k1_context* secp256k1_context_sign;
+/*extern secp256k1_context* secp256k1_context_sign;
 bool Get2TypePubKey(const CKey & secret)
 {
     if(!secret.IsValid())
@@ -226,4 +226,4 @@ bool MakeNewKey()
         return false;
 
     return true;
-}
+}*/
