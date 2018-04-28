@@ -3,6 +3,9 @@
 #include "net.h"
 #include "addrman.h"
 
+#include <secp256k1.h>
+#include <secp256k1_recovery.h>
+
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/program_options/detail/config_file.hpp>
@@ -171,7 +174,7 @@ bool GetKeysFromSecret(std::string strSecret, CKey& keyRet, CPubKey& pubkeyRet)
 
 bool Get2TypePubKey(const CKey & secret)
 {
-    if(!secret.fValid)
+    if(!secret.IsValid())
         return showerror("Get2TypePubKey:secret.fValid");
     secp256k1_pubkey pubkey;
     size_t clen = 65;
