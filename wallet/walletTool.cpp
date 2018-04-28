@@ -1,13 +1,10 @@
 #include "utils.h"
 #include "wallet/wallet.h"
 
-#include <secp256k1.h>
-#include <secp256k1_recovery.h>
-
 using namespace std;
 
 extern CWallet* pwalletMain;
-extern secp256k1_context* secp256k1_context_sign;
+/*extern secp256k1_context* secp256k1_context_sign;
 
 
 bool Get2TypePubKey(const CKey & secret, CPubKey & result_compressed, CPubKey & result_uncompressed)
@@ -60,6 +57,27 @@ bool MakeNewKey()
         return showerror("VerifyPubKey failed %s", HexStr(pubkeys).c_str());
 
     cout << "privkey : " << HexStr(secret).c_str() << endl << "pubkey short : " << HexStr(pubkeys).c_str() << endl << "pubkey long : " << HexStr(pubkeyl).c_str() << endl;
+
+    return true;
+}*/
+
+bool MakeNewKey()
+{
+    bool fCompressed = pwalletMain->CanSupportFeature(FEATURE_COMPRPUBKEY); // default to compressed public keys if we want 0.6.0 wallets
+
+    CKey secret;
+    secret.MakeNewKey(fCompressed);
+
+    // Compressed public keys were introduced in version 0.6.0
+    if (fCompressed)
+        pwalletMain->SetMinVersion(FEATURE_COMPRPUBKEY);
+
+    CPubKey pubkey = secret.GetPubKey();
+    
+    if(!secret.VerifyPubKey(pubkey))
+        return showerror("VerifyPubKey failed %s", HexStr(pubkey).c_str());
+
+    cout << "privkey : " << HexStr(secret).c_str() << endl << "pubkey short : " << HexStr(pubkey).c_str() << endl;
 
     return true;
 }
