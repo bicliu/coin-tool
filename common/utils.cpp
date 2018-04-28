@@ -71,7 +71,8 @@ int PrintStr(const std::string &str)
 
 bool showerror(const char* format, ...)
 {
-    char[100] buf;
+    char buf[100];
+    memset(buf, 0, 100);
     va_list args;
     va_start(args,format);
     vsprintf(buf,format,args);
