@@ -252,8 +252,15 @@ set(THIRD_LIBRARIES ${BITCOIN_LIBRARIES} ${OPENSSL_CRYPTO_LIBRARY} ${OPENSSL_SSL
                     ${LIBZMQ_LIBRARIES} ${LIBEVENT_LIB} ${LIBEVENT_PTHREADS_LIB} ${secp256k1_LIBRARIES} ${PTHREAD_LIBRARIES})
 
 message("-- Coin tools libs")
+message("") # empty line
+message("--     common lib")
 file(GLOB LIB_COMMON common/*.cpp)
 add_library(tool_common STATIC ${LIB_COMMON})
+
+message("") # empty line
+message("--     wallet lib")
+file(GLOB LIB_WALLET wallet/*.cpp)
+add_library(tool_wallet STATIC ${LIB_WALLET})
 
 #add_executable(alert ${ALERT_SRC})
 #target_link_libraries(alert ${THIRD_LIBRARIES})
