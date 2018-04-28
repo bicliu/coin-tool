@@ -196,6 +196,7 @@ bool Get2TypePubKey(const CKey & secret)
     return true;
 }
 
+extern CWallet* pwalletMain;
 bool MakeNewKey()
 {
     bool fCompressed = pwalletMain->CanSupportFeature(FEATURE_COMPRPUBKEY); // default to compressed public keys if we want 0.6.0 wallets
