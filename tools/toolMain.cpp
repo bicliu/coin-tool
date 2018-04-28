@@ -10,5 +10,5 @@ int main()
 	ECC_Start();
 	ECCVerifyHandle globalVerifyHandle;
 
-    MakeNewKey();
+//    MakeNewKey();
 }
