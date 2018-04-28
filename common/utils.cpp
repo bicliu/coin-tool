@@ -1,7 +1,5 @@
 #include "utils.h"
 #include "protocol.h"
-#include "net.h"
-#include "addrman.h"
 
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
