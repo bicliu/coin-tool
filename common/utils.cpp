@@ -2,7 +2,7 @@
 #include "protocol.h"
 #include "net.h"
 #include "addrman.h"
-#include "wallet.h"
+#include "wallet/wallet.h"
 
 #include <secp256k1.h>
 #include <secp256k1_recovery.h>
