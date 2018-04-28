@@ -7,10 +7,22 @@
 //extern std::map<std::string, std::string> mapToolArgs;
 //extern std::map<std::string, std::vector<std::string> > mapMultiToolArgs;
 
+/*ouput funcs*/
+int PrintStr(const std::string &str);
+inline bool showerror(const char* format)
+{
+    PrintStr(std::string("ERROR: ") + format + "\n");
+    return false;
+}
+
+/*Init funcs*/
 void SetFilePath(const std::string & filename);
-bool AddOneNode(const std::string & strNode, bool fConnectToMasternode = false);
-void FreeNode();
-bool GetKeysFromSecret(std::string strSecret, CKey& keyRet, CPubKey& pubkeyRet);
 void SetParams();
 
+/*net funcs*/
+bool AddOneNode(const std::string & strNode, bool fConnectToMasternode = false);
+void FreeNode();
+
+/*Key funcs*/
+bool GetKeysFromSecret(std::string strSecret, CKey& keyRet, CPubKey& pubkeyRet);
 #endif

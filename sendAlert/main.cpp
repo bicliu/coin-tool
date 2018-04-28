@@ -11,7 +11,7 @@ int main()
 	CKey prikey;
 	CPubKey pubkey;
 	string strPrikey = "cPu3SSXjZMzhnqq6mVpNmskdLAFwdcQW3JHgqU6M2s1beTAQWNdW";
-	
+	showerror("showerror test %s", strPrikey);
 	SetFilePath("alertarg.conf");
 	ReadConfigFile(mapArgs, mapMultiArgs);
 

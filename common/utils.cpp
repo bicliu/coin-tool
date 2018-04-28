@@ -10,6 +10,26 @@
 
 using namespace std;
 
+int PrintStr(const std::string &str)
+{
+    int ret = 0; // Returns total number of characters written
+    static bool fStartedNewLine = true;
+
+    std::string strThreadLogged = LogThreadNameStr(str, &fStartedNewLine);
+    std::string strTimestamped = LogTimestampStr(strThreadLogged, &fStartedNewLine);
+
+    if (!str.empty() && str[str.size()-1] == '\n')
+        fStartedNewLine = true;
+    else
+        fStartedNewLine = false;
+
+    // print to console
+    ret = fwrite(strTimestamped.data(), 1, strTimestamped.size(), stdout);
+    fflush(stdout);
+    
+    return ret;
+}
+
 boost::filesystem::path GetCoinToolDir()
 {
     namespace fs = boost::filesystem;
@@ -45,6 +65,14 @@ void SetFilePath(const std::string & filename)
     mapArgs["-conf"] = pathFile.string();
 
     cout << "Using config file " << GetConfigFile().string() << endl;
+}
+
+void SetParams()
+{
+    if(GetBoolArg("-testnet", false))
+        SelectParams(CBaseChainParams::TESTNET);
+    else
+        SelectParams(CBaseChainParams::MAIN);
 }
 
 bool AddOneNode(const string & strNode, bool fConnectToMasternode)
@@ -98,7 +126,7 @@ bool GetKeysFromSecret(std::string strSecret, CKey& keyRet, CPubKey& pubkeyRet)
 {
     CBitcoinSecret vchSecret;
 
-    if(!vchSecret.SetString(strSecret)) return false;
+    if(!vchSecret.SetString(strSecret)) return showerror("GetKeysFromSecret:SetString error");
 
     keyRet = vchSecret.GetKey();
     pubkeyRet = keyRet.GetPubKey();
@@ -106,10 +134,42 @@ bool GetKeysFromSecret(std::string strSecret, CKey& keyRet, CPubKey& pubkeyRet)
     return true;
 }
 
-void SetParams()
+bool Get2TypePubKey(const CKey & secret)
 {
-    if(GetBoolArg("-testnet", false))
-        SelectParams(CBaseChainParams::TESTNET);
-    else
-        SelectParams(CBaseChainParams::MAIN);
+    if(!secret.fValid)
+        return showerror("Get2TypePubKey:secret.fValid");
+    secp256k1_pubkey pubkey;
+    size_t clen = 65;
+    CPubKey result_compressed;
+    CPubKey result_uncompressed;
+    int ret = secp256k1_ec_pubkey_create(secp256k1_context_sign, &pubkey, secret.begin());
+    if(!ret)
+        return showerror("Get2TypePubKey:secp256k1_ec_pubkey_create return %d", ret);
+    secp256k1_ec_pubkey_serialize(secp256k1_context_sign, (unsigned char*)result_compressed.begin(), &clen, &pubkey, SECP256K1_EC_COMPRESSED);
+    assert(result_compressed.size() == clen);
+    assert(result_compressed.IsValid());
+
+    secp256k1_ec_pubkey_serialize(secp256k1_context_sign, (unsigned char*)result_uncompressed.begin(), &clen, &pubkey, SECP256K1_EC_UNCOMPRESSED);
+    assert(result_uncompressed.size() == clen);
+    assert(result_uncompressed.IsValid());
+
+    return result;
+}
+
+bool MakeNewKey()
+{
+    bool fCompressed = CanSupportFeature(FEATURE_COMPRPUBKEY); // default to compressed public keys if we want 0.6.0 wallets
+
+    CKey secret;
+    secret.MakeNewKey(fCompressed);
+
+    // Compressed public keys were introduced in version 0.6.0
+    if (fCompressed)
+        SetMinVersion(FEATURE_COMPRPUBKEY);
+
+    CPubKey pubkey = secret.GetPubKey();
+    if(!secret.VerifyPubKey(pubkey))
+        return false;
+
+    return true;
 }
