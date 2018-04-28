@@ -1,3 +1,4 @@
+#include "utils.h"
 #include "wallet/wallet.h"
 
 #include <secp256k1.h>

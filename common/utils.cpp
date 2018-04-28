@@ -8,6 +8,8 @@
 #include <boost/program_options/detail/config_file.hpp>
 #include <boost/program_options/parsers.hpp>
 
+#include <stdarg.h>
+
 using namespace std;
 
 static std::string GetTimestampStr(const std::string &str, bool *fStartedNewLine)
