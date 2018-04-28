@@ -10,13 +10,48 @@
 
 using namespace std;
 
+static std::string GetTimestampStr(const std::string &str, bool *fStartedNewLine)
+{
+    string strStamped;
+
+    if (!fLogTimestamps)
+        return str;
+
+    if (*fStartedNewLine) {
+        int64_t nTimeMicros = GetLogTimeMicros();
+        strStamped = DateTimeStrFormat("%Y-%m-%d %H:%M:%S", nTimeMicros/1000000);
+        if (fLogTimeMicros)
+            strStamped += strprintf(".%06d", nTimeMicros%1000000);
+        strStamped += ' ' + str;
+    } else
+        strStamped = str;
+
+    return strStamped;
+}
+static std::string GetThreadNameStr(const std::string &str, bool *fStartedNewLine)
+{
+    string strThreadLogged;
+
+    if (!fLogThreadNames)
+        return str;
+
+    std::string strThreadName = GetThreadName();
+
+    if (*fStartedNewLine)
+        strThreadLogged = strprintf("%16s | %s", strThreadName.c_str(), str.c_str());
+    else
+        strThreadLogged = str;
+
+    return strThreadLogged;
+}
+
 int PrintStr(const std::string &str)
 {
     int ret = 0; // Returns total number of characters written
     static bool fStartedNewLine = true;
 
-    std::string strThreadLogged = LogThreadNameStr(str, &fStartedNewLine);
-    std::string strTimestamped = LogTimestampStr(strThreadLogged, &fStartedNewLine);
+    std::string strThreadLogged = GetThreadNameStr(str, &fStartedNewLine);
+    std::string strTimestamped = GetTimestampStr(strThreadLogged, &fStartedNewLine);
 
     if (!str.empty() && str[str.size()-1] == '\n')
         fStartedNewLine = true;
