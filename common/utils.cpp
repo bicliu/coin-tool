@@ -2,6 +2,7 @@
 #include "protocol.h"
 #include "net.h"
 #include "addrman.h"
+#include "wallet.h"
 
 #include <secp256k1.h>
 #include <secp256k1_recovery.h>
@@ -172,6 +173,7 @@ bool GetKeysFromSecret(std::string strSecret, CKey& keyRet, CPubKey& pubkeyRet)
     return true;
 }
 
+extern static secp256k1_context* secp256k1_context_sign = NULL;
 bool Get2TypePubKey(const CKey & secret)
 {
     if(!secret.IsValid())
@@ -191,7 +193,7 @@ bool Get2TypePubKey(const CKey & secret)
     assert(result_uncompressed.size() == clen);
     assert(result_uncompressed.IsValid());
 
-    return result;
+    return true;
 }
 
 bool MakeNewKey()
