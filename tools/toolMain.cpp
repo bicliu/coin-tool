@@ -1,14 +1,22 @@
 #include "utils.h"
-//#include "walletTool.h"
+#include "alert.h"
+#include "walletTool.h"
+
+using namespace std;
 
 int main()
 {
-    SetFilePath("tool.conf");
+    CAlert alert;
+	
+	SetFilePath("tool.conf");
 	ReadConfigFile(mapArgs, mapMultiArgs);
 
 	SetParams();
 	ECC_Start();
 	ECCVerifyHandle globalVerifyHandle;
 
-//    MakeNewKey();
+	MakeNewKey();
+
+    return 0;
 }
+

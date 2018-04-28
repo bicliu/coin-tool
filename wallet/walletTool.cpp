@@ -63,6 +63,8 @@ bool MakeNewKey()
 
 bool MakeNewKey()
 {
+	AssertLockHeld(pwalletMain->cs_wallet); // mapKeyMetadata
+
     bool fCompressed = pwalletMain->CanSupportFeature(FEATURE_COMPRPUBKEY); // default to compressed public keys if we want 0.6.0 wallets
 
     CKey secret;
