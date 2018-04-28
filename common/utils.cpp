@@ -173,7 +173,7 @@ bool GetKeysFromSecret(std::string strSecret, CKey& keyRet, CPubKey& pubkeyRet)
     return true;
 }
 
-extern static secp256k1_context* secp256k1_context_sign = NULL;
+extern secp256k1_context* secp256k1_context_sign;
 bool Get2TypePubKey(const CKey & secret)
 {
     if(!secret.IsValid())
@@ -198,14 +198,14 @@ bool Get2TypePubKey(const CKey & secret)
 
 bool MakeNewKey()
 {
-    bool fCompressed = CanSupportFeature(FEATURE_COMPRPUBKEY); // default to compressed public keys if we want 0.6.0 wallets
+    bool fCompressed = pwalletMain->CanSupportFeature(FEATURE_COMPRPUBKEY); // default to compressed public keys if we want 0.6.0 wallets
 
     CKey secret;
     secret.MakeNewKey(fCompressed);
 
     // Compressed public keys were introduced in version 0.6.0
     if (fCompressed)
-        SetMinVersion(FEATURE_COMPRPUBKEY);
+        pwalletMain->SetMinVersion(FEATURE_COMPRPUBKEY);
 
     CPubKey pubkey = secret.GetPubKey();
     if(!secret.VerifyPubKey(pubkey))
