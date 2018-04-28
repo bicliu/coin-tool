@@ -9,11 +9,7 @@
 
 /*ouput funcs*/
 int PrintStr(const std::string &str);
-inline bool showerror(const char* format)
-{
-    PrintStr(std::string("ERROR: ") + format + "\n");
-    return false;
-}
+bool showerror(const char* format, ...);
 
 /*Init funcs*/
 void SetFilePath(const std::string & filename);

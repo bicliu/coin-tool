@@ -69,6 +69,18 @@ int PrintStr(const std::string &str)
     return ret;
 }
 
+bool showerror(const char* format, ...)
+{
+    char[100] buf;
+    va_list args;
+    va_start(args,format);
+    vsprintf(buf,format,args);
+    va_end(args);
+
+    PrintStr(std::string("ERROR: ") + string(buf, buf + strlen(buf)) + "\n");
+    return false;
+}
+
 boost::filesystem::path GetCoinToolDir()
 {
     namespace fs = boost::filesystem;
