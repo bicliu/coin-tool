@@ -4,6 +4,8 @@
 #include <secp256k1.h>
 #include <secp256k1_recovery.h>
 
+using namespace std;
+
 extern CWallet* pwalletMain;
 extern secp256k1_context* secp256k1_context_sign;
 
@@ -52,12 +54,12 @@ bool MakeNewKey()
         return false;
     
     if(!secret.VerifyPubKey(pubkeys))
-        return showerror("VerifyPubKey failed %s", pubkeys.toString().c_str());
+        return showerror("VerifyPubKey failed %s", HexStr(pubkeys).c_str());
 
     if(!secret.VerifyPubKey(pubkeyl))
-        return showerror("VerifyPubKey failed %s", pubkeyl.toString().c_str());
+        return showerror("VerifyPubKey failed %s", HexStr(pubkeys).c_str());
 
-    cout << "privkey : " << HexStr(secret) << endl << "pubkey short : " << HexStr(pubkeys) << endl << "pubkey long : " << HexStr(pubkeyl) << endl;
+    cout << "privkey : " << HexStr(secret).c_str() << endl << "pubkey short : " << HexStr(pubkeys).c_str() << endl << "pubkey long : " << HexStr(pubkeyl).c_str() << endl;
 
     return true;
 }
