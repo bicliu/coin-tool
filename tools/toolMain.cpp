@@ -1,5 +1,5 @@
 #include "utils.h"
-#include "walletTool.h"
+//#include "walletTool.h"
 
 int main()
 {
