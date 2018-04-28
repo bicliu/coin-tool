@@ -14,8 +14,8 @@ set(IMPORTLIB ${BITCOIN_LIBRARIES} ${THIRD_LIBRARIES}
 
 file(GLOB TOOL_HEADERS "*.h" )
 file(GLOB TOOL_SRC "*.cpp"  "*.cc")
-add_executable(sendalert ${TOOL_SRC} ${TOOL_HEADERS})
-target_link_libraries(sendalert ${IMPORTLIB} tool_common)
+add_executable(maintools ${TOOL_SRC} ${TOOL_HEADERS})
+target_link_libraries(maintools ${IMPORTLIB} tool_common)
 
 message("--   ********* tools end *********")
 message("") # empty line 
