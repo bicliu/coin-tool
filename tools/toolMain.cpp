@@ -16,10 +16,13 @@ int main(int argc, char* argv[])
 	ReadFile(mapArgs, mapMultiArgs, string(argv[argc - 1]));
 
 	if(mapArgs.count("-toolcommand"))
-		return showreturn("File without command");
-	else
 	{
 		cout << "command is " << mapArgs["-toolcommand"];
+		//to do command
+	}
+	else
+	{
+		return showreturn("File without command");
 	}
 
     return 0;
