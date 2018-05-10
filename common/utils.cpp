@@ -80,6 +80,19 @@ bool showerror(const char* format, ...)
     return false;
 }
 
+int showreturn(const char* format, ...)
+{
+    char buf[100];
+    memset(buf, 0, 100);
+    va_list args;
+    va_start(args,format);
+    vsprintf(buf,format,args);
+    va_end(args);
+
+    PrintStr(std::string("ERROR: ") + string(buf, buf + strlen(buf)) + "\n");
+    return -1;
+}
+
 boost::filesystem::path GetCoinToolDir()
 {
     namespace fs = boost::filesystem;
@@ -125,7 +138,59 @@ void SetParams()
         SelectParams(CBaseChainParams::MAIN);
 }
 
-bool AddOneNode(const string & strNode, bool fConnectToMasternode)
+/** Interpret string as boolean, for argument parsing */
+static bool ToolsInterpretBool(const std::string& strValue)
+{
+    if (strValue.empty())
+        return true;
+    return (atoi(strValue) != 0);
+}
+
+/** Turn -noX into -X=0 */
+static void ToolsInterpretNegativeSetting(std::string& strKey, std::string& strValue)
+{
+    if (strKey.length()>3 && strKey[0]=='-' && strKey[1]=='n' && strKey[2]=='o')
+    {
+        strKey = "-" + strKey.substr(3);
+        strValue = ToolsInterpretBool(strValue) ? "0" : "1";
+    }
+}
+
+boost::filesystem::path GetFile(const std::string & filename)
+{
+    boost::filesystem::path pathFile(filename);
+    if (!pathFile.is_complete())
+        pathFile = GetCoinToolDir() / pathFile;
+
+    return pathFile;
+}
+
+bool ReadFile(std::map<std::string, std::string>& mapSettingsRet,
+              std::map<std::string, std::vector<std::string> >& mapMultiSettingsRet,
+              const std::string & strfile)
+{
+    boost::filesystem::ifstream streamFile(GetFile(strfile));
+	cout << "Read file " << GetFile(strfile).string() << endl;
+    if (!streamFile.good())
+		return showerror("Open file failed!");
+
+    set<string> setOptions;
+    setOptions.insert("*");
+
+    for (boost::program_options::detail::config_file_iterator it(streamFile, setOptions), end; it != end; ++it)
+    {
+        // Don't overwrite existing settings so command line settings override ulord.conf
+        string strKey = string("-") + it->string_key;
+        string strValue = it->value[0];
+        ToolsInterpretNegativeSetting(strKey, strValue);
+        if (mapSettingsRet.count(strKey) == 0)
+            mapSettingsRet[strKey] = strValue;
+        mapMultiSettingsRet[strKey].push_back(strValue);
+    }
+	return true;
+}
+
+bool AddOneNode(const std::string & strNode, bool fConnectToMasternode)
 {
 	//CAddress addr;
 	//return OpenNetworkConnection(addr, NULL, strNode.c_str());

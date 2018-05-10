@@ -1,20 +1,26 @@
 #include "utils.h"
-//#include "alert.h"
 
 using namespace std;
 
-int main()
+int main(int argc, char* argv[])
 {
-    //CAlert alert;
-	
 	SetFilePath("tool.conf");
 	ReadConfigFile(mapArgs, mapMultiArgs);
 
 	SetParams();
 	ECC_Start();
-	//ECCVerifyHandle globalVerifyHandle;
 
-	//MakeNewKey();
+	if(2 != argc)
+		return showreturn("command as:./tools filename");
+
+	ReadFile(mapArgs, mapMultiArgs, string(argv[argc - 1]));
+
+	if(mapArgs.count("-toolcommand"))
+		return showreturn("File without command");
+	else
+	{
+		cout << "command is " << mapArgs["-toolcommand"];
+	}
 
     return 0;
 }

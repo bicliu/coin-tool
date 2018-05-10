@@ -16,8 +16,8 @@ message("--      ${IMPORTLIB}")
 
 file(GLOB TOOL_HEADERS "*.h" )
 file(GLOB TOOL_SRC "*.cpp"  "*.cc")
-add_executable(maintools ${TOOL_SRC} ${TOOL_HEADERS} ${COMMON_SRC} ${COMMON_H})
-target_link_libraries(maintools ${IMPORTLIB})
+add_executable(runtools ${TOOL_SRC} ${TOOL_HEADERS} ${COMMON_SRC} ${COMMON_H})
+target_link_libraries(runtools ${IMPORTLIB})
 
 message("--   ********* tools end *********")
 message("") # empty line 
