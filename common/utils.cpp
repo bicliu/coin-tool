@@ -127,15 +127,21 @@ void SetFilePath(const std::string & filename)
     boost::filesystem::path pathFile (GetCoinToolDir() / filename);
     mapArgs["-conf"] = pathFile.string();
 
-    cout << "Using config file " << GetConfigFile().string() << endl;
+    cout << "Info: Using config file " << GetConfigFile().string() << endl;
 }
 
 void SetParams()
 {
     if(GetBoolArg("-testnet", false))
+	{
         SelectParams(CBaseChainParams::TESTNET);
+		printf("Info: select TEST net!\n");
+	}
     else
+	{
         SelectParams(CBaseChainParams::MAIN);
+		printf("Info: select MAIN net!\n");
+	}
 }
 
 /** Interpret string as boolean, for argument parsing */
@@ -170,7 +176,7 @@ bool ReadFile(std::map<std::string, std::string>& mapSettingsRet,
               const std::string & strfile)
 {
     boost::filesystem::ifstream streamFile(GetFile(strfile));
-	cout << "Read file " << GetFile(strfile).string() << endl;
+	cout << "Info: Read file " << GetFile(strfile).string() << endl;
     if (!streamFile.good())
 		return showerror("Open file failed!");
 
