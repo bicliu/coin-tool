@@ -30,11 +30,11 @@ int main(int argc, char* argv[])
 			{
 				int h = atoi(str);
 				cout << setw(10) << h
-					<< setw(20) << GetMinerSubsidy(h, Params().GetConsensus())
-					<< setw(20) << GetBudget(h, Params().GetConsensus())
-					<< setw(20) << GetMasternodePayment(h)
-					<< setw(20) << GetFoundersReward(h, Params().GetConsensus())
-					<< setw(20) << GetBlockSubsidy(h, Params().GetConsensus()) << endl;
+					<< setw(20) << GetMinerSubsidy(h, Params().GetConsensus()) / COIN
+					<< setw(20) << GetBudget(h, Params().GetConsensus()) / COIN
+					<< setw(20) << GetMasternodePayment(h) / COIN
+					<< setw(20) << GetFoundersReward(h, Params().GetConsensus()) / COIN
+					<< setw(20) << GetBlockSubsidy(h, Params().GetConsensus()) / COIN << endl;
 			}
 		}
 		else
