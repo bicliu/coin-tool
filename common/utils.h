@@ -3,9 +3,10 @@
 
 #include "base58.h"
 #include "util.h"
-#include "net.h"
-#include "addrman.h"
+//#include "net.h"
+//#include "addrman.h"
 
+//class CNode;
 //extern std::map<std::string, std::string> mapToolArgs;
 //extern std::map<std::string, std::vector<std::string> > mapMultiToolArgs;
 

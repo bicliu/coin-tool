@@ -1,5 +1,7 @@
 #include "utils.h"
 #include "alert.h"
+#include "net.h"
+#include "addrman.h"
 
 using namespace std;
 
