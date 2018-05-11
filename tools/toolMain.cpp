@@ -25,12 +25,11 @@ void YearsReward(int iyears)
 			aMnode += GetMasternodePayment(h);
 			aFounders += GetFoundersReward(h, Params().GetConsensus());
 			aBlocks += (aMiner + aBud + aMnode + aFounders);
-
-			cout << i << " x" << iyears <<setw(9) << iHl << "--" << (iHh - 1)
-				<< setw(20) << aMiner << setw(20) << aBud
-				<< setw(20) << aMnode << setw(20) << aFounders
-				<< setw(20) << aBlocks << endl;
 		}
+		cout << i << " x" << iyears <<setw(9) << iHl << "--" << (iHh - 1)
+			<< setw(20) << aMiner << setw(20) << aBud
+			<< setw(20) << aMnode << setw(20) << aFounders
+			<< setw(20) << aBlocks << endl;
 	}
 }
 
