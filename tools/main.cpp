@@ -2,6 +2,7 @@
 
 #include "rewardtool.h"
 #include "alerttool.h"
+#include "hash-string.h"
 
 #include <iomanip>
 
