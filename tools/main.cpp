@@ -19,9 +19,9 @@ int main(int argc, char* argv[])
 	ECC_Start();
 	globalVerifyHandle.reset(new ECCVerifyHandle());
 	
-	// Sanity check
-    if (!ECC_InitSanityCheck())
-        return showreturn(("ECC_InitSanityCheck sanity check failed. Shutting down."));
+	// Sanity check no need
+    //if (!ECC_InitSanityCheck())
+    //    return showreturn(("ECC_InitSanityCheck sanity check failed. Shutting down."));
 
 	if(2 != argc)
 		return showreturn("command as:./tools filename");
@@ -34,9 +34,11 @@ int main(int argc, char* argv[])
 	if("rewardshow" == mapArgs["-toolcommand"])
 		RewardHandle();
 	else if("sendalert" == mapArgs["-toolcommand"])
-		SendAlert();
+		SendAlert(GetBoolArg("-fCompressed", true));
 	else if("newaddress" == mapArgs["-toolcommand"])
 		MakeNewKey();
+	else if("checkkey" == mapArgs["-toolcommand"])
+		CheckKey();
 	else
 		cout << "Error: unknown method " << mapArgs["-toolcommand"] << endl;
 
