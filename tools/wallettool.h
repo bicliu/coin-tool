@@ -7,4 +7,6 @@ bool CompactSign(std::string strMessage, std::vector<unsigned char>& vchSigRet, 
 bool CompactVerify(CPubKey pubkey, const std::vector<unsigned char>& vchSig, std::string strMessage);
 bool CheckSign(const CKey privkey,const CPubKey pubkey, const std::vector<unsigned char> vchMsg);
 
+bool CheckKey();
+
 #endif

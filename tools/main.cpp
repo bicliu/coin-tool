@@ -34,9 +34,9 @@ int main(int argc, char* argv[])
 	if("rewardshow" == mapArgs["-toolcommand"])
 		RewardHandle();
 	else if("sendalert" == mapArgs["-toolcommand"])
-		SendAlert(GetBoolArg("-fCompressed", true));
+		SendAlert();
 	else if("newaddress" == mapArgs["-toolcommand"])
-		MakeNewKey();
+		MakeNewKey(GetBoolArg("-fCompressed", true));
 	else if("checkkey" == mapArgs["-toolcommand"])
 		CheckKey();
 	else
