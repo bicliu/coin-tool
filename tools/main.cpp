@@ -2,7 +2,6 @@
 
 #include "rewardtool.h"
 #include "alerttool.h"
-#include "hash-string.h"
 
 #include <iomanip>
 
@@ -28,13 +27,13 @@ int main(int argc, char* argv[])
 	{
 		RewardHandle();
 	}
-	switch(hash_string(mapArgs["-toolcommand"].c_str()))
+	switch(hash_string(mapArgs["-toolcommand"]))
 	{
-		case hash_string("rewardshow".c_str()):
+		case hash_string("rewardshow"):
 			RewardHandle();
 			break;
 
-		case hash_string("sendalert".c_str()):
+		case hash_string("sendalert"):
 			SendAlert();
 			break;
 		default:
