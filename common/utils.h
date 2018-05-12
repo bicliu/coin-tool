@@ -14,6 +14,7 @@
 int PrintStr(const std::string &str);
 bool showerror(const char* format, ...);
 int showreturn(const char* format, ...);
+std::string GetRankString(int index);
 
 /*Init funcs*/
 void SetFilePath(const std::string & filename);

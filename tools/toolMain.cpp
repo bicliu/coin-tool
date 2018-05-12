@@ -25,7 +25,7 @@ void YearsReward(int iyears, int isum)
 	CAmount aSumFr = 0, asfrsmall = 0;
 	CAmount aSumbk = 0, asbksmall = 0;
 	int lasth = 0;
-	cout << endl << "The rewards in every "<< iyears << " from 1st to 4th :" <<endl
+	cout << endl << "The rewards in every "<< iyears << " from 1st to " << GetRankString(isum) << " :" <<endl
 		<< "year         height range              MinerSubsidy           Budget        MasternodePayment      FoundersReward       BlockSubsidy" <<endl;
 	for(int i = 1; i < isum+1; i++)
 	{

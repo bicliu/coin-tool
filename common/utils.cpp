@@ -9,7 +9,7 @@
 #include <boost/program_options/parsers.hpp>
 
 #include <stdarg.h>
-#include <sstream.h>
+#include <sstream>
 
 using namespace std;
 
