@@ -34,5 +34,5 @@ void FreeNode();
 bool GetKeysFromSecret(std::string strSecret, CKey& keyRet, CPubKey& pubkeyRet);
 
 /*pub funcs*/
-uint256 GetHash(std::string str);
+
 #endif
