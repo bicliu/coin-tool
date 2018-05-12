@@ -78,7 +78,7 @@ bool CheckSign(const CKey privkey,const CPubKey pubkey, const std::string strMes
     std::vector<unsigned char> vchSig;
     if(!privkey.Sign(ss.GetHash(), vchSig))
 	{
-        cout << "Error: Sign msg failed! privkey = " << HexStr(secret).c_str() << endl;
+        cout << "Error: Sign msg failed! privkey = " << HexStr(privkey).c_str() << endl;
     	return false;
 	}
     if (!pubkey.Verify(ss.GetHash(), vchSig))
@@ -109,7 +109,7 @@ bool CheckKey()
     CKey prikey;
 	CPubKey pubkey(ParseHex(strPubkey));
     CPubKey retpubkey;
-    std::vector<unsigned char>& vchSig;
+    vector<unsigned char> vchSig;
 	
     if(!GetKeysFromSecret(strPrikey, prikey, retpubkey))
         return showerror("CheckKey get privkey failed!");
@@ -119,7 +119,7 @@ bool CheckKey()
     if(!CheckSign(prikey, pubkey, mapArgs["-message"]))
         return false;
 
-    if(!CompactSign(pubkey, vchSig, mapArgs["-message"]))
+    if(!CompactSign(mapArgs["-message"], vchSig, prikey))
         return false;
 
     if(!CompactVerify(retpubkey, vchSig, mapArgs["-message"]))
