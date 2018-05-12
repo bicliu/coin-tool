@@ -121,7 +121,7 @@ bool CheckKey()
     if(!CompactSign(mapArgs["-message"], vchSig, prikey))
         return false;
 
-    if(!CompactVerify(retpubkey, vchSig, mapArgs["-message"]))
+    if(!CompactVerify(pubkey, vchSig, mapArgs["-message"]))
         return false;
 
     cout << "check key success!" << endl;
