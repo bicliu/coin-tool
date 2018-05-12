@@ -15,6 +15,10 @@ int main(int argc, char* argv[])
 
 	SetParams();
 	ECC_Start();
+	
+	// Sanity check
+    if (!ECC_InitSanityCheck())
+        return showreturn(("ECC_InitSanityCheck sanity check failed. Shutting down."));
 
 	if(2 != argc)
 		return showreturn("command as:./tools filename");
