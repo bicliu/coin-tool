@@ -303,3 +303,10 @@ bool GetKeysFromSecret(std::string strSecret, CKey& keyRet, CPubKey& pubkeyRet)
 
     return true;
 }
+
+uint256 GetHash(std::string str)
+{
+    CHashWriter ss(SER_GETHASH, PROTOCOL_VERSION);
+    ss << str;
+    return ss.GetHash();
+}
