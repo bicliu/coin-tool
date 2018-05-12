@@ -200,7 +200,7 @@ bool ReadCurrentFile(std::map<std::string, std::string>& mapSettingsRet,
               std::map<std::string, std::vector<std::string> >& mapMultiSettingsRet,
               const std::string & strfile)
 {
-    boost::filesystem::path pathFile(filename);
+    boost::filesystem::path pathFile(strfile);
     boost::filesystem::ifstream streamFile(pathFile);
     if (!streamFile.good())
 		return showerror("Open file <%s> failed!", strfile);

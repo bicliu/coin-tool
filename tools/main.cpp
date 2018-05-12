@@ -27,13 +27,13 @@ int main(int argc, char* argv[])
 	{
 		RewardHandle();
 	}
-	switch(mapArgs["-toolcommand"])
+	switch(GetHash(mapArgs["-toolcommand"]))
 	{
-		case "rewardshow":
+		case GetHash("rewardshow"):
 			RewardHandle();
 			break;
 
-		case "sendalert":
+		case GetHash("sendalert"):
 			SendAlert();
 			break;
 		default:
