@@ -22,6 +22,9 @@ void SetParams();
 bool ReadFile(std::map<std::string, std::string>& mapSettingsRet,
               std::map<std::string, std::vector<std::string> >& mapMultiSettingsRet,
               const std::string & strfile);
+bool ReadCurrentFile(std::map<std::string, std::string>& mapSettingsRet,
+              std::map<std::string, std::vector<std::string> >& mapMultiSettingsRet,
+              const std::string & strfile);
 
 /*net funcs*/
 bool AddOneNode(const std::string & strNode, bool fConnectToMasternode = false);

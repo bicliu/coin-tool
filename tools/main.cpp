@@ -1,7 +1,7 @@
 #include "utils.h"
-#include "reward.h"
-#include "main.h"
-#include "governance-classes.h"
+
+#include "rewardtool.h"
+#include "alerttool.h"
 
 #include <iomanip>
 
@@ -18,14 +18,27 @@ int main(int argc, char* argv[])
 	if(2 != argc)
 		return showreturn("command as:./tools filename");
 
-	ReadFile(mapArgs, mapMultiArgs, string(argv[argc - 1]));
+	ReadCurrentFile(mapArgs, mapMultiArgs, string(argv[argc - 1]));
 
 	if(!mapArgs.count("-toolcommand"))
 		return showreturn("File without command");
 
-	if("reward" == mapArgs["-toolcommand"])
+	if("rewardshow" == mapArgs["-toolcommand"])
 	{
 		RewardHandle();
+	}
+	switch(mapArgs["-toolcommand"])
+	{
+		case "rewardshow":
+			RewardHandle();
+			break;
+
+		case "sendalert":
+			SendAlert();
+			break;
+		default:
+			cout << "Error: unknown method " << mapArgs["-toolcommand"] << endl;
+			break;
 	}
 
     return 0;

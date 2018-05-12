@@ -1,5 +1,5 @@
 #include "utils.h"
-#include "reward.h"
+#include "rewardtool.h"
 #include "main.h"
 #include "governance-classes.h"
 

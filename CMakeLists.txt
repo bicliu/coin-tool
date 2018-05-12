@@ -265,5 +265,5 @@ file(GLOB COMMON_H common/*.h)
 
 #add_executable(alert ${ALERT_SRC})
 #target_link_libraries(alert ${THIRD_LIBRARIES})
-add_subdirectory(sendAlert)
+#add_subdirectory(sendAlert)
 add_subdirectory(tools)

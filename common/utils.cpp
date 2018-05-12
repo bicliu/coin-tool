@@ -177,9 +177,33 @@ bool ReadFile(std::map<std::string, std::string>& mapSettingsRet,
               const std::string & strfile)
 {
     boost::filesystem::ifstream streamFile(GetFile(strfile));
-	cout << "Info: Read file " << GetFile(strfile).string() << endl;
     if (!streamFile.good())
-		return showerror("Open file failed!");
+		return showerror("Open file <%s> failed!", GetFile(strfile).string());
+
+    set<string> setOptions;
+    setOptions.insert("*");
+
+    for (boost::program_options::detail::config_file_iterator it(streamFile, setOptions), end; it != end; ++it)
+    {
+        // Don't overwrite existing settings so command line settings override ulord.conf
+        string strKey = string("-") + it->string_key;
+        string strValue = it->value[0];
+        ToolsInterpretNegativeSetting(strKey, strValue);
+        if (mapSettingsRet.count(strKey) == 0)
+            mapSettingsRet[strKey] = strValue;
+        mapMultiSettingsRet[strKey].push_back(strValue);
+    }
+	return true;
+}
+
+bool ReadCurrentFile(std::map<std::string, std::string>& mapSettingsRet,
+              std::map<std::string, std::vector<std::string> >& mapMultiSettingsRet,
+              const std::string & strfile)
+{
+    boost::filesystem::path pathFile(filename);
+    boost::filesystem::ifstream streamFile(pathFile);
+    if (!streamFile.good())
+		return showerror("Open file <%s> failed!", strfile);
 
     set<string> setOptions;
     setOptions.insert("*");
