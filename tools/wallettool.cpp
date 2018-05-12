@@ -5,7 +5,7 @@ using namespace std;
 
 extern CWallet* pwalletMain;
 
-string strMessageMagic = "TEST: sign test";
+string strMessageCustom = "TEST: sign test";
 
 bool MakeNewKey(bool fCompressed)
 {
@@ -32,10 +32,10 @@ bool MakeNewKey(bool fCompressed)
 bool CompactSign(std::string strMessage, std::vector<unsigned char>& vchSigRet, CKey privkey)
 {
     if (mapArgs.count("-magicstr"))
-		strMessageMagic = mapArgs["-magicstr"];
+		strMessageCustom = mapArgs["-magicstr"];
 
     CHashWriter ss(SER_GETHASH, 0);
-    ss << strMessageMagic;
+    ss << strMessageCustom;
     ss << strMessage;
 
     return privkey.SignCompact(ss.GetHash(), vchSigRet);
@@ -44,10 +44,10 @@ bool CompactSign(std::string strMessage, std::vector<unsigned char>& vchSigRet, 
 bool CompactVerify(CPubKey pubkey, const std::vector<unsigned char>& vchSig, std::string strMessage)
 {
     if (mapArgs.count("-magicstr"))
-		strMessageMagic = mapArgs["-magicstr"];
+		strMessageCustom = mapArgs["-magicstr"];
         
     CHashWriter ss(SER_GETHASH, 0);
-    ss << strMessageMagic;
+    ss << strMessageCustom;
     ss << strMessage;
 
     CPubKey pubkeyFromSig;
@@ -57,9 +57,8 @@ bool CompactVerify(CPubKey pubkey, const std::vector<unsigned char>& vchSig, std
     }
 
     if(pubkeyFromSig.GetID() != pubkey.GetID()) {
-        printf("Keys don't match: pubkey=%s, pubkeyFromSig=%s, strMessage=%s, vchSig=%s",
-                pubkey.GetID().ToString(), pubkeyFromSig.GetID().ToString(), strMessage,
-                EncodeBase64(&vchSig[0], vchSig.size()));
+        cout << "Keys don't match : pubkey = " << pubkey.GetID().ToString() << ", pubkeyFromSig=" << pubkeyFromSig.GetID().ToString()
+            << ", strMessage=" << strMessage << ", vchSig=" << EncodeBase64(&vchSig[0], vchSig.size()) << endl;
         return false;
     }
 
@@ -69,10 +68,10 @@ bool CompactVerify(CPubKey pubkey, const std::vector<unsigned char>& vchSig, std
 bool CheckSign(const CKey privkey,const CPubKey pubkey, const std::string strMessage)
 {
     if (mapArgs.count("-magicstr"))
-		strMessageMagic = mapArgs["-magicstr"];
+		strMessageCustom = mapArgs["-magicstr"];
         
     CHashWriter ss(SER_GETHASH, 0);
-    ss << strMessageMagic;
+    ss << strMessageCustom;
     ss << strMessage;
 
     std::vector<unsigned char> vchSig;
