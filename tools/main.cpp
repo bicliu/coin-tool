@@ -24,22 +24,11 @@ int main(int argc, char* argv[])
 		return showreturn("File without command");
 
 	if("rewardshow" == mapArgs["-toolcommand"])
-	{
 		RewardHandle();
-	}
-	switch(hash_string(mapArgs["-toolcommand"]))
-	{
-		case hash_string_time("rewardshow"):
-			RewardHandle();
-			break;
-
-		case hash_string_time("sendalert"):
-			SendAlert();
-			break;
-		default:
-			cout << "Error: unknown method " << mapArgs["-toolcommand"] << endl;
-			break;
-	}
+	else if("sendalert" == mapArgs["-toolcommand"])
+		SendAlert();
+	else
+		cout << "Error: unknown method " << mapArgs["-toolcommand"] << endl;
 
     return 0;
 }
