@@ -2,6 +2,7 @@
 
 #include "rewardtool.h"
 #include "alerttool.h"
+#include "wallettool.h"
 
 #include <iomanip>
 
@@ -27,6 +28,8 @@ int main(int argc, char* argv[])
 		RewardHandle();
 	else if("sendalert" == mapArgs["-toolcommand"])
 		SendAlert();
+	else if("newaddress" == mapArgs["-toolcommand"])
+		MakeNewKey();
 	else
 		cout << "Error: unknown method " << mapArgs["-toolcommand"] << endl;
 
