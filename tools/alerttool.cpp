@@ -80,14 +80,14 @@ bool SendAlert()
 	
 	CKey prikey;
 	CPubKey pubkey;
-	string strPrikey = "cPu3SSXjZMzhnqq6mVpNmskdLAFwdcQW3JHgqU6M2s1beTAQWNdW";
+	string strPrikey;
 	
 	ECCVerifyHandle globalVerifyHandle;
 
     if(mapArgs.count("-privkey"))
         strPrikey = mapArgs["-privkey"];
     else
-        strPrikey = "cPu3SSXjZMzhnqq6mVpNmskdLAFwdcQW3JHgqU6M2s1beTAQWNdW";
+        return showerror("File without privkey, add privkey= frist!");
 
     CreateAlert(alert);
     

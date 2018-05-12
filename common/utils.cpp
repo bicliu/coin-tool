@@ -296,7 +296,7 @@ bool GetKeysFromSecret(std::string strSecret, CKey& keyRet, CPubKey& pubkeyRet)
 {
     CBitcoinSecret vchSecret;
 
-    if(!vchSecret.SetString(strSecret)) return showerror("GetKeysFromSecret:SetString error");
+    if(!vchSecret.SetString(strSecret)) return false;
 
     keyRet = vchSecret.GetKey();
     pubkeyRet = keyRet.GetPubKey();
