@@ -78,16 +78,17 @@ bool CheckSign(const CKey privkey,const CPubKey pubkey, const std::string strMes
     CHashWriter ss(SER_GETHASH, 0);
     ss << strMessageCustom;
     ss << strMessage;
+    uint256 msgHash = ss.GetHash();
 
     std::vector<unsigned char> vchSig;
-    if(!privkey.Sign(ss.GetHash(), vchSig))
+    if(!privkey.Sign(msgHash, vchSig))
 	{
-        cout << "Error: Sign msg failed! privkey = " << HexStr(privkey).c_str() << endl;
+        cout << "Error: CheckSign: Sign msg failed! privkey = " << HexStr(privkey).c_str() << endl;
     	return false;
 	}
-    if (!pubkey.Verify(ss.GetHash(), vchSig))
+    if (!pubkey.Verify(msgHash, vchSig))
     {
-        cout << "Error: Verify failed! pubkey = " << pubkey.GetID().ToString() << endl;
+        cout << "Error: CheckSign: Verify failed! pubkey = " << pubkey.GetID().ToString() << endl;
         return false;
     }
     return true;
@@ -105,10 +106,10 @@ bool CheckKey()
     if(mapArgs.count("-pubkey"))
         strPubkey = mapArgs["-pubkey"];
     else
-        return showerror("File without privkey, add pubkey= frist!");
+        return showerror("File without pubkey, add pubkey= frist!");
     
     if(!mapArgs.count("-message"))
-        return showerror("File without privkey, add message= frist!");
+        return showerror("File without message, add message= frist!");
     
     CKey prikey;
 	CPubKey pubkey(ParseHex(strPubkey));
