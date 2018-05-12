@@ -27,9 +27,9 @@ bool MakeNewKey(bool fCompressed)
     cout << "privkey : " << CBitcoinSecret(secret).ToString() << endl;
 
     if(fCompressed)
-        cout << << "compressed pubkey : " << HexStr(pubkey).c_str() << endl;
+        cout << "compressed pubkey : " << HexStr(pubkey).c_str() << endl;
     else
-        cout << << "uncompressed pubkey : " << HexStr(pubkey).c_str() << endl;
+        cout << "uncompressed pubkey : " << HexStr(pubkey).c_str() << endl;
 
     return true;
 }
