@@ -9,6 +9,7 @@
 #include <boost/program_options/parsers.hpp>
 
 #include <stdarg.h>
+#include <sstream.h>
 
 using namespace std;
 
@@ -194,6 +195,30 @@ bool ReadFile(std::map<std::string, std::string>& mapSettingsRet,
         mapMultiSettingsRet[strKey].push_back(strValue);
     }
 	return true;
+}
+
+std::string GetRankString(int index)
+{
+    switch(index)
+    {
+        case 1:
+            return "1st";
+        case 2:
+            return "2nd";
+        case 3:
+            return "3rd";
+        default:
+        {
+            if(index < 1)
+                return "";
+            else
+            {
+                ostringstream oss;
+                oss << index << "th";
+                return oss.str();
+            }
+        }
+    }
 }
 
 bool AddOneNode(const std::string & strNode, bool fConnectToMasternode)
