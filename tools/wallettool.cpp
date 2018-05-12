@@ -24,7 +24,12 @@ bool MakeNewKey(bool fCompressed)
     if(!secret.VerifyPubKey(pubkey))
         return showerror("VerifyPubKey failed %s", HexStr(pubkey).c_str());
 
-    cout << "privkey : " << HexStr(secret).c_str() << endl << "pubkey short : " << HexStr(pubkey).c_str() << endl;
+    cout << "privkey : " << CBitcoinSecret(secret).ToString() << endl;
+
+    if(fCompressed)
+        cout << << "compressed pubkey : " << HexStr(pubkey).c_str() << endl;
+    else
+        cout << << "uncompressed pubkey : " << HexStr(pubkey).c_str() << endl;
 
     return true;
 }
