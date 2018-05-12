@@ -8,6 +8,8 @@
 
 using namespace std;
 
+static boost::scoped_ptr<ECCVerifyHandle> globalVerifyHandle;
+
 int main(int argc, char* argv[])
 {
 	SetFilePath("tool.conf");
@@ -15,6 +17,7 @@ int main(int argc, char* argv[])
 
 	SetParams();
 	ECC_Start();
+	globalVerifyHandle.reset(new ECCVerifyHandle());
 	
 	// Sanity check
     if (!ECC_InitSanityCheck())

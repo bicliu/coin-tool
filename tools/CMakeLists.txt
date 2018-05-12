@@ -12,7 +12,7 @@ set(IMPORTLIB ${BITCOIN_LIBRARIES} ${THIRD_LIBRARIES}
 	pthread  db_cxx-4.8 anl miniupnpc
 )
 
-message("--      ${IMPORTLIB}")
+#message("--      ${IMPORTLIB}")
 
 file(GLOB TOOL_HEADERS "*.h" )
 file(GLOB TOOL_SRC "*.cpp"  "*.cc")
