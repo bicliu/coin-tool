@@ -306,10 +306,9 @@ bool GetKeysFromSecret(std::string strSecret, CKey& keyRet, CPubKey& pubkeyRet)
 
 /* We assume to have `unsigned long int' value with at least 32 bits.  */
 #define HASHWORDBITS 32
-uint64_t hash_string (const std::string paramstr)
+uint64_t hash_string (const char *str)
 {
   uint64_t hval, g;
-  const char *str = paramstr.c_str();
 
   /* Compute the hash value for the given string.  */
   hval = 0;
@@ -325,4 +324,9 @@ uint64_t hash_string (const std::string paramstr)
         }
     }
   return hval;
+}
+
+constexpr uint64_t hash_string_time(char const* str)
+{  
+    return hash_string(str);  
 }

@@ -29,11 +29,11 @@ int main(int argc, char* argv[])
 	}
 	switch(hash_string(mapArgs["-toolcommand"]))
 	{
-		case hash_string("rewardshow"):
+		case hash_string_time("rewardshow"):
 			RewardHandle();
 			break;
 
-		case hash_string("sendalert"):
+		case hash_string_time("sendalert"):
 			SendAlert();
 			break;
 		default:
