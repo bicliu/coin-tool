@@ -1,0 +1,16 @@
+toolcommand=sendalert
+addnode=10.175.0.211:19888
+privkey=cPu3SSXjZMzhnqq6mVpNmskdLAFwdcQW3JHgqU6M2s1beTAQWNdW
+relayuntil=4000000000000
+expiration=4000000000000
+id=20
+cancel=10
+setcancel=11
+setcancel=12
+minver=1000
+maxver=1879048192
+setsubver=70208
+setsubver=100000
+priority=98
+comment="TEST: alert test message"
+statusbar="URGENT: Alert test, upgrade required"
