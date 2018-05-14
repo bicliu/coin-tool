@@ -155,19 +155,29 @@ bool CheckKey()
     {
         bool bIsPair = false;
 		cout << "private key <" << CBitcoinSecret(secret).ToString() << ">" << endl << "{" << endl;
-        for(CPubKey publickey : vPublic)
+        for(vector<CPubKey>::iterator iter = vPublic.begin(); iter != vPublic.end(); )
         {
-            if(IsPairOfKey(secret, publickey, msg))
+            if(IsPairOfKey(secret, *iter, msg))
             {
                 bIsPair = true;
-				cout << "    publickey <" << HexStr(publickey).c_str() << "> address " << CBitcoinAddress(publickey.GetID()).ToString()  << endl;
+				cout << "    publickey <" << HexStr(*iter).c_str() << "> address " << CBitcoinAddress((*iter).GetID()).ToString()  << endl;
+				iter = vPublic.erase(iter);
             }
+			else
+				iter++;
         }
 		cout << "}" << endl;
         CPubKey retPub = secret.GetPubKey();
         if(!bIsPair)
-            cout << "get publickey <" << HexStr(retPub).c_str() << "> address " << CBitcoinAddress(retPub.GetID()).ToString()  << endl;
+            cout << "get publickey <" << HexStr(retPub).c_str() << "> address " << CBitcoinAddress(retPub.GetID()).ToString()  << endl << endl;
     }
+
+	if(vPublic.size() != 0)
+	{
+		cout << endl << "Get address from pubkey:" << endl;
+		for(CPubKey publickey : vPublic)
+			cout << "publickey <" << HexStr(publickey).c_str() << "> get address " << CBitcoinAddress(publickey.GetID()).ToString()  << endl;
+	}
 
     return true;
 }
