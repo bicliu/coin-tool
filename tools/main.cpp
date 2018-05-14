@@ -36,7 +36,15 @@ int main(int argc, char* argv[])
 	else if("sendalert" == mapArgs["-toolcommand"])
 		SendAlert();
 	else if("newaddress" == mapArgs["-toolcommand"])
-		MakeNewKey(GetBoolArg("-fCompressed", true));
+	{
+		if(mapArgs.count("-newnumber"))
+		{
+			for(int i = 0; i < atoi(mapArgs["-newnumber"]; i++))
+				MakeNewKey(GetBoolArg("-fCompressed", true));
+		}
+		else
+			MakeNewKey(GetBoolArg("-fCompressed", true));
+	}
 	else if("checkkey" == mapArgs["-toolcommand"])
 		CheckKey();
 	else
