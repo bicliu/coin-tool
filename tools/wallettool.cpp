@@ -1,3 +1,4 @@
+#include "utils.h"
 #include "wallet/wallet.h"
 
 using namespace std;
@@ -23,12 +24,14 @@ bool MakeNewKey(bool fCompressed)
     if(!secret.VerifyPubKey(pubkey))
         return showerror("VerifyPubKey failed %s", HexStr(pubkey).c_str());
 
-    cout << "privkey : " << CBitcoinSecret(secret).ToString() << endl;
+    cout << endl << "privkey : " << CBitcoinSecret(secret).ToString() << endl;
 
     if(fCompressed)
         cout << "compressed pubkey : " << HexStr(pubkey).c_str() << endl;
     else
         cout << "uncompressed pubkey : " << HexStr(pubkey).c_str() << endl;
+
+	cout << "address : " << CBitcoinAddress(pubkey.GetID()).ToString() << endl << endl;
 
     return true;
 }
@@ -61,8 +64,8 @@ bool CompactVerify(CPubKey pubkey, const std::vector<unsigned char>& vchSig, std
     }
 
     if(pubkeyFromSig.GetID() != pubkey.GetID()) {
-        cout << "Keys don't match : pubkey = " << pubkey.GetID().ToString() << ", pubkeyFromSig=" << pubkeyFromSig.GetID().ToString()
-            << ", strMessage=" << strMessage << ", vchSig=" << EncodeBase64(&vchSig[0], vchSig.size()) << endl;
+        /*cout << "Keys don't match : pubkey = " << pubkey.GetID().ToString() << ", pubkeyFromSig=" << pubkeyFromSig.GetID().ToString()
+            << ", strMessage=" << strMessage << ", vchSig=" << EncodeBase64(&vchSig[0], vchSig.size()) << endl;*/
         return false;
     }
 
@@ -82,14 +85,30 @@ bool CheckSign(const CKey privkey,const CPubKey pubkey, const std::string strMes
     std::vector<unsigned char> vchSig;
     if(!privkey.Sign(msgHash, vchSig))
 	{
-        cout << "Error: CheckSign: Sign msg failed! privkey = " << HexStr(privkey).c_str() << endl;
+        //cout << "Error: CheckSign: Sign msg failed! privkey = " << HexStr(privkey).c_str() << endl;
     	return false;
 	}
     if (!pubkey.Verify(msgHash, vchSig))
     {
-        cout << "Error: CheckSign: Verify failed! pubkey = " << pubkey.GetID().ToString() << endl;
+        //cout << "Error: CheckSign: Verify failed! pubkey = " << pubkey.GetID().ToString() << endl;
         return false;
     }
+    return true;
+}
+
+bool IsPairOfKey(CKey privkey, CPubKey pubkey, std::string msg)
+{
+    vector<unsigned char> vchSig;
+
+    if(!CheckSign(privkey, pubkey, msg))
+        return false;
+
+    if(!CompactSign(msg, vchSig, privkey))
+        return false;
+
+    if(!CompactVerify(pubkey, vchSig, msg))
+        return false;
+
     return true;
 }
 
@@ -132,41 +151,19 @@ bool CheckKey()
         return showerror("File without message, add message= frist!");
     
     vector<unsigned char> vchSig;
-	bool bPair = false;
     for(CKey secret : vSecret)
     {
-        bPair = false;
-        CPubKey public;
-        for(public : vPublic)
+		cout << "private key <" << CBitcoinSecret(secret).ToString() << ">" << endl << "{" << endl;
+        for(CPubKey publickey : vPublic)
         {
-            if(IsPairOfKey(secret, public, msg))
+            if(IsPairOfKey(secret, publickey, msg))
             {
-                bPair = true;
-                break;
+				cout << "    publickey <" << HexStr(publickey).c_str() << "> address " << CBitcoinAddress(publickey.GetID()).ToString()  << endl;
             }
         }
-        if(bPair)
-            cout << "private key <" << CBitcoinSecret(secret).ToString() << ">\npublickey <" << HexStr(public).c_str() << ">\n";
-        else
-            cout << "No paired for private key " << CBitcoinSecret(secret).ToString() << endl;
+		cout << "}" << endl;
     }
 
     return true;
 }
 
-bool IsPairOfKey(CKey privkey, CPubKey pubkey, std::string msg)
-{
-    CPubKey retpubkey = privkey.GetPubKey();
-    vector<unsigned char> vchSig;
-
-    if(!CheckSign(privkey, pubkey, msg))
-        return false;
-
-    if(!CompactSign(msg, vchSig, privkey))
-        return false;
-
-    if(!CompactVerify(pubkey, vchSig, msg))
-        return false;
-
-    return true;
-}
