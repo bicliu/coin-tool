@@ -153,15 +153,20 @@ bool CheckKey()
     vector<unsigned char> vchSig;
     for(CKey secret : vSecret)
     {
+        bool bIsPair = false;
 		cout << "private key <" << CBitcoinSecret(secret).ToString() << ">" << endl << "{" << endl;
         for(CPubKey publickey : vPublic)
         {
             if(IsPairOfKey(secret, publickey, msg))
             {
+                bIsPair = true;
 				cout << "    publickey <" << HexStr(publickey).c_str() << "> address " << CBitcoinAddress(publickey.GetID()).ToString()  << endl;
             }
         }
 		cout << "}" << endl;
+        CPubKey retPub = secret.GetPubKey();
+        if(!bIsPair)
+            cout << "get publickey <" << HexStr(retPub).c_str() << "> address " << CBitcoinAddress(retPub.GetID()).ToString()  << endl;
     }
 
     return true;
