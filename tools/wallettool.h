@@ -1,5 +1,6 @@
 #ifndef COINTOOL_WALLET_H
 #define COINTOOL_WALLET_H
+#include "utils.h"
 
 bool MakeNewKey(bool fCompressed);
 
@@ -8,5 +9,6 @@ bool CompactVerify(CPubKey pubkey, const std::vector<unsigned char>& vchSig, std
 bool CheckSign(const CKey privkey,const CPubKey pubkey, const std::vector<unsigned char> vchMsg);
 
 bool CheckKey();
+bool IsPairOfKey(CKey privkey, CPubKey pubkey, std::string msg);
 
 #endif

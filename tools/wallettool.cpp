@@ -1,4 +1,3 @@
-#include "utils.h"
 #include "wallet/wallet.h"
 
 using namespace std;
@@ -96,40 +95,78 @@ bool CheckSign(const CKey privkey,const CPubKey pubkey, const std::string strMes
 
 bool CheckKey()
 {
-    string strPrikey;
-    string strPubkey;
+    string msg;
+    vector<CKey> vSecret;
+    vector<CPubKey> vPublic;
     if(mapArgs.count("-privkey"))
-        strPrikey = mapArgs["-privkey"];
+    {
+        for(string str : mapMultiArgs["-privkey"])
+        {
+            CKey privkey;
+            CPubKey retpubkey;
+            if(!GetKeysFromSecret(str, privkey, retpubkey))
+            {
+                cout << "Error: privkey <" << str << "> getpubkey failed!" << endl;
+                continue;
+            }
+            vSecret.push_back(privkey);
+        }
+    }
     else
         return showerror("File without privkey, add privkey= frist!");
 
     if(mapArgs.count("-pubkey"))
-        strPubkey = mapArgs["-pubkey"];
+    {
+        for(string str : mapMultiArgs["-pubkey"])
+        {
+            CPubKey pubkey(ParseHex(str));
+            vPublic.push_back(pubkey);
+        }
+    }
     else
         return showerror("File without pubkey, add pubkey= frist!");
     
-    if(!mapArgs.count("-message"))
+    if(mapArgs.count("-message"))
+        msg = mapArgs["-message"];
+    else
         return showerror("File without message, add message= frist!");
     
-    CKey prikey;
-	CPubKey pubkey(ParseHex(strPubkey));
-    CPubKey retpubkey;
     vector<unsigned char> vchSig;
-	
-    if(!GetKeysFromSecret(strPrikey, prikey, retpubkey))
-        return showerror("CheckKey get privkey failed!");
+	bool bPair = false;
+    for(CKey secret : vSecret)
+    {
+        bPair = false;
+        CPubKey public;
+        for(public : vPublic)
+        {
+            if(IsPairOfKey(secret, public, msg))
+            {
+                bPair = true;
+                break;
+            }
+        }
+        if(bPair)
+            cout << "private key <" << CBitcoinSecret(secret).ToString() << ">\npublickey <" << HexStr(public).c_str() << ">\n";
+        else
+            cout << "No paired for private key " << CBitcoinSecret(secret).ToString() << endl;
+    }
 
-    //cout << "Info for retpubkey " << retpubkey.GetID().ToString() << endl;
+    return true;
+}
 
-    if(!CheckSign(prikey, pubkey, mapArgs["-message"]))
+bool IsPairOfKey(CKey privkey, CPubKey pubkey, std::string msg)
+{
+    CPubKey retpubkey = privkey.GetPubKey();
+    vector<unsigned char> vchSig;
+
+    if(!CheckSign(privkey, pubkey, msg))
         return false;
 
-    if(!CompactSign(mapArgs["-message"], vchSig, prikey))
+    if(!CompactSign(msg, vchSig, privkey))
         return false;
 
-    if(!CompactVerify(pubkey, vchSig, mapArgs["-message"]))
+    if(!CompactVerify(pubkey, vchSig, msg))
         return false;
 
-    cout << "check key success!" << endl;
     return true;
 }
