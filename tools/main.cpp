@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
 	{
 		if(mapArgs.count("-newnumber"))
 		{
-			for(int i = 0; i < atoi(mapArgs["-newnumber"]; i++))
+			for(int i = 0; i < atoi(mapArgs["-newnumber"]); i++)
 				MakeNewKey(GetBoolArg("-fCompressed", true));
 		}
 		else
