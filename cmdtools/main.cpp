@@ -21,30 +21,32 @@ int main(int argc, char* argv[])
     //if (!ECC_InitSanityCheck())
     //    return showreturn(("ECC_InitSanityCheck sanity check failed. Shutting down."));
 
-	if(2 > argc)
+	if(argc < 2)
 	{
 		cout << "no cmd \n";
 		return -1;
 	}
+
+	string strcmd = string(argv[cmdindex]);
 	
-	if("signmsg" == argv[cmdindex])
+	if("signmsg" == strcmd)
 	{
 		SignMsg(argv[cmdindex+1], argv[cmdindex+2]);
 	}
-	else if("signcheck" == argv[cmdindex])
+	else if("signcheck" == strcmd)
 	{
 		SignVerify(argv[cmdindex+1], argv[cmdindex+2],argv[cmdindex+3]);
 	}
-	else if("compactsign" == argv[cmdindex])
+	else if("compactsign" == strcmd)
 	{
 		CompactSign(argv[cmdindex+1], argv[cmdindex+2]);
 	}
-	else if("compactverify" == argv[cmdindex])
+	else if("compactverify" == strcmd)
 	{
 		CompactVerify(argv[cmdindex+1], argv[cmdindex+2],argv[cmdindex+3]);
 	}
 	else
-		cout << "Error: unknown method " << argv[cmdindex] << endl;
+		cout << "Error: unknown method " << strcmd << endl;
 
     return 0;
 }

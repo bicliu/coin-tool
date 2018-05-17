@@ -101,7 +101,7 @@ void CompactVerify(const std::string & strpubkey,const std::string & strMessage,
     CHashWriter ss(SER_GETHASH, 0);
     ss << strMessageCustom;
     ss << strMessage;
-    uint256 msgHash = ss.GetHash();
+    //uint256 msgHash = ss.GetHash();
 
     CPubKey pubkeyFromSig;
     if(!pubkeyFromSig.RecoverCompact(ss.GetHash(), vchSig)) {
