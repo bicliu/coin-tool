@@ -20,6 +20,12 @@ void showvector(const std::vector<unsigned char>& vch)
     printf("\n");
 }
 
+void SignMsgHelp()
+{
+    cout << "Command \"signmsg\" example :" << endl
+        << "signmsg privatekey \"message\"" << endl;
+}
+
 void SignMsg(const std::string & strprivkey,const std::string strMessage)
 {
     std::vector<unsigned char> vchSig;
@@ -47,6 +53,12 @@ void SignMsg(const std::string & strprivkey,const std::string strMessage)
     return;
 }
 
+void SignVerifyHelp()
+{
+    cout << "Command \"verifymsg\" example :" << endl
+        << "verifymsg publickey \"message\" \"signature\"" << endl;
+}
+
 void SignVerify(const std::string & strpubkey,const std::string & strMessage, const std::string & strSig)
 {
     std::vector<unsigned char> vchSig(DecodeBase64(strSig.c_str()));
@@ -65,6 +77,12 @@ void SignVerify(const std::string & strpubkey,const std::string & strMessage, co
 
     cout << "Verify Success !" << endl;
     return;
+}
+
+void CompactSignHelp()
+{
+    cout << "Command \"compactsign\" example :" << endl
+        << "compactsign privatekey \"message\"" << endl;
 }
 
 void CompactSign(const std::string & strprivkey, std::string strMessage)
@@ -91,6 +109,12 @@ void CompactSign(const std::string & strprivkey, std::string strMessage)
 
     cout << "Base64Code: " << EncodeBase64(&vchSig[0], vchSig.size()) << endl;
     return;
+}
+
+void CompactVerifyHelp()
+{
+    cout << "Command \"compactverify\" example :" << endl
+        << "compactverify publickey \"message\" \"signature\"" << endl;
 }
 
 void CompactVerify(const std::string & strpubkey,const std::string & strMessage, const std::string & strSig)

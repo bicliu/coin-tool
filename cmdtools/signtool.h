@@ -7,4 +7,9 @@ void SignVerify(const std::string & strpubkey,const std::string & strMessage, co
 void CompactSign(const std::string & strprivkey, std::string strMessage);
 void CompactVerify(const std::string & strpubkey,const std::string & strMessage, const std::string & strSig);
 
+void SignMsgHelp();
+void SignVerifyHelp();
+void CompactSignHelp();
+void CompactVerifyHelp();
+
 #endif
