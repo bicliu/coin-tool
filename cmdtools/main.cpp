@@ -12,7 +12,7 @@ void RegisterCmdForHelp()
 {
 	cout << "********* commands *********" << endl;
 	cout << "signmsg" << endl;
-	cout << "signcheck" << endl;
+	cout << "verifymsg" << endl;
 	cout << "compactsign" << endl;
 	cout << "compactverify" << endl;
 	cout << "********* commands *********" << endl;

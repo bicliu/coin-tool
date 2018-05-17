@@ -22,8 +22,8 @@ void showvector(const std::vector<unsigned char>& vch)
 
 void SignMsgHelp()
 {
-    cout << "Command \"signmsg\" example :" << endl
-        << "signmsg privatekey \"message\"" << endl;
+    cout << "Command \"signmsg\" example :" << endl << endl
+        << "signmsg privatekey \"message\"" << endl << endl;
 }
 
 void SignMsg(const std::string & strprivkey,const std::string strMessage)
@@ -55,8 +55,8 @@ void SignMsg(const std::string & strprivkey,const std::string strMessage)
 
 void SignVerifyHelp()
 {
-    cout << "Command \"verifymsg\" example :" << endl
-        << "verifymsg publickey \"message\" \"signature\"" << endl;
+    cout << "Command \"verifymsg\" example :" << endl << endl
+        << "verifymsg publickey \"message\" \"signature\"" << endl << endl;
 }
 
 void SignVerify(const std::string & strpubkey,const std::string & strMessage, const std::string & strSig)
@@ -81,8 +81,8 @@ void SignVerify(const std::string & strpubkey,const std::string & strMessage, co
 
 void CompactSignHelp()
 {
-    cout << "Command \"compactsign\" example :" << endl
-        << "compactsign privatekey \"message\"" << endl;
+    cout << "Command \"compactsign\" example :" << endl << endl
+        << "compactsign privatekey \"message\"" << endl << endl;
 }
 
 void CompactSign(const std::string & strprivkey, std::string strMessage)
@@ -113,8 +113,8 @@ void CompactSign(const std::string & strprivkey, std::string strMessage)
 
 void CompactVerifyHelp()
 {
-    cout << "Command \"compactverify\" example :" << endl
-        << "compactverify publickey \"message\" \"signature\"" << endl;
+    cout << "Command \"compactverify\" example :" << endl << endl
+        << "compactverify publickey \"message\" \"signature\"" << endl << endl;
 }
 
 void CompactVerify(const std::string & strpubkey,const std::string & strMessage, const std::string & strSig)
