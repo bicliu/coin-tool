@@ -72,7 +72,7 @@ bool MsgSign(const CKey & privkey, const std::string & strMessage, std::vector<u
     ss << strMessageCustom;
     ss << strMessage;
 
-    if(!privkey.Sign(msgHash, vchSig))
+    if(!privkey.Sign(ss.GetHash(), vchSig))
 	{
         //cout << "Error: CheckSign: Sign msg failed! privkey = " << HexStr(privkey).c_str() << endl;
     	return false;
@@ -86,7 +86,7 @@ bool MsgVerify(const CPubKey & pubkey, const std::string & strMessage, const std
     ss << strMessageCustom;
     ss << strMessage;
 
-    if (!pubkey.Verify(msgHash, vchSig))
+    if (!pubkey.Verify(ss.GetHash(), vchSig))
     {
         //cout << "Error: CheckSign: Verify failed! pubkey = " << pubkey.GetID().ToString() << endl;
         return false;
