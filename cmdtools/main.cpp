@@ -11,10 +11,10 @@ const int cmdindex = 1;
 void RegisterCmdForHelp()
 {
 	cout << "********* commands *********" << endl;
-	cout << "signmsg" << end;
-	cout << "signcheck" << end;
-	cout << "compactsign" << end;
-	cout << "compactverify" << end;
+	cout << "signmsg" << endl;
+	cout << "signcheck" << endl;
+	cout << "compactsign" << endl;
+	cout << "compactverify" << endl;
 	cout << "********* commands *********" << endl;
 }
 
