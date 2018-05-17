@@ -1,11 +1,11 @@
-#include "utils.h"
+#include "wallettool.h"
 #include "wallet/wallet.h"
 
 using namespace std;
 
 extern CWallet* pwalletMain;
 
-string strMessageCustom = "TEST: sign test";
+const std::string strMessageCustom = "Ulord Signed Message:\n";
 
 bool MakeNewKey(bool fCompressed)
 {
@@ -38,9 +38,6 @@ bool MakeNewKey(bool fCompressed)
 
 bool CompactSign(std::string strMessage, std::vector<unsigned char>& vchSigRet, CKey privkey)
 {
-    if (mapArgs.count("-magicstr"))
-		strMessageCustom = mapArgs["-magicstr"];
-
     CHashWriter ss(SER_GETHASH, 0);
     ss << strMessageCustom;
     ss << strMessage;
@@ -50,9 +47,6 @@ bool CompactSign(std::string strMessage, std::vector<unsigned char>& vchSigRet, 
 
 bool CompactVerify(CPubKey pubkey, const std::vector<unsigned char>& vchSig, std::string strMessage)
 {
-    if (mapArgs.count("-magicstr"))
-		strMessageCustom = mapArgs["-magicstr"];
-        
     CHashWriter ss(SER_GETHASH, 0);
     ss << strMessageCustom;
     ss << strMessage;
@@ -72,22 +66,26 @@ bool CompactVerify(CPubKey pubkey, const std::vector<unsigned char>& vchSig, std
     return true;
 }
 
-bool CheckSign(const CKey privkey,const CPubKey pubkey, const std::string strMessage)
+bool MsgSign(const CKey & privkey, const std::string & strMessage, std::vector<unsigned char>& vchSig)
 {
-    if (mapArgs.count("-magicstr"))
-		strMessageCustom = mapArgs["-magicstr"];
-        
     CHashWriter ss(SER_GETHASH, 0);
     ss << strMessageCustom;
     ss << strMessage;
-    uint256 msgHash = ss.GetHash();
 
-    std::vector<unsigned char> vchSig;
     if(!privkey.Sign(msgHash, vchSig))
 	{
         //cout << "Error: CheckSign: Sign msg failed! privkey = " << HexStr(privkey).c_str() << endl;
     	return false;
 	}
+    return true;
+}
+
+bool MsgVerify(const CPubKey & pubkey, const std::string & strMessage, const std::vector<unsigned char>& vchSig)
+{
+    CHashWriter ss(SER_GETHASH, 0);
+    ss << strMessageCustom;
+    ss << strMessage;
+
     if (!pubkey.Verify(msgHash, vchSig))
     {
         //cout << "Error: CheckSign: Verify failed! pubkey = " << pubkey.GetID().ToString() << endl;
@@ -99,8 +97,12 @@ bool CheckSign(const CKey privkey,const CPubKey pubkey, const std::string strMes
 bool IsPairOfKey(CKey privkey, CPubKey pubkey, std::string msg)
 {
     vector<unsigned char> vchSig;
+    vector<unsigned char> vchSig1;
 
-    if(!CheckSign(privkey, pubkey, msg))
+    if(!MsgSign(privkey, msg, vchSig1))
+        return false;
+
+    if(!MsgVerify(pubkey, msg, vchSig1))
         return false;
 
     if(!CompactSign(msg, vchSig, privkey))
@@ -182,3 +184,125 @@ bool CheckKey()
     return true;
 }
 
+void SignMsgHelp()
+{
+    cout << "Command \"signmsg\" example :" << endl << endl
+        << "signmsg privatekey \"message\"" << endl << endl;
+}
+
+void SignMsg(const std::string & strprivkey,const std::string strMessage)
+{
+    std::vector<unsigned char> vchSig;
+
+    CKey privkey;
+    CPubKey retpubkey;
+    if(!GetKeysFromSecret(strprivkey, privkey, retpubkey))
+    {
+        cout << "Error: privkey <" << strprivkey << "> getpubkey failed!" << endl;
+        return;
+    }
+
+    CHashWriter ss(SER_GETHASH, 0);
+    ss << strMessageCustom;
+    ss << strMessage;
+    uint256 msgHash = ss.GetHash();
+
+    if(!privkey.Sign(msgHash, vchSig))
+	{
+        cout << "Error: Sign msg failed! privkey = " << CBitcoinSecret(privkey).ToString() << endl;
+        return;
+    }
+
+    cout << "Base64Code: " << EncodeBase64(&vchSig[0], vchSig.size()) << endl;
+    return;
+}
+
+void SignVerifyHelp()
+{
+    cout << "Command \"verifymsg\" example :" << endl << endl
+        << "verifymsg publickey \"message\" \"signature\"" << endl << endl;
+}
+
+void SignVerify(const std::string & strpubkey,const std::string & strMessage, const std::string & strSig)
+{
+    std::vector<unsigned char> vchSig(DecodeBase64(strSig.c_str()));
+    CPubKey pubkey(ParseHex(strpubkey));
+
+    CHashWriter ss(SER_GETHASH, 0);
+    ss << strMessageCustom;
+    ss << strMessage;
+    uint256 msgHash = ss.GetHash();
+
+    if (!pubkey.Verify(msgHash, vchSig))
+    {
+        cout << "Error: Verify failed! pubkey = " << HexStr(pubkey).c_str() << endl;
+        return;
+    }
+
+    cout << "Verify Success !" << endl;
+    return;
+}
+
+void CompactSignHelp()
+{
+    cout << "Command \"compactsign\" example :" << endl << endl
+        << "compactsign privatekey \"message\"" << endl << endl;
+}
+
+void CompactSign(const std::string & strprivkey, std::string strMessage)
+{
+    std::vector<unsigned char> vchSig;
+
+    CKey privkey;
+    CPubKey retpubkey;
+    if(!GetKeysFromSecret(strprivkey, privkey, retpubkey))
+    {
+        cout << "Error: privkey <" << strprivkey << "> getpubkey failed!" << endl;
+        return;
+    }
+
+    CHashWriter ss(SER_GETHASH, 0);
+    ss << strMessageCustom;
+    ss << strMessage;
+
+    if(!privkey.SignCompact(ss.GetHash(), vchSig))
+    {
+        cout << "Error: Sign msg failed! privkey = " << CBitcoinSecret(privkey).ToString() << endl;
+        return;
+    }
+
+    cout << "Base64Code: " << EncodeBase64(&vchSig[0], vchSig.size()) << endl;
+    return;
+}
+
+void CompactVerifyHelp()
+{
+    cout << "Command \"compactverify\" example :" << endl << endl
+        << "compactverify publickey \"message\" \"signature\"" << endl << endl;
+}
+
+void CompactVerify(const std::string & strpubkey,const std::string & strMessage, const std::string & strSig)
+{
+    std::vector<unsigned char> vchSig(DecodeBase64(strSig.c_str()));
+    CPubKey pubkey(ParseHex(strpubkey));
+
+    CHashWriter ss(SER_GETHASH, 0);
+    ss << strMessageCustom;
+    ss << strMessage;
+    //uint256 msgHash = ss.GetHash();
+
+    CPubKey pubkeyFromSig;
+    if(!pubkeyFromSig.RecoverCompact(ss.GetHash(), vchSig)) {
+        cout << "Error: recovering public key failed." << endl;
+        return;
+    }
+
+    if(pubkeyFromSig.GetID() != pubkey.GetID()) {
+        cout << "Error: Keys don't match : pubkey = " << HexStr(pubkey).c_str() << ", pubkeyFromSig=" << HexStr(pubkeyFromSig).c_str()
+            << ", strMessage=" << strMessage << ", vchSig=" << EncodeBase64(&vchSig[0], vchSig.size()) << endl;
+        return;
+    }
+
+    cout << "Verify Success !" << endl;
+    return;
+}

@@ -68,6 +68,21 @@ int PrintStr(const std::string &str)
     return ret;
 }
 
+void showvector(const std::vector<unsigned char>& vch)
+{
+    int count = 0;
+    for(auto c : vch)
+    {
+        printf("%02x ", (uint8_t)c);
+        count++;
+        if(count % 8 == 0)
+			printf("    ");
+		if(count % 16 == 0)
+			printf("\n");
+    }
+    printf("\n");
+}
+
 bool showerror(const char* format, ...)
 {
     char buf[100];
