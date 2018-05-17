@@ -110,7 +110,7 @@ void CompactVerify(const std::string & strpubkey,const std::string & strMessage,
     }
 
     if(pubkeyFromSig.GetID() != pubkey.GetID()) {
-        cout << "Error: Keys don't match : pubkey = " << pubkey.GetID().ToString() << ", pubkeyFromSig=" << pubkeyFromSig.GetID().ToString()
+        cout << "Error: Keys don't match : pubkey = " << HexStr(pubkey).c_str() << ", pubkeyFromSig=" << HexStr(pubkeyFromSig).c_str()
             << ", strMessage=" << strMessage << ", vchSig=" << EncodeBase64(&vchSig[0], vchSig.size()) << endl;
         return;
     }
