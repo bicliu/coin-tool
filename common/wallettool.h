@@ -4,8 +4,8 @@
 
 bool MakeNewKey(bool fCompressed);
 
-bool CompactSign(std::string strMessage, std::vector<unsigned char>& vchSigRet, CKey privkey);
-bool CompactVerify(CPubKey pubkey, const std::vector<unsigned char>& vchSig, std::string strMessage);
+bool CompactSign(const CKey & privkey, const std::string & strMessage, std::vector<unsigned char>& vchSigRet);
+bool CompactVerify(const CPubKey & pubkey, const std::string & strMessage,const std::vector<unsigned char>& vchSig);
 
 bool CheckKey();
 bool IsPairOfKey(CKey privkey, CPubKey pubkey, std::string msg);

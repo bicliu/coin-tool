@@ -36,7 +36,7 @@ bool MakeNewKey(bool fCompressed)
     return true;
 }
 
-bool CompactSign(std::string strMessage, std::vector<unsigned char>& vchSigRet, CKey privkey)
+bool CompactSign(const CKey & privkey, const std::string & strMessage, std::vector<unsigned char>& vchSigRet)
 {
     CHashWriter ss(SER_GETHASH, 0);
     ss << strMessageCustom;
@@ -45,7 +45,7 @@ bool CompactSign(std::string strMessage, std::vector<unsigned char>& vchSigRet, 
     return privkey.SignCompact(ss.GetHash(), vchSigRet);
 }
 
-bool CompactVerify(CPubKey pubkey, const std::vector<unsigned char>& vchSig, std::string strMessage)
+bool CompactVerify(const CPubKey & pubkey, const std::string & strMessage,const std::vector<unsigned char>& vchSig)
 {
     CHashWriter ss(SER_GETHASH, 0);
     ss << strMessageCustom;
@@ -105,10 +105,10 @@ bool IsPairOfKey(CKey privkey, CPubKey pubkey, std::string msg)
     if(!MsgVerify(pubkey, msg, vchSig1))
         return false;
 
-    if(!CompactSign(msg, vchSig, privkey))
+    if(!CompactSign(privkey, msg, vchSig))
         return false;
 
-    if(!CompactVerify(pubkey, vchSig, msg))
+    if(!CompactVerify(pubkey, msg, vchSig))
         return false;
 
     return true;
@@ -202,12 +202,7 @@ void SignMsg(const std::string & strprivkey,const std::string strMessage)
         return;
     }
 
-    CHashWriter ss(SER_GETHASH, 0);
-    ss << strMessageCustom;
-    ss << strMessage;
-    uint256 msgHash = ss.GetHash();
-
-    if(!privkey.Sign(msgHash, vchSig))
+    if(!MsgSign(privkey, strMessage, vchSig))
 	{
         cout << "Error: Sign msg failed! privkey = " << CBitcoinSecret(privkey).ToString() << endl;
         return;
@@ -228,12 +223,7 @@ void SignVerify(const std::string & strpubkey,const std::string & strMessage, co
     std::vector<unsigned char> vchSig(DecodeBase64(strSig.c_str()));
     CPubKey pubkey(ParseHex(strpubkey));
 
-    CHashWriter ss(SER_GETHASH, 0);
-    ss << strMessageCustom;
-    ss << strMessage;
-    uint256 msgHash = ss.GetHash();
-
-    if (!pubkey.Verify(msgHash, vchSig))
+    if (!MsgVerify(pubkey, strMessage, vchSig))
     {
         cout << "Error: Verify failed! pubkey = " << HexStr(pubkey).c_str() << endl;
         return;
@@ -261,11 +251,7 @@ void CompactSign(const std::string & strprivkey, std::string strMessage)
         return;
     }
 
-    CHashWriter ss(SER_GETHASH, 0);
-    ss << strMessageCustom;
-    ss << strMessage;
-
-    if(!privkey.SignCompact(ss.GetHash(), vchSig))
+    if(!CompactSign(privkey, strMessage, vchSig))
     {
         cout << "Error: Sign msg failed! privkey = " << CBitcoinSecret(privkey).ToString() << endl;
         return;
@@ -286,18 +272,7 @@ void CompactVerify(const std::string & strpubkey,const std::string & strMessage,
     std::vector<unsigned char> vchSig(DecodeBase64(strSig.c_str()));
     CPubKey pubkey(ParseHex(strpubkey));
 
-    CHashWriter ss(SER_GETHASH, 0);
-    ss << strMessageCustom;
-    ss << strMessage;
-    //uint256 msgHash = ss.GetHash();
-
-    CPubKey pubkeyFromSig;
-    if(!pubkeyFromSig.RecoverCompact(ss.GetHash(), vchSig)) {
-        cout << "Error: recovering public key failed." << endl;
-        return;
-    }
-
-    if(pubkeyFromSig.GetID() != pubkey.GetID()) {
+    if(!CompactVerify(pubkey, strMessage, vchSig)) {
         cout << "Error: Keys don't match : pubkey = " << HexStr(pubkey).c_str() << ", pubkeyFromSig=" << HexStr(pubkeyFromSig).c_str()
             << ", strMessage=" << strMessage << ", vchSig=" << EncodeBase64(&vchSig[0], vchSig.size()) << endl;
         return;
