@@ -47,7 +47,7 @@ int64_t getCurrentTime()
 }  
 
 // find a genesis in about 10-20 mins
-void _get(const ch * const pblock, const arith_uint256 hashTarget)
+void _get(const ch * const pblock, const arith_uint256 hashTarget, const int index)
 {
     uint256 hash;
     ch *pb = new ch(*pblock);
@@ -67,7 +67,7 @@ void _get(const ch * const pblock, const arith_uint256 hashTarget)
         }
 		if (tcnt !=0 and tcnt % 1000 == 0)
         {
-            std::cout<<"cryptohello tcnt = "<<tcnt<<" time = "<<getCurrentTime()<<" ms"<<std::endl;       
+            std::cout<<"_get "<<index<<" cryptohello tcnt = "<<tcnt<<" time = "<<getCurrentTime()<<" ms"<<std::endl;       
         }
 
     }
@@ -89,9 +89,10 @@ static void findGenesis(CBlockHeader *pb, const std::string &net)
         << ", " << net << std::endl;
 
     std::vector<std::thread> threads;
-
-    for (int i = 0; i < std::min(GetNumCores(), 100); ++i)
-    //for (int i = 0; i < 1; ++i)
+	int icpu = std::min(GetNumCores(), 100);
+	cout << "Get " << icpu << " cpus to use" << endl;
+    //for (int i = 0; i < std::min(GetNumCores(), 100); ++i)
+    for (int i = 0; i < icpu; ++i)
     {
         if (i >= 0)
         {
@@ -101,9 +102,9 @@ static void findGenesis(CBlockHeader *pb, const std::string &net)
         	nonce <<= 32;
         	nonce >>= 16;
         	pb->nNonce = ArithToUint256(nonce);
-		//std::cout<<"i = "<<i<<"    nNonce = "<<pb->nNonce.ToString()<<std::endl;	
+			std::cout<<"i = "<<i<<"    nNonce = "<<pb->nNonce.ToString()<<std::endl;	
         }
-        threads.push_back(std::thread(_get, pb, hashTarget));
+        threads.push_back(std::thread(_get, pb, hashTarget, i));
     }
 
     for (auto &t : threads)
