@@ -45,7 +45,7 @@ bool CompactSign(const CKey & privkey, const std::string & strMessage, std::vect
     return privkey.SignCompact(ss.GetHash(), vchSigRet);
 }
 
-bool CompactVerify(const CPubKey & pubkey, const std::string & strMessage,const std::vector<unsigned char>& vchSig)
+bool CompactVerify(const CPubKey & pubkey, const std::string & strMessage,const std::vector<unsigned char>& vchSig, bool blog)
 {
     CHashWriter ss(SER_GETHASH, 0);
     ss << strMessageCustom;
@@ -58,15 +58,16 @@ bool CompactVerify(const CPubKey & pubkey, const std::string & strMessage,const 
     }
 
     if(pubkeyFromSig.GetID() != pubkey.GetID()) {
-        /*cout << "Keys don't match : pubkey = " << pubkey.GetID().ToString() << ", pubkeyFromSig=" << pubkeyFromSig.GetID().ToString()
-            << ", strMessage=" << strMessage << ", vchSig=" << EncodeBase64(&vchSig[0], vchSig.size()) << endl;*/
+        if(blog)
+            cout << "Keys don't match : pubkey = " << pubkey.GetID().ToString() << ", pubkeyFromSig=" << pubkeyFromSig.GetID().ToString()
+                << ", strMessage=" << strMessage << ", vchSig=" << EncodeBase64(&vchSig[0], vchSig.size()) << endl;
         return false;
     }
 
     return true;
 }
 
-bool MsgSign(const CKey & privkey, const std::string & strMessage, std::vector<unsigned char>& vchSig)
+bool MsgSign(const CKey & privkey, const std::string & strMessage, std::vector<unsigned char>& vchSig. bool blog)
 {
     CHashWriter ss(SER_GETHASH, 0);
     ss << strMessageCustom;
@@ -74,13 +75,14 @@ bool MsgSign(const CKey & privkey, const std::string & strMessage, std::vector<u
 
     if(!privkey.Sign(ss.GetHash(), vchSig))
 	{
-        //cout << "Error: CheckSign: Sign msg failed! privkey = " << HexStr(privkey).c_str() << endl;
+        if(blog)
+            cout << "Error: CheckSign: Sign msg failed! privkey = " << HexStr(privkey).c_str() << endl;
     	return false;
 	}
     return true;
 }
 
-bool MsgVerify(const CPubKey & pubkey, const std::string & strMessage, const std::vector<unsigned char>& vchSig)
+bool MsgVerify(const CPubKey & pubkey, const std::string & strMessage, const std::vector<unsigned char>& vchSig, bool blog)
 {
     CHashWriter ss(SER_GETHASH, 0);
     ss << strMessageCustom;
@@ -88,7 +90,8 @@ bool MsgVerify(const CPubKey & pubkey, const std::string & strMessage, const std
 
     if (!pubkey.Verify(ss.GetHash(), vchSig))
     {
-        //cout << "Error: CheckSign: Verify failed! pubkey = " << pubkey.GetID().ToString() << endl;
+        if(blog)
+            cout << "Error: CheckSign: Verify failed! pubkey = " << pubkey.GetID().ToString() << endl;
         return false;
     }
     return true;
@@ -272,11 +275,7 @@ void CompactVerify(const std::string & strpubkey,const std::string & strMessage,
     std::vector<unsigned char> vchSig(DecodeBase64(strSig.c_str()));
     CPubKey pubkey(ParseHex(strpubkey));
 
-    if(!CompactVerify(pubkey, strMessage, vchSig)) {
-        cout << "Error: Keys don't match : pubkey = " << HexStr(pubkey).c_str() << ", pubkeyFromSig=" << HexStr(pubkeyFromSig).c_str()
-            << ", strMessage=" << strMessage << ", vchSig=" << EncodeBase64(&vchSig[0], vchSig.size()) << endl;
-        return;
-    }
+    if(!CompactVerify(pubkey, strMessage, vchSig, true)) return;
 
     cout << "Verify Success !" << endl;
     return;
