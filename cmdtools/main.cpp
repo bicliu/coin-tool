@@ -1,4 +1,6 @@
 #include "utils.h"
+#include "rewardtool.h"
+#include "alerttool.h"
 #include "wallettool.h"
 
 #include <iomanip>
