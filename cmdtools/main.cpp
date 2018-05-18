@@ -2,6 +2,7 @@
 #include "rewardtool.h"
 #include "alerttool.h"
 #include "wallettool.h"
+#include "genesis.h"
 
 #include <iomanip>
 
@@ -104,6 +105,10 @@ int main(int argc, char* argv[])
 		int64_t tmnow = GetTimeMicros();
 		cout << "Time is " << DateTimeStrFormat("%Y-%m-%d %H:%M:%S", tnow) << endl
 			<< "<" << tnow << ">,<" << tmnow << ">" << endl;;
+	}
+	else if("creategenesis" == strcmd)
+	{
+		GenesisTest();
 	}
 	else
 		cout << "Error: unknown method " << strcmd << endl;
