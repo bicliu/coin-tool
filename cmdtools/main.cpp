@@ -99,7 +99,12 @@ int main(int argc, char* argv[])
 		SendAlertHandle(argv[cmdindex+1]);
 	}
 	else if("timemicros" == strcmd)
-		cout << "micros times = " << GetTimeMicros() << endl;
+	{
+		int64_t tnow = GetTime();
+		int64_t tmnow = GetTimeMicros();
+		cout << "Time is " << DateTimeStrFormat("%Y-%m-%d %H:%M:%S", tnow) << endl
+			<< "<" << tnow << ">,<" << tmnow << ">" << endl;;
+	}
 	else
 		cout << "Error: unknown method " << strcmd << endl;
 
