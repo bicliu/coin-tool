@@ -3,5 +3,5 @@
 
 bool SendAlert();
 void SendAlertHelp();
-void SendAlertHandle(std::string & filepath);
+void SendAlertHandle(const std::string & filepath);
 #endif

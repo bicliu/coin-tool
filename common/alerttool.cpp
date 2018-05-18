@@ -178,7 +178,7 @@ void SendAlertHelp()
         << "sendalert alertconfigurefile" << endl << endl;
 }
 
-void SendAlertHandle(std::string & filepath)
+void SendAlertHandle(const std::string & filepath)
 {
 	if(ReadCurrentFile(mapArgs, mapMultiArgs, filepath))
 		SendAlert();
