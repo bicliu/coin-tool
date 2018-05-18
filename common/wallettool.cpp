@@ -67,7 +67,7 @@ bool CompactVerify(const CPubKey & pubkey, const std::string & strMessage,const 
     return true;
 }
 
-bool MsgSign(const CKey & privkey, const std::string & strMessage, std::vector<unsigned char>& vchSig. bool blog)
+bool MsgSign(const CKey & privkey, const std::string & strMessage, std::vector<unsigned char>& vchSig, bool blog)
 {
     CHashWriter ss(SER_GETHASH, 0);
     ss << strMessageCustom;
