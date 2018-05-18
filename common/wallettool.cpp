@@ -280,3 +280,15 @@ void CompactVerify(const std::string & strpubkey,const std::string & strMessage,
     cout << "Verify Success !" << endl;
     return;
 }
+
+void NewAddressHelp()
+{
+    cout << "Command \"newaddress\" example :" << endl << endl
+        << "newaddress Ifcompressed number" << endl << endl;
+}
+
+void NewAddress(bool bCompressed, int num)
+{
+    for (int i = 0; i < num; i++)
+        MakeNewKey(bCompressed);
+}

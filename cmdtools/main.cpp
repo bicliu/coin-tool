@@ -15,6 +15,8 @@ void RegisterCmdForHelp()
 	cout << "verifymsg" << endl;
 	cout << "compactsign" << endl;
 	cout << "compactverify" << endl;
+	cout << "newaddress" << endl;
+	cout << "sendalert" << endl;
 	cout << "********* commands *********" << endl;
 }
 
@@ -55,7 +57,7 @@ int main(int argc, char* argv[])
 			SignVerifyHelp();
 			return -1;
 		}
-		SignVerify(argv[cmdindex+1], argv[cmdindex+2],argv[cmdindex+3]);
+		SignVerify(argv[cmdindex+1], argv[cmdindex+2], argv[cmdindex+3]);
 	}
 	else if("compactsign" == strcmd)
 	{
@@ -73,7 +75,25 @@ int main(int argc, char* argv[])
 			CompactVerifyHelp();
 			return -1;
 		}
-		CompactVerify(argv[cmdindex+1], argv[cmdindex+2],argv[cmdindex+3]);
+		CompactVerify(argv[cmdindex+1], argv[cmdindex+2], argv[cmdindex+3]);
+	}
+	else if("newaddress" == strcmd)
+	{
+		if(argc < cmdindex+3)
+		{
+			NewAddressHelp();
+			return -1;
+		}
+		NewAddress(argv[cmdindex+1], atoi(argv[cmdindex+2]));
+	}
+	else if("sendalert" == strcmd)
+	{
+		if(argc < cmdindex+2)
+		{
+			SendAlertHelp();
+			return -1;
+		}
+		SendAlertHandle(argv[cmdindex+1]));
 	}
 	else
 		cout << "Error: unknown method " << strcmd << endl;

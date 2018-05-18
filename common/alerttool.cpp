@@ -171,3 +171,15 @@ bool SendAlert()
 	FreeNode();
     return true;
 }
+
+void SendAlertHelp()
+{
+	cout << "Command \"sendalert\" example :" << endl << endl
+        << "sendalert alertconfigurefile" << endl << endl;
+}
+
+void SendAlertHandle(std::string & filepath)
+{
+	if(ReadCurrentFile(mapArgs, mapMultiArgs, filepath))
+		SendAlert();
+}
