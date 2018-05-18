@@ -86,7 +86,7 @@ int main(int argc, char* argv[])
 			NewAddressHelp();
 			return -1;
 		}
-		NewAddress(argv[cmdindex+1], atoi(argv[cmdindex+2]));
+		NewAddress(atob(argv[cmdindex+1]), atoi(argv[cmdindex+2]));
 	}
 	else if("sendalert" == strcmd)
 	{

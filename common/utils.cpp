@@ -318,3 +318,10 @@ bool GetKeysFromSecret(std::string strSecret, CKey& keyRet, CPubKey& pubkeyRet)
 
     return true;
 }
+
+bool atob(const std::string & str)
+{
+    if("true" == str)
+        return true;
+    return false;
+}
