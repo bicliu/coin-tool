@@ -95,7 +95,7 @@ int main(int argc, char* argv[])
 			SendAlertHelp();
 			return -1;
 		}
-		SendAlertHandle(argv[cmdindex+1]));
+		SendAlertHandle(argv[cmdindex+1]);
 	}
 	else
 		cout << "Error: unknown method " << strcmd << endl;
