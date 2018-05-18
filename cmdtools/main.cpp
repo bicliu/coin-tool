@@ -19,6 +19,7 @@ void RegisterCmdForHelp()
 	cout << "compactverify" << endl;
 	cout << "newaddress" << endl;
 	cout << "sendalert" << endl;
+	cout << "timemicros" << endl;
 	cout << "********* commands *********" << endl;
 }
 
@@ -97,6 +98,8 @@ int main(int argc, char* argv[])
 		}
 		SendAlertHandle(argv[cmdindex+1]);
 	}
+	else if("timemicros" == strcmd)
+		cout << "micros times = " << GetTimeMicros() << endl;
 	else
 		cout << "Error: unknown method " << strcmd << endl;
 
