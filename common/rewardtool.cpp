@@ -39,7 +39,11 @@ void RewardStatistics(int iyears, int isum)
 		int iHh = i * 210240 * iyears;
 		for (int h = iHl; h < iHh; h ++)
 		{
-			AddReward(GetMinerSubsidy(h, Params().GetConsensus()), aMiner, aMinersmall);
+			if(1 == h)
+				AddReward(GetMinerSubsidy(h, Params().GetConsensus()), aFounders, aFoundersmall);
+			else
+				AddReward(GetMinerSubsidy(h, Params().GetConsensus()), aMiner, aMinersmall);
+				
 			AddReward(GetMasternodePayment(h), aMnode, aMnodesmall);
 			if(CSuperblockManager::IsSuperblockTriggered(h))
 			{
