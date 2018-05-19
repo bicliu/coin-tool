@@ -161,24 +161,14 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
  */
 static CBlock CreateGenesisBlock(uint32_t nTime, uint256 nNonce, uint32_t nBits, int32_t nVersion, const int64_t& genesisReward)
 {
-    const char* pszTimestamp;
-    if(mapArgs.count("-startwords"))
-        pszTimestamp = mapArgs["-startwords"].c_str();
-    else
-        pszTimestamp = "ulord hold value testnet.";
-
+    const char* pszTimestamp = "ulord hold value testnet.";
     const CScript genesisOutputScript = CScript() << ParseHex("034c73d75f59061a08032b68369e5034390abc5215b3df79be01fb4319173a88f8") << OP_CHECKSIG;
     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
 }
 
 static CBlock CreateGenesisBlock1(uint32_t nTime, uint256 nNonce, uint32_t nBits, int32_t nVersion, const int64_t& genesisReward)                                                                                                                
 {
-    //const char* pszTimestamp = "Good for U and me, change the world together. 19/May/2018, 12:00:00";
-    const char* pszTimestamp;
-    if(mapArgs.count("-startwords"))
-        pszTimestamp = mapArgs["-startwords"].c_str();
-    else
-        pszTimestamp = "Good for U and me, change the world together. 19/May/2018, 12:00:00";
+    const char* pszTimestamp = "Change the World with Us. 19/May/2018, 05:00:00, GMT";
     const CScript genesisOutputScript = CScript() << ParseHex("041c508f27e982c369486c0f1a42779208b3f5dc96c21a2af6004cb18d1529f42182425db1e1632dc6e73ff687592e148569022cee52b4b4eb10e8bb11bd927ec0") << OP_CHECKSIG;
     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
 }
@@ -191,12 +181,12 @@ void GenesisTest()
 
     if (Params().NetworkIDString() == CBaseChainParams::MAIN)
     {
-        genesis =CreateGenesisBlock1((uint32_t)GetTime(), uint256S("0x01"), nTempBit.GetCompact(), 1, Params().GetConsensus().genesisReward);
+        genesis =CreateGenesisBlock1(1526705798, uint256S("0x01"), nTempBit.GetCompact(), 1, Params().GetConsensus().genesisReward);
         a = arith_uint256("0x000009b173000000000000000000000000000000000000000000000000000000");
     }
     else if(Params().NetworkIDString() == CBaseChainParams::TESTNET)
     {
-        genesis = CreateGenesisBlock((uint32_t)GetTime(), uint256S("0x01"), nTempBit.GetCompact(), 1,  1 * COIN);
+        genesis = CreateGenesisBlock(1526705798, uint256S("0x01"), nTempBit.GetCompact(), 1,  1 * COIN);
         a = arith_uint256("0x000fffffff000000000000000000000000000000000000000000000000000000");
     }
     else
