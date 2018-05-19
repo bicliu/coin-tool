@@ -186,7 +186,7 @@ void GenesisTest()
     }
     else if(Params().NetworkIDString() == CBaseChainParams::TESTNET)
     {
-        genesis = CreateGenesisBlock(1526705798, uint256S("0x01"), nTempBit.GetCompact(), 1,  1 * COIN);
+        genesis = CreateGenesisBlock(1519895551, uint256S("0x01"), nTempBit.GetCompact(), 1,  1 * COIN);
         a = arith_uint256("0x000fffffff000000000000000000000000000000000000000000000000000000");
     }
     else
