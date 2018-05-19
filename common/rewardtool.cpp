@@ -26,7 +26,7 @@ void RewardStatistics(int iyears, int isum)
 	CAmount aSumFr = 0, asfrsmall = 0;
 	CAmount aSumbk = 0, asbksmall = 0;
 	int lasth = 0;
-	cout << endl << "The rewards in every "<< iyears << " from 1st to " << GetRankString(isum) << " :" <<endl
+	cout << endl << "The rewards in every "<< iyears << " years from 1st to " << GetRankString(isum) << " :" <<endl
 		<< "year         height range              MinerSubsidy           Budget        MasternodePayment      FoundersReward       BlockSubsidy" <<endl;
 	for(int i = 1; i < isum+1; i++)
 	{
@@ -59,7 +59,7 @@ void RewardStatistics(int iyears, int isum)
 		asmnsmall += aMnodesmall;
 		asfrsmall += aFoundersmall;
 		lasth = iHh - 1;
-		cout << i << " x" << iyears << "     " << setw(9) << iHl << "--" << setw(9)  << (iHh - 1)
+		cout<< setw(2) << i << " x" << iyears << "     " << setw(9) << iHl << "--" << setw(9)  << (iHh - 1)
 			<< setw(20) << aMiner << setw(20) << aBud
 			<< setw(20) << aMnode << setw(20) << aFounders
 			<< setw(20) << aBlocks << endl;
@@ -133,7 +133,7 @@ void RewardExampleHelp()
 
 void RewardExample(const std::string & filename)
 {
-	if(ReadCurrentFile(mapArgs, mapMultiArgs, filename))
+	if(!ReadCurrentFile(mapArgs, mapMultiArgs, filename))
 	{
 		cout << "read file " << filename << " failed" << endl;
 		return;
