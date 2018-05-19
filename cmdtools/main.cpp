@@ -8,21 +8,32 @@
 
 using namespace std;
 
-static boost::scoped_ptr<ECCVerifyHandle> globalVerifyHandle;
+typedef void (*FP_CMD)(int, char)
 
-void RegisterCmdForHelp()
+static boost::scoped_ptr<ECCVerifyHandle> globalVerifyHandle;
+map <string, FP_CMD> mapCommand;
+
+void RegisterCmd()
+{
+	mapCommand.insert(make_pair("help", &ShowCmds));
+	mapCommand.insert(make_pair("signmsg", &SignMsg));
+	mapCommand.insert(make_pair("verifymsg", &SignMsg));
+	mapCommand.insert(make_pair("compactsign", &SignMsg));
+	mapCommand.insert(make_pair("compactverify", &SignMsg));
+	mapCommand.insert(make_pair("newaddress", &SignMsg));
+	mapCommand.insert(make_pair("sendalert", &SignMsg));
+	mapCommand.insert(make_pair("gettime", &SignMsg));
+	mapCommand.insert(make_pair("blockreward", &SignMsg));
+	mapCommand.insert(make_pair("rewardstatistics", &SignMsg));
+	mapCommand.insert(make_pair("rewardexample", &SignMsg));
+	mapCommand.insert(make_pair("genesis", &SignMsg));
+}
+
+void ShowCmds(int argc, char* argv[])
 {
 	cout << "********* commands *********" << endl;
-	cout << "signmsg" << endl;
-	cout << "verifymsg" << endl;
-	cout << "compactsign" << endl;
-	cout << "compactverify" << endl;
-	cout << "newaddress" << endl;
-	cout << "sendalert" << endl;
-	cout << "gettime" << endl;
-	cout << "blockreward" << endl;
-	cout << "rewardstatistics" << endl;
-	cout << "rewardexample" << endl;
+	for(map<string, FP_CMD>::iterator iter = mapCommand.begin(); iter != mapCommand.end(); iter++)
+		cout << iter->first << endl;
 	cout << "********* commands *********" << endl;
 }
 
@@ -34,6 +45,8 @@ int main(int argc, char* argv[])
 	SetParams();
 	ECC_Start();
 	globalVerifyHandle.reset(new ECCVerifyHandle());
+
+	RegisterCmd();
 	
 	// Sanity check no need
     //if (!ECC_InitSanityCheck())
@@ -41,13 +54,19 @@ int main(int argc, char* argv[])
 
 	if(argc < 2)
 	{
-		RegisterCmdForHelp();
+		ShowCmds(argc, argv);
 		return -1;
 	}
 
 	string strcmd = string(argv[cmdindex]);
-	
-	if("signmsg" == strcmd)
+
+	map<string, FP_CMD>::iterator iterCMD = mapCommand.find(strcmd);
+
+	if(iter != mapCommand.end())
+		iterCMD->second(argc, argv);
+	else
+		cout << "Error: unknown method " << strcmd << endl;
+	/*if("signmsg" == strcmd)
 		SignMsg(argc, argv);
 	else if("verifymsg" == strcmd)
 		SignVerify(argc, argv);
@@ -60,12 +79,7 @@ int main(int argc, char* argv[])
 	else if("sendalert" == strcmd)
 		SendAlertHandle(argc, argv);
 	else if("gettime" == strcmd)
-	{
-		int64_t tnow = GetTime();
-		int64_t tmnow = GetTimeMicros();
-		cout << "Time is " << DateTimeStrFormat("%Y-%m-%d %H:%M:%S", tnow) << endl
-			<< "<" << tnow << ">,<" << tmnow << ">" << endl;;
-	}
+		GetTimeHandle(argc, argv);
 	else if("blockreward" == strcmd)
 		BlockReward(argc, argv);
 	else if("rewardstatistics" == strcmd)
@@ -75,7 +89,7 @@ int main(int argc, char* argv[])
 	else if("genesis" == strcmd)
 		GenesisLookFor(argc, argv);
 	else
-		cout << "Error: unknown method " << strcmd << endl;
+		cout << "Error: unknown method " << strcmd << endl;*/
 
     return 0;
 }
