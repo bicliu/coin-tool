@@ -80,7 +80,7 @@ void RewardHandle()
 {
 	if (mapArgs.count("-height"))
 	{
-		cout << "    height      MinerSubsidy           Budget        MasternodePayment     FoundersReward       BlockSubsidy" << endl;
+		cout << "    height        MinerSubsidy              Budget    MasternodePayment     FoundersReward        BlockSubsidy" << endl;
 		for(string str : mapMultiArgs["-height"])
 		{
 			int h = atoi(str);
@@ -107,6 +107,8 @@ void BlockReward(int argc, char* argv[])
 {
 	CAmount budget = 0;
 	CAmount founders = 0;
+	CAmount miner = 0;
+	CAmount mstnd = 0;
 
 	if(argc < cmdindex+2)
 	{
@@ -120,13 +122,15 @@ void BlockReward(int argc, char* argv[])
 		budget = GetBudget(h, Params().GetConsensus());
 		founders = GetFoundersReward(h, Params().GetConsensus());
 	}
-	cout << "    height      MinerSubsidy           Budget        MasternodePayment     FoundersReward       BlockSubsidy" << endl;
+	miner = GetMinerSubsidy(h, Params().GetConsensus());
+	mstnd = GetMasternodePayment(h);
+	cout << "    height        MinerSubsidy              Budget    MasternodePayment     FoundersReward        BlockSubsidy" << endl;
 	cout << setw(10) << h
-		<< setw(20) << (float)(GetMinerSubsidy(h, Params().GetConsensus()) / COIN)
-		<< setw(20) << (float)(budget / COIN)
-		<< setw(20) << (float)(GetMasternodePayment(h) / COIN)
-		<< setw(20) << (float)(founders / COIN)
-		<< setw(20) << (float)(GetBlockSubsidy(h, Params().GetConsensus()) / COIN) << endl;
+		<< setw(20) << miner / COIN
+		<< setw(20) << budget / COIN
+		<< setw(20) << mstnd / COIN
+		<< setw(20) << founders / COIN
+		<< setw(20) << (budget + founders + miner + mstnd) / COIN << endl;
 	
 	return;
 }
