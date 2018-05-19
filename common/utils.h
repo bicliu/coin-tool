@@ -34,5 +34,6 @@ void FreeNode();
 bool GetKeysFromSecret(std::string strSecret, CKey& keyRet, CPubKey& pubkeyRet);
 
 /*pub funcs*/
+extern const int cmdindex = 1;
 bool atob(const std::string & str);
 #endif

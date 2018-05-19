@@ -9,5 +9,5 @@ void RewardStatisticsHelp();
 void RewardStatistics(int iyears, int isum);
 
 void RewardExampleHelp();
-void RewardExample(const std::string & filename);
+void RewardExample(int argc, char* argv[]);
 #endif

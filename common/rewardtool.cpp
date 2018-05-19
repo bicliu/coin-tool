@@ -43,7 +43,7 @@ void RewardStatistics(int iyears, int isum)
 				AddReward(GetMinerSubsidy(h, Params().GetConsensus()), aFounders, aFoundersmall);
 			else
 				AddReward(GetMinerSubsidy(h, Params().GetConsensus()), aMiner, aMinersmall);
-				
+
 			AddReward(GetMasternodePayment(h), aMnode, aMnodesmall);
 			if(CSuperblockManager::IsSuperblockTriggered(h))
 			{
@@ -135,11 +135,17 @@ void RewardExampleHelp()
         << "rewardexample filename" << endl << endl;
 }
 
-void RewardExample(const std::string & filename)
+void RewardExample(int argc, char* argv[])
 {
-	if(!ReadCurrentFile(mapArgs, mapMultiArgs, filename))
+	if(argc < cmdindex+2)
 	{
-		cout << "read file " << filename << " failed" << endl;
+		RewardExampleHelp();
+		return;
+	}
+	
+	if(!ReadCurrentFile(mapArgs, mapMultiArgs, argv[cmdindex+1]))
+	{
+		cout << "read file " << argv[cmdindex+1] << " failed" << endl;
 		return;
 	}
 	RewardHandle();

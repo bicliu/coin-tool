@@ -9,7 +9,6 @@
 using namespace std;
 
 static boost::scoped_ptr<ECCVerifyHandle> globalVerifyHandle;
-const int cmdindex = 1;
 
 void RegisterCmdForHelp()
 {
