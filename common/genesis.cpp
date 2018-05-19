@@ -193,6 +193,8 @@ void GenesisTest()
         return;
 
     cout << "\tpow:\t" << a.GetCompact()  << " "<< nTempBit.GetCompact() << endl;
+    cout <<"hashMerkleRoot: " << genesis.hashMerkleRoot.ToString() << endl;
+    
     findGenesis(&genesis);
 
     cout << "create end." << endl;
