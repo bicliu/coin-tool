@@ -13,8 +13,6 @@
 
 using namespace std;
 
-const int cmdindex = 1;
-
 static std::string GetTimestampStr(const std::string &str, bool *fStartedNewLine)
 {
     string strStamped;

@@ -133,7 +133,7 @@ int main(int argc, char* argv[])
 			RewardExampleHelp();
 			return -1;
 		}
-		RewardExample(argv[cmdindex+1]);
+		RewardExample(argc, argv);
 	}
 	else if("genesis" == strcmd)
 	{

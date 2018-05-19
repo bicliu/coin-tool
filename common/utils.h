@@ -9,6 +9,7 @@
 //class CNode;
 //extern std::map<std::string, std::string> mapToolArgs;
 //extern std::map<std::string, std::vector<std::string> > mapMultiToolArgs;
+const int cmdindex = 1;
 
 /*ouput funcs*/
 int PrintStr(const std::string &str);
@@ -34,6 +35,5 @@ void FreeNode();
 bool GetKeysFromSecret(std::string strSecret, CKey& keyRet, CPubKey& pubkeyRet);
 
 /*pub funcs*/
-extern const int cmdindex = 1;
 bool atob(const std::string & str);
 #endif
