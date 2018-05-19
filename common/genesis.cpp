@@ -168,16 +168,21 @@ void GenesisTest()
 {
     arith_uint256 nTempBit =  UintToArith256( Params().GetConsensus().powLimit);
     CBlock genesis;
+    arith_uint256 a;
 
     if (Params().NetworkIDString() == CBaseChainParams::MAIN)
+    {
         genesis =CreateGenesisBlock1((uint32_t)GetTime(), uint256S("0x01"), nTempBit.GetCompact(), 1, Params().GetConsensus().genesisReward);
+        a = arith_uint256("0x000009b173000000000000000000000000000000000000000000000000000000");
+    }
     else if(Params().NetworkIDString() == CBaseChainParams::TESTNET)
+    {
         genesis = CreateGenesisBlock((uint32_t)GetTime(), uint256S("0x01"), nTempBit.GetCompact(), 1,  1 * COIN);
+        a = arith_uint256("0x000fffffff000000000000000000000000000000000000000000000000000000");
+    }
     else
         return;
 
-
-    arith_uint256 a("0x000009b173000000000000000000000000000000000000000000000000000000");
     cout << "\tpow:\t" << a.GetCompact()  << " "<< nTempBit.GetCompact() << endl;
     findGenesis(&genesis);
 
