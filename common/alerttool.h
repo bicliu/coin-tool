@@ -2,6 +2,5 @@
 #define ALERT_TOOL_H
 
 bool SendAlert();
-void SendAlertHelp();
-void SendAlertHandle(const std::string & filepath);
+void SendAlertHandle(int argc, char* argv[]);
 #endif

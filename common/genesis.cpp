@@ -173,7 +173,7 @@ static CBlock CreateGenesisBlock1(uint32_t nTime, uint256 nNonce, uint32_t nBits
     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
 }
 
-void GenesisTest()
+void GenesisLookFor(int argc, char* argv[])
 {
     arith_uint256 nTempBit =  UintToArith256( Params().GetConsensus().powLimit);
     CBlock genesis;

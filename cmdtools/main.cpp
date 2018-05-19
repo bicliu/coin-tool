@@ -48,59 +48,17 @@ int main(int argc, char* argv[])
 	string strcmd = string(argv[cmdindex]);
 	
 	if("signmsg" == strcmd)
-	{
-		if(argc < cmdindex+3)
-		{
-			SignMsgHelp();
-			return -1;
-		}
-		SignMsg(argv[cmdindex+1], argv[cmdindex+2]);
-	}
+		SignMsg(argc, argv);
 	else if("verifymsg" == strcmd)
-	{
-		if(argc < cmdindex+4)
-		{
-			SignVerifyHelp();
-			return -1;
-		}
-		SignVerify(argv[cmdindex+1], argv[cmdindex+2], argv[cmdindex+3]);
-	}
+		SignVerify(argc, argv);
 	else if("compactsign" == strcmd)
-	{
-		if(argc < cmdindex+3)
-		{
-			CompactSignHelp();
-			return -1;
-		}
-		CompactSign(argv[cmdindex+1], argv[cmdindex+2]);
-	}
+		CompactSignHandle(argc, argv);
 	else if("compactverify" == strcmd)
-	{
-		if(argc < cmdindex+4)
-		{
-			CompactVerifyHelp();
-			return -1;
-		}
-		CompactVerify(argv[cmdindex+1], argv[cmdindex+2], argv[cmdindex+3]);
-	}
+		CompactVerifyHandle(argc, argv);
 	else if("newaddress" == strcmd)
-	{
-		if(argc < cmdindex+3)
-		{
-			NewAddressHelp();
-			return -1;
-		}
-		NewAddress(atob(argv[cmdindex+1]), atoi(argv[cmdindex+2]));
-	}
+		NewAddress(argc, argv);
 	else if("sendalert" == strcmd)
-	{
-		if(argc < cmdindex+2)
-		{
-			SendAlertHelp();
-			return -1;
-		}
-		SendAlertHandle(argv[cmdindex+1]);
-	}
+		SendAlertHandle(argc, argv);
 	else if("gettime" == strcmd)
 	{
 		int64_t tnow = GetTime();
@@ -109,36 +67,13 @@ int main(int argc, char* argv[])
 			<< "<" << tnow << ">,<" << tmnow << ">" << endl;;
 	}
 	else if("blockreward" == strcmd)
-	{
-		if(argc < cmdindex+2)
-		{
-			BlockRewardHelp();
-			return -1;
-		}
-		BlockReward(atoi(argv[cmdindex+1]));
-	}
+		BlockReward(argc, argv);
 	else if("rewardstatistics" == strcmd)
-	{
-		if(argc < cmdindex+3)
-		{
-			RewardStatisticsHelp();
-			return -1;
-		}
-		RewardStatistics(atoi(argv[cmdindex+1]),atoi(argv[cmdindex+2]));
-	}
+		RewardStatisticsHandle(argc, argv);
 	else if("rewardexample" == strcmd)
-	{
-		if(argc < cmdindex+2)
-		{
-			RewardExampleHelp();
-			return -1;
-		}
 		RewardExample(argc, argv);
-	}
 	else if("genesis" == strcmd)
-	{
-		GenesisTest();
-	}
+		GenesisLookFor(argc, argv);
 	else
 		cout << "Error: unknown method " << strcmd << endl;
 

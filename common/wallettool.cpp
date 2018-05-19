@@ -193,8 +193,15 @@ void SignMsgHelp()
         << "signmsg privatekey \"message\"" << endl << endl;
 }
 
-void SignMsg(const std::string & strprivkey,const std::string strMessage)
+void SignMsg(int argc, char* argv[])
 {
+    if(argc < cmdindex+3)
+    {
+        SignMsgHelp();
+        return -1;
+    }
+    string strprivkey = argv[cmdindex+1]; 
+    string strMessage = argv[cmdindex+2];
     std::vector<unsigned char> vchSig;
 
     CKey privkey;
@@ -221,12 +228,18 @@ void SignVerifyHelp()
         << "verifymsg publickey \"message\" \"signature\"" << endl << endl;
 }
 
-void SignVerify(const std::string & strpubkey,const std::string & strMessage, const std::string & strSig)
+void SignVerify(int argc, char* argv[])
 {
-    std::vector<unsigned char> vchSig(DecodeBase64(strSig.c_str()));
-    CPubKey pubkey(ParseHex(strpubkey));
+    if(argc < cmdindex+4)
+    {
+        SignVerifyHelp();
+        return;
+    }
+    
+    std::vector<unsigned char> vchSig(DecodeBase64(argv[cmdindex+3].c_str()));
+    CPubKey pubkey(ParseHex(argv[cmdindex+1]));
 
-    if (!MsgVerify(pubkey, strMessage, vchSig))
+    if (!MsgVerify(pubkey, argv[cmdindex+2], vchSig))
     {
         cout << "Error: Verify failed! pubkey = " << HexStr(pubkey).c_str() << endl;
         return;
@@ -242,8 +255,15 @@ void CompactSignHelp()
         << "compactsign privatekey \"message\"" << endl << endl;
 }
 
-void CompactSign(const std::string & strprivkey, std::string strMessage)
+void CompactSignHandle(int argc, char* argv[])
 {
+    if(argc < cmdindex+3)
+    {
+        CompactSignHelp();
+        return;
+    }
+	string strprivkey = argv[cmdindex+1];
+    string strMessage = argv[cmdindex+2];
     std::vector<unsigned char> vchSig;
 
     CKey privkey;
@@ -270,12 +290,18 @@ void CompactVerifyHelp()
         << "compactverify publickey \"message\" \"signature\"" << endl << endl;
 }
 
-void CompactVerify(const std::string & strpubkey,const std::string & strMessage, const std::string & strSig)
+void CompactVerifyHandle(int argc, char* argv[])
 {
-    std::vector<unsigned char> vchSig(DecodeBase64(strSig.c_str()));
-    CPubKey pubkey(ParseHex(strpubkey));
+    if(argc < cmdindex+4)
+    {
+        CompactVerifyHelp();
+        return;
+    }
 
-    if(!CompactVerify(pubkey, strMessage, vchSig, true)) return;
+    std::vector<unsigned char> vchSig(DecodeBase64(argv[cmdindex+3].c_str()));
+    CPubKey pubkey(ParseHex(argv[cmdindex+1]));
+
+    if(!CompactVerify(pubkey, argv[cmdindex+2], vchSig, true)) return;
 
     cout << "Verify Success !" << endl;
     return;
@@ -287,8 +313,16 @@ void NewAddressHelp()
         << "newaddress Ifcompressed number" << endl << endl;
 }
 
-void NewAddress(bool bCompressed, int num)
+void NewAddress(int argc, char* argv[])
 {
+    if(argc < cmdindex+3)
+    {
+        NewAddressHelp();
+        return;
+    }
+
+    int num = atoi(argv[cmdindex+2]);
+
     for (int i = 0; i < num; i++)
-        MakeNewKey(bCompressed);
+        MakeNewKey(atob(argv[cmdindex+1]));
 }

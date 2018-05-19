@@ -103,10 +103,18 @@ void BlockRewardHelp()
         << "blockreward blockheight" << endl << endl;
 }
 
-void BlockReward(int h)
+void BlockReward(int argc, char* argv[])
 {
 	CAmount budget = 0;
 	CAmount founders = 0;
+
+	if(argc < cmdindex+2)
+	{
+		BlockRewardHelp();
+		return -1;
+	}
+	int h = atoi(argv[cmdindex+1]);
+
 	if(CSuperblockManager::IsSuperblockTriggered(h))
 	{
 		budget = GetBudget(h, Params().GetConsensus());
@@ -127,6 +135,16 @@ void RewardStatisticsHelp()
 {
 	cout << "Command \"rewardstatistics\" example :" << endl << endl
         << "rewardstatistics years count" << endl << endl;
+}
+
+void RewardStatisticsHandle(int argc, char* argv[])
+{
+	if(argc < cmdindex+3)
+		{
+			RewardStatisticsHelp();
+			return -1;
+		}
+	RewardStatistics(atoi(argv[cmdindex+1]),atoi(argv[cmdindex+2]));
 }
 
 void RewardExampleHelp()

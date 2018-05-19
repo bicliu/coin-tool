@@ -178,8 +178,14 @@ void SendAlertHelp()
         << "sendalert alertconfigurefile" << endl << endl;
 }
 
-void SendAlertHandle(const std::string & filepath)
+void SendAlertHandle(int argc, char* argv[])
 {
-	if(ReadCurrentFile(mapArgs, mapMultiArgs, filepath))
+	if(argc < cmdindex+2)
+	{
+		SendAlertHelp();
+		return;
+	}
+
+	if(ReadCurrentFile(mapArgs, mapMultiArgs, argv[cmdindex+1]))
 		SendAlert();
 }
