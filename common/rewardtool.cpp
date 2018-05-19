@@ -18,7 +18,7 @@ void AddReward(const CAmount value, CAmount & coin, CAmount & small)
 	}
 }
 
-void YearsReward(int iyears, int isum)
+void RewardStatistics(int iyears, int isum)
 {
 	CAmount aSumMr = 0, asmrsmall = 0;
 	CAmount aSumBd = 0, asbdsmall = 0;
@@ -89,6 +89,55 @@ void RewardHandle()
 		}
 	}
 	
-	YearsReward(1, 4);
-	YearsReward(4, 5);
+	RewardStatistics(1, 4);
+	RewardStatistics(4, 5);
+}
+
+void BlockRewardHelp()
+{
+	cout << "Command \"blockreward\" example :" << endl << endl
+        << "blockreward blockheight" << endl << endl;
+}
+
+void BlockReward(int h)
+{
+	CAmount budget = 0;
+	CAmount founders = 0;
+	if(CSuperblockManager::IsSuperblockTriggered(h))
+	{
+		budget = GetBudget(h, Params().GetConsensus());
+		founders = GetFoundersReward(h, Params().GetConsensus());
+	}
+	cout << "    height      MinerSubsidy           Budget        MasternodePayment     FoundersReward       BlockSubsidy" << endl;
+	cout << setw(10) << h
+		<< setw(20) << (float)(GetMinerSubsidy(h, Params().GetConsensus()) / COIN)
+		<< setw(20) << (float)(budget / COIN)
+		<< setw(20) << (float)(GetMasternodePayment(h) / COIN)
+		<< setw(20) << (float)(founders / COIN)
+		<< setw(20) << (float)(GetBlockSubsidy(h, Params().GetConsensus()) / COIN) << endl;
+	
+	return;
+}
+
+void RewardStatisticsHelp()
+{
+	cout << "Command \"rewardstatistics\" example :" << endl << endl
+        << "rewardstatistics years count" << endl << endl;
+}
+
+void RewardExampleHelp()
+{
+	cout << "Command \"rewardexample\" example :" << endl << endl
+        << "rewardexample filename" << endl << endl;
+}
+
+void RewardExample(const std::string & filename)
+{
+	if(ReadCurrentFile(mapArgs, mapMultiArgs, filename))
+	{
+		cout << "read file " << filename << " failed" << endl;
+		return;
+	}
+	RewardHandle();
+	return;
 }

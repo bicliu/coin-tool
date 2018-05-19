@@ -21,6 +21,9 @@ void RegisterCmdForHelp()
 	cout << "newaddress" << endl;
 	cout << "sendalert" << endl;
 	cout << "gettime" << endl;
+	cout << "blockreward" << endl;
+	cout << "rewardstatistics" << endl;
+	cout << "rewardexample" << endl;
 	cout << "********* commands *********" << endl;
 }
 
@@ -105,6 +108,33 @@ int main(int argc, char* argv[])
 		int64_t tmnow = GetTimeMicros();
 		cout << "Time is " << DateTimeStrFormat("%Y-%m-%d %H:%M:%S", tnow) << endl
 			<< "<" << tnow << ">,<" << tmnow << ">" << endl;;
+	}
+	else if("blockreward" == strcmd)
+	{
+		if(argc < cmdindex+2)
+		{
+			BlockRewardHelp();
+			return -1;
+		}
+		BlockReward(atoi(argv[cmdindex+1]));
+	}
+	else if("rewardstatistics" == strcmd)
+	{
+		if(argc < cmdindex+3)
+		{
+			RewardStatisticsHelp();
+			return -1;
+		}
+		RewardStatistics(atoi(argv[cmdindex+1]),atoi(argv[cmdindex+2]));
+	}
+	else if("rewardexample" == strcmd)
+	{
+		if(argc < cmdindex+2)
+		{
+			RewardExampleHelp();
+			return -1;
+		}
+		RewardExample(argv[cmdindex+1]);
 	}
 	else if("genesis" == strcmd)
 	{
