@@ -111,7 +111,7 @@ void BlockReward(int argc, char* argv[])
 	if(argc < cmdindex+2)
 	{
 		BlockRewardHelp();
-		return -1;
+		return;
 	}
 	int h = atoi(argv[cmdindex+1]);
 
@@ -142,7 +142,7 @@ void RewardStatisticsHandle(int argc, char* argv[])
 	if(argc < cmdindex+3)
 		{
 			RewardStatisticsHelp();
-			return -1;
+			return;
 		}
 	RewardStatistics(atoi(argv[cmdindex+1]),atoi(argv[cmdindex+2]));
 }
