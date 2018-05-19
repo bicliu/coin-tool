@@ -66,7 +66,7 @@ void RewardStatistics(int iyears, int isum)
 	}
 	aSumbk = (aSumMr + aSumBd + aSumMn + aSumFr);
     AddReward((asmrsmall + asbdsmall + asmnsmall + asfrsmall), aSumbk, asbksmall);
-	cout << "total    " << setw(9) << 0 << "--" << setw(9)  << lasth                                                                                                                                                                             
+	cout << "total     " << setw(9) << 0 << "--" << setw(9)  << lasth                                                                                                                                                                             
         << setw(20) << aSumMr << setw(20) << aSumBd
         << setw(20) << aSumMn << setw(20) << aSumFr
         << setw(20) << aSumbk << endl;
