@@ -51,13 +51,16 @@ void _get(const ch * const pblock, const arith_uint256 hashTarget, const int ind
 {
     uint256 hash;
     ch *pb = new ch(*pblock);
+
+	std::cout<< "_get " << index <<" start nonce = "<<pb->nNonce.ToString()<<std::endl;
 	
-    for (int cnt = 0, tcnt=0; true; ++cnt,++tcnt)
+    for (int cnt = 0; true; ++cnt)
     {
         uint256 hash = pb->GetHash();
 
-		//std::cout<<"hex hash = "<<hash.GetHex()<<std::endl;
-				
+		std::cout<< "_get " << index <<" hex hash = "<<hash.GetHex()<<std::endl;
+		//std::cout<< "_get " << index <<" pb nonce = "<<pb->nNonce.ToString()<<std::endl;
+		
         if (UintToArith256(hash) <= hashTarget) break;
         pb->nNonce = ArithToUint256(UintToArith256(pb->nNonce) + 1);
         if (cnt > 1e3)
@@ -65,10 +68,10 @@ void _get(const ch * const pblock, const arith_uint256 hashTarget, const int ind
             pb->nTime = GetTime();
             cnt = 0;
         }
-		if (tcnt !=0 and tcnt % 1000 == 0)
+		/*if (tcnt !=0 and tcnt % 1000 == 0)
         {
             std::cout<<"_get "<<index<<" cryptohello tcnt = "<<tcnt<<" time = "<<getCurrentTime()<<" ms"<<std::endl;       
-        }
+        }*/
 
     }
     
@@ -102,9 +105,10 @@ static void findGenesis(CBlockHeader *pb, const std::string &net)
         	nonce <<= 32;
         	nonce >>= 16;
         	pb->nNonce = ArithToUint256(nonce);
-			std::cout<<"i = "<<i<<"    nNonce = "<<pb->nNonce.ToString()<<std::endl;	
+			//std::cout<<"i = "<<i<<"    nNonce = "<<pb->nNonce.ToString()<<std::endl;	
         }
         threads.push_back(std::thread(_get, pb, hashTarget, i));
+		MilliSleep(100);
     }
 
     for (auto &t : threads)
