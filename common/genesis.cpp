@@ -39,12 +39,12 @@ typedef long long ll;
 static std::mutex mtx;
 
 //test cnt 1000 times time
-int64_t getCurrentTime()  
+/*int64_t getCurrentTime()  
 {      
    struct timeval tv;      
    gettimeofday(&tv,NULL);   
    return tv.tv_sec * 1000 + tv.tv_usec / 1000;      
-}  
+}*/
 
 // find a genesis in about 10-20 mins
 void _get(const ch * const pblock, const arith_uint256 hashTarget, const int index)
@@ -52,13 +52,13 @@ void _get(const ch * const pblock, const arith_uint256 hashTarget, const int ind
     uint256 hash;
     ch *pb = new ch(*pblock);
 
-	std::cout<< "_get " << index <<" start nonce = "<<pb->nNonce.ToString()<<std::endl;
+	//std::cout<< "_get " << index <<" start nonce = "<<pb->nNonce.ToString()<<std::endl;
 	
     for (int cnt = 0; true; ++cnt)
     {
         uint256 hash = pb->GetHash();
 
-		std::cout<< "_get " << index <<" hex hash = "<<hash.GetHex()<<std::endl;
+		//std::cout<< "_get " << index <<" hex hash = "<<hash.GetHex()<<std::endl;
 		//std::cout<< "_get " << index <<" pb nonce = "<<pb->nNonce.ToString()<<std::endl;
 		
         if (UintToArith256(hash) <= hashTarget) break;
@@ -67,6 +67,7 @@ void _get(const ch * const pblock, const arith_uint256 hashTarget, const int ind
         {
             pb->nTime = GetTime();
             cnt = 0;
+            std::cout<< "_get " << index << " time " << pb->nTime << endl;
         }
 		/*if (tcnt !=0 and tcnt % 1000 == 0)
         {
@@ -77,7 +78,7 @@ void _get(const ch * const pblock, const arith_uint256 hashTarget, const int ind
     
     std::lock_guard<std::mutex> guard(mtx);
     std::cout << "\n\t\t----------------------------------------\t" << std::endl;
-    std::cout << "\t" << pb->ToString() << std::endl;
+    std::cout << "\t" << pb->ToString();
     std::cout << "\n\t\t----------------------------------------\t" << std::endl;
     delete pb;
 
@@ -85,11 +86,10 @@ void _get(const ch * const pblock, const arith_uint256 hashTarget, const int ind
     assert(0);
 }
 
-static void findGenesis(CBlockHeader *pb, const std::string &net)
+static void findGenesis(CBlockHeader *pb)
 {
     arith_uint256 hashTarget = arith_uint256().SetCompact(pb->nBits);
-    std::cout << " finding genesis using target " << hashTarget.ToString()
-        << ", " << net << std::endl;
+    std::cout << " finding genesis using target " << hashTarget.ToString() << std::endl;
 
     std::vector<std::thread> threads;
 	int icpu = std::min(GetNumCores(), 100);
@@ -150,6 +150,12 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
  *     CTxOut(nValue=50.00000000, scriptPubKey=0xA9037BAC7050C479B121CF)
  *   vMerkleTree: e0028e
  */
+static CBlock CreateGenesisBlock(uint32_t nTime, uint256 nNonce, uint32_t nBits, int32_t nVersion, const int64_t& genesisReward)
+{
+    const char* pszTimestamp = "ulord hold value testnet.";
+    const CScript genesisOutputScript = CScript() << ParseHex("034c73d75f59061a08032b68369e5034390abc5215b3df79be01fb4319173a88f8") << OP_CHECKSIG;
+    return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
+}
 
 static CBlock CreateGenesisBlock1(uint32_t nTime, uint256 nNonce, uint32_t nBits, int32_t nVersion, const int64_t& genesisReward)                                                                                                                
 {
@@ -161,11 +167,21 @@ static CBlock CreateGenesisBlock1(uint32_t nTime, uint256 nNonce, uint32_t nBits
 void GenesisTest()
 {
     arith_uint256 nTempBit =  UintToArith256( Params().GetConsensus().powLimit);
-    CBlock genesis =CreateGenesisBlock1(1524045652, uint256S("0x01"), nTempBit.GetCompact(), 1, Params().GetConsensus().genesisReward);
+    CBlock genesis;
+
+    if (Params().NetworkIDString() == CBaseChainParams::MAIN)
+        genesis =CreateGenesisBlock1((uint32_t)GetTime(), uint256S("0x01"), nTempBit.GetCompact(), 1, Params().GetConsensus().genesisReward);
+    else if(Params().NetworkIDString() == CBaseChainParams::TESTNET)
+        genesis = CreateGenesisBlock((uint32_t)GetTime(), uint256S("0x01"), nTempBit.GetCompact(), 1,  1 * COIN);
+    else
+        return;
+
 
     arith_uint256 a("0x000009b173000000000000000000000000000000000000000000000000000000");
     cout << "\tpow:\t" << a.GetCompact()  << " "<< nTempBit.GetCompact() << endl;
-    findGenesis(&genesis, "main");
-    cout <<"hashMerkleRoot: " << genesis.hashMerkleRoot.ToString() << endl
-        << "hashGenesisBlock: " << genesis.GetHash().ToString() << endl;
+    findGenesis(&genesis);
+
+    cout << "create end." << endl;
+
+    return;
 }
