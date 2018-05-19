@@ -106,7 +106,7 @@ int main(int argc, char* argv[])
 		cout << "Time is " << DateTimeStrFormat("%Y-%m-%d %H:%M:%S", tnow) << endl
 			<< "<" << tnow << ">,<" << tmnow << ">" << endl;;
 	}
-	else if("creategenesis" == strcmd)
+	else if("genesis" == strcmd)
 	{
 		GenesisTest();
 	}
