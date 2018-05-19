@@ -237,7 +237,7 @@ void SignVerify(int argc, char* argv[])
     }
     string strSig = argv[cmdindex+3];
     
-    std::vector<unsigned char> vchSig(DecodeBase64(strSig.c_str());
+    std::vector<unsigned char> vchSig(DecodeBase64(strSig.c_str()));
     CPubKey pubkey(ParseHex(argv[cmdindex+1]));
 
     if (!MsgVerify(pubkey, argv[cmdindex+2], vchSig))
@@ -300,7 +300,7 @@ void CompactVerifyHandle(int argc, char* argv[])
     }
     string strSig = argv[cmdindex+3];
 
-    std::vector<unsigned char> vchSig(DecodeBase64(strSig.c_str());
+    std::vector<unsigned char> vchSig(DecodeBase64(strSig.c_str()));
     CPubKey pubkey(ParseHex(argv[cmdindex+1]));
 
     if(!CompactVerify(pubkey, argv[cmdindex+2], vchSig, true)) return;
