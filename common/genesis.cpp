@@ -47,7 +47,7 @@ static std::mutex mtx;
 }*/
 
 // find a genesis in about 10-20 mins
-void _get(const ch * const pblock, const arith_uint256 hashTarget, const int index)
+void _get(const ch * const pblock, const arith_uint256 hashTarget, const int index, int & result)
 {
     uint256 hash;
     ch *pb = new ch(*pblock);
@@ -61,7 +61,16 @@ void _get(const ch * const pblock, const arith_uint256 hashTarget, const int ind
 		//std::cout<< "_get " << index <<" hex hash = "<<hash.GetHex()<<std::endl;
 		//std::cout<< "_get " << index <<" pb nonce = "<<pb->nNonce.ToString()<<std::endl;
 		
-        if (UintToArith256(hash) <= hashTarget) break;
+        if (UintToArith256(hash) <= hashTarget)
+        {
+            result++;
+            std::lock_guard<std::mutex> guard(mtx);
+            std::cout << "\n\t\t----------------------------------------\t" << std::endl;
+            std::cout << "\t" << pb->ToString();
+            std::cout << "\n\t\t----------------------------------------\t" << std::endl;
+        }
+        if(result > 0)
+            break;
         pb->nNonce = ArithToUint256(UintToArith256(pb->nNonce) + 1);
         if (cnt > 1e3)
         {
@@ -76,14 +85,11 @@ void _get(const ch * const pblock, const arith_uint256 hashTarget, const int ind
 
     }
     
-    std::lock_guard<std::mutex> guard(mtx);
-    std::cout << "\n\t\t----------------------------------------\t" << std::endl;
-    std::cout << "\t" << pb->ToString();
-    std::cout << "\n\t\t----------------------------------------\t" << std::endl;
     delete pb;
 
     // stop while found one
-    assert(0);
+    //assert(0);
+    return;
 }
 
 static void findGenesis(CBlockHeader *pb)
@@ -93,6 +99,7 @@ static void findGenesis(CBlockHeader *pb)
 
     std::vector<std::thread> threads;
 	int icpu = std::min(GetNumCores(), 100);
+    int iresult = 0;
 	cout << "Get " << icpu << " cpus to use" << endl;
     //for (int i = 0; i < std::min(GetNumCores(), 100); ++i)
     for (int i = 0; i < icpu; ++i)
@@ -107,8 +114,8 @@ static void findGenesis(CBlockHeader *pb)
         	pb->nNonce = ArithToUint256(nonce);
 			//std::cout<<"i = "<<i<<"    nNonce = "<<pb->nNonce.ToString()<<std::endl;	
         }
-        threads.push_back(std::thread(_get, pb, hashTarget, i));
-		MilliSleep(100);
+        threads.push_back(std::thread(_get, pb, hashTarget, i, iresult));
+		//MilliSleep(100);
     }
 
     for (auto &t : threads)
