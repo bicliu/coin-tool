@@ -332,7 +332,7 @@ void NewAddress(int argc, char* argv[])
 void FindAddressHelp()
 {
     cout << "Command \"findaddress\" example :" << endl << endl
-        << "newaddress Ifcompressed \"target\" ..." << endl << endl;
+        << "newaddress IfignoreCase \"target\" ..." << endl << endl;
 }
 
 void FindAddress(int argc, char* argv[])
@@ -345,7 +345,8 @@ void FindAddress(int argc, char* argv[])
 
     pwalletMain = new CWallet();
 	AssertLockHeld(pwalletMain->cs_wallet); // mapKeyMetadata
-    bool fCompressed = atob(argv[cmdindex+1]);
+    bool fCompressed = true;
+    bool figCase = atob(argv[cmdindex+1]);
 
     vector <string> vTarget;
     for(int i = cmdindex+2; i < argc; i++)
@@ -374,8 +375,8 @@ void FindAddress(int argc, char* argv[])
         
         for(auto var : vTarget)
         {
-            //if(addrPro.find(var) != string::npos)
-			if(-1 != ci_find_substr(addrPro, var))
+            bool bfind = figCase ? (-1 != ci_find_substr(addrPro, var)) : (addrPro.find(var) != string::npos);
+			if(bfind)
             {
                 cout << endl << "privkey : " << CBitcoinSecret(secret).ToString() << endl;
                 if(fCompressed)
