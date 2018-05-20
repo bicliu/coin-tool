@@ -28,4 +28,7 @@ mkdir .cointools
 ```
 
 Add a configure file "tool.conf", and add "testnet=0" for main net or "testnet=1" for test net
+
+```bash
 sudo apt-get install libboost-all-dev
+```
