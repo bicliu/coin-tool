@@ -35,6 +35,7 @@ void RegisterCmd()
 	mapCommand.insert(make_pair("rewardstatistics", &RewardStatisticsHandle));
 	mapCommand.insert(make_pair("rewardexample", &RewardExample));
 	mapCommand.insert(make_pair("genesis", &GenesisLookFor));
+	mapCommand.insert(make_pair("findaddress", &FindAddress));
 }
 
 int main(int argc, char* argv[])

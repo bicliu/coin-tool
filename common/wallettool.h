@@ -18,4 +18,5 @@ void SignVerify(int argc, char* argv[]);
 void CompactSignHandle(int argc, char* argv[]);
 void CompactVerifyHandle(int argc, char* argv[]);
 void NewAddress(int argc, char* argv[]);
+void FindAddress(int argc, char* argv[]);
 #endif

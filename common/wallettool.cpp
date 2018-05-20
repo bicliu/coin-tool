@@ -328,3 +328,65 @@ void NewAddress(int argc, char* argv[])
     for (int i = 0; i < num; i++)
         MakeNewKey(atob(argv[cmdindex+1]));
 }
+
+void FindAddressHelp()
+{
+    cout << "Command \"findaddress\" example :" << endl << endl
+        << "newaddress Ifcompressed \"target\" ..." << endl << endl;
+}
+
+void FindAddress(int argc, char* argv[])
+{
+    if(argc < cmdindex+3)
+    {
+        FindAddressHelp();
+        return;
+    }
+
+    pwalletMain = new CWallet();
+	AssertLockHeld(pwalletMain->cs_wallet); // mapKeyMetadata
+    bool fCompressed = atob(argv[cmdindex+1]);
+
+    vector <string> vTarget;
+    for(int i = cmdindex+2, i < argc, i++)
+        vTarget.push_back(argv[i]);
+
+    // Compressed public keys were introduced in version 0.6.0
+    if (fCompressed)
+        pwalletMain->SetMinVersion(FEATURE_COMPRPUBKEY);
+
+    cout << "Looking for :" << endl;
+    uint64_t lookcount = 0;
+
+    while(true)
+    {
+        CKey secret;
+        secret.MakeNewKey(fCompressed);
+        CPubKey pubkey = secret.GetPubKey();
+        
+        if(!secret.VerifyPubKey(pubkey))
+        {
+            cout << "VerifyPubKey failed " << HexStr(pubkey).c_str();
+            return;
+        }
+
+        string addrPro = CBitcoinAddress(pubkey.GetID()).ToString();
+        
+        for(auto var : vTarget)
+        {
+            if(addrPro.find(var) != npos)
+            {
+                cout << endl << "privkey : " << CBitcoinSecret(secret).ToString() << endl;
+                if(fCompressed)
+                    cout << "compressed pubkey : " << HexStr(pubkey).c_str() << endl;
+                else
+                    cout << "uncompressed pubkey : " << HexStr(pubkey).c_str() << endl;
+                cout << "address : " << addrPro << endl << endl;
+                return;
+            }
+        }
+        lookcount++;
+        cout << lookcount << "\r";
+    }
+    return;
+}
