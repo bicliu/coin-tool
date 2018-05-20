@@ -348,7 +348,7 @@ void FindAddress(int argc, char* argv[])
     bool fCompressed = atob(argv[cmdindex+1]);
 
     vector <string> vTarget;
-    for(int i = cmdindex+2, i < argc, i++)
+    for(int i = cmdindex+2; i < argc; i++)
         vTarget.push_back(argv[i]);
 
     // Compressed public keys were introduced in version 0.6.0
@@ -374,7 +374,7 @@ void FindAddress(int argc, char* argv[])
         
         for(auto var : vTarget)
         {
-            if(addrPro.find(var) != npos)
+            if(addrPro.find(var) != string::npos)
             {
                 cout << endl << "privkey : " << CBitcoinSecret(secret).ToString() << endl;
                 if(fCompressed)
