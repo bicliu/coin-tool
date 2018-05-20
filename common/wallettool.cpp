@@ -374,7 +374,8 @@ void FindAddress(int argc, char* argv[])
         
         for(auto var : vTarget)
         {
-            if(addrPro.find(var) != string::npos)
+            //if(addrPro.find(var) != string::npos)
+			if(-1 != ci_find_substr(addrPro, var))
             {
                 cout << endl << "privkey : " << CBitcoinSecret(secret).ToString() << endl;
                 if(fCompressed)

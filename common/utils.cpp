@@ -325,3 +325,4 @@ bool atob(const std::string & str)
         return true;
     return false;
 }
+
