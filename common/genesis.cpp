@@ -174,8 +174,20 @@ static CBlock CreateGenesisBlock1(uint32_t nTime, uint256 nNonce, uint32_t nBits
     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
 }*/
 
+void GenesisLookForHelp()
+{
+    cout << "Command \"genesis\" example :" << endl << endl
+        << "genesis unixTime \"stamp\" ..." << endl << endl;
+}
+
 void GenesisLookFor(int argc, char* argv[])
 {
+    if(argc < cmdindex+3)
+    {
+        GenesisLookForHelp();
+        return;
+    }
+
     arith_uint256 nTempBit =  UintToArith256( Params().GetConsensus().powLimit);
     CBlock genesis;
     arith_uint256 a;
