@@ -193,7 +193,7 @@ bool ReadFile(std::map<std::string, std::string>& mapSettingsRet,
 {
     boost::filesystem::ifstream streamFile(GetFile(strfile));
     if (!streamFile.good())
-		return showerror("Open file <%s> failed!", GetFile(strfile).string());
+		return showerror("Open file <%s> failed!", GetFile(strfile).string().c_str());
 
     set<string> setOptions;
     setOptions.insert("*");
@@ -218,7 +218,7 @@ bool ReadCurrentFile(std::map<std::string, std::string>& mapSettingsRet,
     boost::filesystem::path pathFile(strfile);
     boost::filesystem::ifstream streamFile(pathFile);
     if (!streamFile.good())
-		return showerror("Open file <%s> failed!", strfile);
+		return showerror("Open file <%s> failed!", strfile.c_str());
 
     set<string> setOptions;
     setOptions.insert("*");
