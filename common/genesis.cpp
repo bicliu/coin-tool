@@ -51,6 +51,7 @@ void _get(const ch * const pblock, const arith_uint256 hashTarget, const int ind
 {
     uint256 hash;
     ch *pb = new ch(*pblock);
+    int64_t timeoffset = pblock->nTime - GetTime();
 
 	//std::cout<< "_get " << index <<" start nonce = "<<pb->nNonce.ToString()<<std::endl;
 	
@@ -76,7 +77,7 @@ void _get(const ch * const pblock, const arith_uint256 hashTarget, const int ind
 
         if (cnt > 1e3)
         {
-            pb->nTime = GetTime();
+            pb->nTime = GetTime() + timeoffset;
             cnt = 0;
             std::cout<< "_get " << index << " time " << pb->nTime << endl;
         }
@@ -159,7 +160,7 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
  *     CTxOut(nValue=50.00000000, scriptPubKey=0xA9037BAC7050C479B121CF)
  *   vMerkleTree: e0028e
  */
-static CBlock CreateGenesisBlock(uint32_t nTime, uint256 nNonce, uint32_t nBits, int32_t nVersion, const int64_t& genesisReward)
+/*static CBlock CreateGenesisBlock(uint32_t nTime, uint256 nNonce, uint32_t nBits, int32_t nVersion, const int64_t& genesisReward)
 {
     const char* pszTimestamp = "ulord hold value testnet.";
     const CScript genesisOutputScript = CScript() << ParseHex("034c73d75f59061a08032b68369e5034390abc5215b3df79be01fb4319173a88f8") << OP_CHECKSIG;
@@ -168,10 +169,10 @@ static CBlock CreateGenesisBlock(uint32_t nTime, uint256 nNonce, uint32_t nBits,
 
 static CBlock CreateGenesisBlock1(uint32_t nTime, uint256 nNonce, uint32_t nBits, int32_t nVersion, const int64_t& genesisReward)                                                                                                                
 {
-    const char* pszTimestamp = "Change the World with Us. 19/May/2018, 05:00:00, GMT";
+    const char* pszTimestamp = "Change the World with Us. 22/May/2018, 00:00:00, GMT";
     const CScript genesisOutputScript = CScript() << ParseHex("041c508f27e982c369486c0f1a42779208b3f5dc96c21a2af6004cb18d1529f42182425db1e1632dc6e73ff687592e148569022cee52b4b4eb10e8bb11bd927ec0") << OP_CHECKSIG;
     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
-}
+}*/
 
 void GenesisLookFor(int argc, char* argv[])
 {
@@ -181,12 +182,16 @@ void GenesisLookFor(int argc, char* argv[])
 
     if (Params().NetworkIDString() == CBaseChainParams::MAIN)
     {
-        genesis =CreateGenesisBlock1(1526705798, uint256S("0x01"), nTempBit.GetCompact(), 1, Params().GetConsensus().genesisReward);
+        //genesis =CreateGenesisBlock1(1526947200, uint256S("0x01"), nTempBit.GetCompact(), 1, Params().GetConsensus().genesisReward);
+        const CScript genesisOutputScript = CScript() << ParseHex("041c508f27e982c369486c0f1a42779208b3f5dc96c21a2af6004cb18d1529f42182425db1e1632dc6e73ff687592e148569022cee52b4b4eb10e8bb11bd927ec0") << OP_CHECKSIG;
+        genesis = CreateGenesisBlock(argv[cmdindex+2].c_str(), genesisOutputScript, atoi(argv[cmdindex+1]), uint256S("0x01"), nTempBit.GetCompact(), 1, Params().GetConsensus().genesisReward);
         a = arith_uint256("0x000009b173000000000000000000000000000000000000000000000000000000");
     }
     else if(Params().NetworkIDString() == CBaseChainParams::TESTNET)
     {
-        genesis = CreateGenesisBlock(1519895551, uint256S("0x01"), nTempBit.GetCompact(), 1,  1 * COIN);
+        //genesis = CreateGenesisBlock(1526947200, uint256S("0x01"), nTempBit.GetCompact(), 1,  1 * COIN);
+        const CScript genesisOutputScript = CScript() << ParseHex("034c73d75f59061a08032b68369e5034390abc5215b3df79be01fb4319173a88f8") << OP_CHECKSIG;
+        genesis = CreateGenesisBlock(argv[cmdindex+2].c_str(), genesisOutputScript, atoi(argv[cmdindex+1]), uint256S("0x01"), nTempBit.GetCompact(), 1, 1 * COIN);
         a = arith_uint256("0x000fffffff000000000000000000000000000000000000000000000000000000");
     }
     else
@@ -194,6 +199,7 @@ void GenesisLookFor(int argc, char* argv[])
 
     cout << "\tpow:\t" << a.GetCompact()  << " "<< nTempBit.GetCompact() << endl;
     cout <<"hashMerkleRoot: " << genesis.hashMerkleRoot.ToString() << endl;
+    cout << endl << genesis.ToString() << endl;
     
     findGenesis(&genesis);
 
