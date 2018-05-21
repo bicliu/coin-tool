@@ -79,7 +79,7 @@ void _get(const ch * const pblock, const arith_uint256 hashTarget, const int ind
         {
             pb->nTime = GetTime() + timeoffset;
             cnt = 0;
-            std::cout<< "_get " << index << " time " << pb->nTime << "\r";
+            //std::cout<< "_get " << index << " time " << pb->nTime << "\r";
         }
 		/*if (tcnt !=0 and tcnt % 1000 == 0)
         {
