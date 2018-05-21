@@ -130,7 +130,7 @@ static void findGenesis(CBlockHeader *pb)
     cout << "Looking for:" << endl;
     while(0 == iresult)
     {
-        if(tdelay > 10000)
+        if(tdelay > 10000000)
         {
             lookcount++;
             cout << lookcount << "\r";
