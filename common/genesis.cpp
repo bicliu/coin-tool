@@ -79,7 +79,7 @@ void _get(const ch * const pblock, const arith_uint256 hashTarget, const int ind
         {
             pb->nTime = GetTime() + timeoffset;
             cnt = 0;
-            std::cout<< "_get " << index << " time " << pb->nTime << endl;
+            //std::cout<< "_get " << index << " time " << pb->nTime << endl;
         }
 		/*if (tcnt !=0 and tcnt % 1000 == 0)
         {
@@ -103,6 +103,7 @@ static void findGenesis(CBlockHeader *pb)
     std::vector<std::thread> threads;
 	int icpu = std::min(GetNumCores(), 100);
     int iresult = 0;
+    uint64_t lookcount = 0;
 	cout << "Get " << icpu << " cpus to use" << endl;
     //for (int i = 0; i < std::min(GetNumCores(), 100); ++i)
     for (int i = 0; i < icpu; ++i)
@@ -121,9 +122,16 @@ static void findGenesis(CBlockHeader *pb)
 		//MilliSleep(100);
     }
 
-    for (auto &t : threads)
+    /*for (auto &t : threads)
     {
         t.join();
+    }*/
+    cout << "Looking for:" << endl;
+    while(0 == iresult)
+    {
+        MilliSleep(1000);
+        lookcount++;
+        cout << lookcount << "\r";
     }
 }
 
