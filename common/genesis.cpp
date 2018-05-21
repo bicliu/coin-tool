@@ -104,6 +104,7 @@ static void findGenesis(CBlockHeader *pb)
 	int icpu = std::min(GetNumCores(), 100);
     int iresult = 0;
     uint64_t lookcount = 0;
+    int64_t tdelay = 0;
 	cout << "Get " << icpu << " cpus to use" << endl;
     //for (int i = 0; i < std::min(GetNumCores(), 100); ++i)
     for (int i = 0; i < icpu; ++i)
@@ -129,9 +130,13 @@ static void findGenesis(CBlockHeader *pb)
     cout << "Looking for:" << endl;
     while(0 == iresult)
     {
-        MilliSleep(1000);
-        lookcount++;
-        cout << lookcount << "\r";
+        if(tdelay > 10000)
+        {
+            lookcount++;
+            cout << lookcount << "\r";
+            tdelay = 0;
+        }
+        tdelay++;
     }
 }
 
