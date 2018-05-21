@@ -65,6 +65,7 @@ void _get(const ch * const pblock, const arith_uint256 hashTarget, const int ind
         if (UintToArith256(hash) <= hashTarget)
         {
             (*result)++;
+			cout << "Task " << index << " get target." << endl;
             std::lock_guard<std::mutex> guard(mtx);
             std::cout << "\n\t\t----------------------------------------\t" << std::endl;
             std::cout << "\t" << pb->ToString();
