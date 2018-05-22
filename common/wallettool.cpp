@@ -339,7 +339,7 @@ void FindAddressHelp()
 
 void _getaddress(const vector <string> * vTarget,const int index, int * result)
 {
-	cout << "thread " << index << " start" << endl;
+	//cout << "thread " << index << " start" << endl;
     while(0 == *result)
     {
         CKey secret;
@@ -404,7 +404,7 @@ void FindAddress(int argc, char* argv[])
     {
         t.join();
     }
-    cout << endl << "Find address !" << endl;
+    cout << endl << "Congratulations! Find an expectant address" << endl;
 
     return;
 }
