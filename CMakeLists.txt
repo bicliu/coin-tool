@@ -61,6 +61,7 @@ endif()
 # Ulord
 if (CHAIN_TYPE STREQUAL "ULORD")
   set(CHAIN_NAME "ulord Core")
+  set(CHAIN_SRC_ROOT "${CMAKE_SOURCE_DIR}/chainsrc/UlordChain")
   #set(POOL__DEB_PACKNAME_POSTFIX "${POOL__DEB_PACKNAME_POSTFIX}-ulord")
   #set(POOL__DEFAULT_INSTALL_PREFIX "/work/udpool.ulord")
 
@@ -87,9 +88,13 @@ if(NOT CHAIN_SRC_ROOT)
 endif()
 message("-- Root Dir of ${CHAIN_NAME}: ${CHAIN_SRC_ROOT} (-DCHAIN_SRC_ROOT=${CHAIN_SRC_ROOT})")
 if (NOT EXISTS "${CHAIN_SRC_ROOT}/src/version.h")
-  message(FATAL_ERROR "The source code of ${CHAIN_NAME} not exists!")
+  #message(FATAL_ERROR "The source code of ${CHAIN_NAME} not exists!")
+  message(STATUS "downloading ${CHAIN_NAME}...")
+  execute_process(WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/chainsrc" COMMAND git clone https://github.com/UlordChain/UlordChain.git)
 endif()
-
+if (NOT EXISTS "${CHAIN_SRC_ROOT}/src/version.h")
+  message(FATAL_ERROR "The source code of ${CHAIN_NAME} not exists! Have to download in chainsrc manually!")
+endif()
 
 ###################################### Libs ######################################
 message("") # empty line
@@ -102,26 +107,23 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 #
 # chain's libs
 #
-set(BITCOIN_LIBRARIES
-  "${CHAIN_SRC_ROOT}/src/libbitcoin_common.a"
-# "${CHAIN_SRC_ROOT}/src/libbitcoinconsensus.la"
-# "${CHAIN_SRC_ROOT}/src/libbitcoinconsensus_la-hash.o"
-# "${CHAIN_SRC_ROOT}/src/libbitcoinconsensus_la-pubkey.o"
-# "${CHAIN_SRC_ROOT}/src/libbitcoinconsensus_la-uint256.o"
-# "${CHAIN_SRC_ROOT}/src/libbitcoinconsensus_la-utilstrencodings.o"
-  "${CHAIN_SRC_ROOT}/src/libbitcoin_server.a"
-  "${CHAIN_SRC_ROOT}/src/libbitcoin_util.a"
-  "${CHAIN_SRC_ROOT}/src/libbitcoin_wallet.a"
-#  "${CHAIN_SRC_ROOT}/src/libbitcoin_zmq.a"
-  "${CHAIN_SRC_ROOT}/src/crypto/libbitcoin_crypto.a"
-  "${CHAIN_SRC_ROOT}/src/hello/libbitcoin_hello.a"
-)
+# Ulord
+if (CHAIN_TYPE STREQUAL "ULORD")
+  set(BITCOIN_LIBRARIES
+    "${CHAIN_SRC_ROOT}/src/libbitcoin_common.a"
+    "${CHAIN_SRC_ROOT}/src/libbitcoin_server.a"
+    "${CHAIN_SRC_ROOT}/src/libbitcoin_util.a"
+    "${CHAIN_SRC_ROOT}/src/libbitcoin_wallet.a"
+    "${CHAIN_SRC_ROOT}/src/crypto/libbitcoin_crypto.a"
+    "${CHAIN_SRC_ROOT}/src/hello/libbitcoin_hello.a"
+  )
+endif()
 
 list(GET BITCOIN_LIBRARIES 0 BITCOIN_LIBRARIE)
 if (NOT EXISTS ${BITCOIN_LIBRARIE})
   message(STATUS "building ${CHAIN_NAME}...")
   execute_process(WORKING_DIRECTORY "${CHAIN_SRC_ROOT}" COMMAND ./autogen.sh)
-  execute_process(WORKING_DIRECTORY "${CHAIN_SRC_ROOT}" COMMAND ./configure --with-gui=no --disable-wallet --disable-tests --disable-bench)
+  execute_process(WORKING_DIRECTORY "${CHAIN_SRC_ROOT}" COMMAND ./configure --with-gui=no --disable-tests --disable-bench)
   execute_process(WORKING_DIRECTORY "${CHAIN_SRC_ROOT}" COMMAND make ${MAKE_JOBS})
 endif()
 
@@ -251,20 +253,11 @@ include_directories(common ${CHAIN_SRC_ROOT}/src ${CHAIN_SRC_ROOT}/src/config ${
 set(THIRD_LIBRARIES ${BITCOIN_LIBRARIES} ${OPENSSL_CRYPTO_LIBRARY} ${OPENSSL_SSL_LIBRARY} ${univalue_LIBRARIES} ${leveldb_LIBRARIES} ${Boost_LIBRARIES}
                     ${LIBZMQ_LIBRARIES} ${LIBEVENT_LIB} ${LIBEVENT_PTHREADS_LIB} ${secp256k1_LIBRARIES} ${PTHREAD_LIBRARIES})
 
-message("-- Coin tools libs")
+message("-- Coin tool libs")
 message("") # empty line
 message("--    set common files")
 file(GLOB COMMON_SRC common/*.cpp)
 file(GLOB COMMON_H common/*.h)
 #add_library(tool_common ${LIB_COMMON})
 
-#message("") # empty line
-#message("--     wallet lib")
-#file(GLOB LIB_WALLET wallet/*.cpp)
-#add_library(tool_wallet ${LIB_WALLET})
-
-#add_executable(alert ${ALERT_SRC})
-#target_link_libraries(alert ${THIRD_LIBRARIES})
-#add_subdirectory(sendAlert)
-#add_subdirectory(tools)
-add_subdirectory(cmdtools)
+add_subdirectory(tool)

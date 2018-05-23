@@ -7,3 +7,4 @@ cmake-build-debug/
 /patches/
 /data/
 /src/bitcoin/
+chainsrc/*
