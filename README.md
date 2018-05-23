@@ -16,14 +16,9 @@ git clone https://github.com/bicliu/coin-tool.git
 cd coin-tool
 mkdir build
 cd build
-cmake -DCHAIN_TYPE=ULORD -DCHAIN_SRC_ROOT=/root/UlordChain -DJOBS=24 ..
+cmake -DCHAIN_TYPE=ULORD -DJOBS=24 ..
 make
 ```
-If you want build without GUI, use 
-```
-cmake -DCHAIN_TYPE=ULORD -DCHAIN_SRC_ROOT=/root/UlordChain -DJOBS=24 -DNOGUI=1 ..
-```
-
 ### Configure
 
 ```bash
