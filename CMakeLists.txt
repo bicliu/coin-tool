@@ -33,7 +33,7 @@ set(CMAKE_C_COMPILER "gcc")
 add_definitions(
     "-std=c++0x -DCHECK_PTHREAD_RETURN_VALUE -D_FILE_OFFSET_BITS=64 -Wextra -Wsign-compare 
     -Wunused-variable -Wno-unused-parameter -Woverloaded-virtual -Wpointer-arith -Wwrite-strings 
-    -march=native -rdynamic -pthread "
+    -march=native -pthread "
 )
 
 # The number of concurrent jobs when compiling a third-party library
@@ -64,7 +64,11 @@ if (CHAIN_TYPE STREQUAL "ULORD")
   set(CHAIN_SRC_ROOT "${CMAKE_SOURCE_DIR}/chainsrc/UlordChain")
   #set(POOL__DEB_PACKNAME_POSTFIX "${POOL__DEB_PACKNAME_POSTFIX}-ulord")
   #set(POOL__DEFAULT_INSTALL_PREFIX "/work/udpool.ulord")
-
+  IF(APPLE)
+    add_definitions( "-DMAC_OSX" )
+  ELSE()
+    #add_definitions("-rdynamic")
+  ENDIF()
   #add_definitions(-DCHAIN_TYPE_BTC)
   #add_definitions(-DKAFKA_TOPIC_PREFIX="") # for compatibility with old deployments, let it empty.
   #add_definitions(-DZOOKEEPER_NODE_POSTFIX="") # for compatibility with old deployments, let it empty.
