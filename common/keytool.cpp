@@ -1,4 +1,4 @@
-#include "wallettool.h"
+#include "keytool.h"
 
 #include <thread>
 
@@ -178,6 +178,33 @@ bool CheckKey()
 	}
 
     return true;
+}
+
+void PrivKeyHelp()
+{
+    cout << "Command \"privkey\" example :" << endl << endl
+        << "privkey privatekey" << endl << endl;
+}
+void PrivKey(int argc, char* argv[])
+{
+    if(argc < cmdindex+2)
+    {
+        PrivKeyHelp();
+        return;
+    }
+    string strprivkey = argv[cmdindex+1];
+    CKey privkey;
+    CPubKey retpubkey;
+    if(!GetKeysFromSecret(strprivkey, privkey, retpubkey))
+    {
+        cout << "Error: privkey <" << strprivkey << "> getpubkey failed!" << endl;
+        continue;
+    }
+    cout << "private key <" << CBitcoinSecret(secret).ToString() << ">" << endl << "{" << endl
+        << "get publickey <" << HexStr(retpubkey).c_str() << "> \naddress " 
+        << CBitcoinAddress(retpubkey.GetID()).ToString()  << endl << endl
+        << "}" << endl;
+    return;
 }
 
 void SignMsgHelp()

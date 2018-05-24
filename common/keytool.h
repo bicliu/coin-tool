@@ -1,5 +1,5 @@
-#ifndef COINTOOL_WALLET_H
-#define COINTOOL_WALLET_H
+#ifndef COINTOOL_KEY_H
+#define COINTOOL_KEY_H
 #include "utils.h"
 
 bool MakeNewKey(bool fCompressed);
@@ -19,4 +19,5 @@ void CompactSignHandle(int argc, char* argv[]);
 void CompactVerifyHandle(int argc, char* argv[]);
 void NewAddress(int argc, char* argv[]);
 void FindAddress(int argc, char* argv[]);
+void PrivKey(int argc, char* argv[]);
 #endif
