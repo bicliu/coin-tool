@@ -341,11 +341,14 @@ void FindAddressHelp()
 void _getaddress(const vector <string> * vTarget,const int & index, const bool & bIsCase, int * result)
 {
 	//cout << "thread " << index << " start" << endl;
+	CKey secret;
+	CPubKey pubkey;
+	string addrPro;
+	uint32_t imatch = 0;
     while(0 == *result)
     {
-        CKey secret;
         secret.MakeNewKey(true);
-        CPubKey pubkey = secret.GetPubKey();
+        pubkey = secret.GetPubKey();
         
         if(!secret.VerifyPubKey(pubkey))
         {
@@ -353,19 +356,25 @@ void _getaddress(const vector <string> * vTarget,const int & index, const bool &
             return;
         }
 
-        string addrPro = CBitcoinAddress(pubkey.GetID()).ToString();
-        
+        addrPro = CBitcoinAddress(pubkey.GetID()).ToString();
+        imatch = 0;
         for(auto var : (*vTarget))
         {
 			bool bfind = !bIsCase ? (-1 != ci_find_substr(addrPro, var)) : (addrPro.find(var) != string::npos);
             if(bfind)
             {
-                cout << endl << "Task " << index << " get target." << endl
-					<< "privkey : " << CBitcoinSecret(secret).ToString() << endl
-                	<< "address : " << addrPro << endl << endl;
-                (*result)++;
-                return;
+				imatch++;
+				if(vTarget->size() == imatch)
+				{
+                	cout << endl << "Task " << index << " get target." << endl
+						<< "privkey : " << CBitcoinSecret(secret).ToString() << endl
+                		<< "address : " << addrPro << endl << endl;
+                	(*result)++;
+                	return;
+				}
             }
+			else
+				break;
         }
     }
 }
