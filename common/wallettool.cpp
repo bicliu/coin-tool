@@ -1,25 +1,16 @@
 #include "wallettool.h"
-#include "wallet/wallet.h"
 
 #include <thread>
 
 using namespace std;
 
-extern CWallet* pwalletMain;
 
 const std::string strMessageCustom = "Ulord Signed Message:\n";
 
 bool MakeNewKey(bool fCompressed)
 {
-    pwalletMain = new CWallet();
-	AssertLockHeld(pwalletMain->cs_wallet); // mapKeyMetadata
-
     CKey secret;
     secret.MakeNewKey(fCompressed);
-
-    // Compressed public keys were introduced in version 0.6.0
-    if (fCompressed)
-        pwalletMain->SetMinVersion(FEATURE_COMPRPUBKEY);
 
     CPubKey pubkey = secret.GetPubKey();
     
@@ -339,7 +330,7 @@ void FindAddressHelp()
 
 void _getaddress(const vector <string> * vTarget,const int index, int * result)
 {
-	//cout << "thread " << index << " start" << endl;
+    //cout << "thread " << index << " start" << endl;
     while(0 == *result)
     {
         CKey secret;
@@ -377,19 +368,11 @@ void FindAddress(int argc, char* argv[])
         return;
     }
 
-    pwalletMain = new CWallet();
-	AssertLockHeld(pwalletMain->cs_wallet); // mapKeyMetadata
-    bool fCompressed = true;
-
     vector <string> vTarget;
     for(int i = cmdindex+1; i < argc; i++)
         vTarget.push_back(argv[i]);
 
-    // Compressed public keys were introduced in version 0.6.0
-    if (fCompressed)
-        pwalletMain->SetMinVersion(FEATURE_COMPRPUBKEY);
-
-	cout << "Looking for ... ..." << endl;
+    cout << "Looking for ... ..." << endl;
 
     std::vector<std::thread> threads;
 	int icpu = std::min(GetNumCores(), 100);
