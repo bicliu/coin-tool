@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 2.6)
 
 project (COINPOOL)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
-
+MESSAGE(STATUS "Current platform: ${CMAKE_SYSTEM_NAME}")
 
 ###################################### Options ######################################
 message("") # empty line
@@ -191,11 +191,12 @@ endif()
 #if(NOT GLOG_FOUND)
 #message(FATAL_ERROR "Glog not found!")
 #endif()
-
-#find_package(libzmq)
-#if(NOT LIBZMQ_FOUND)
-#  message(FATAL_ERROR "libzmq not found!")
-#endif()
+if(ZMQ)
+  find_package(libzmq)
+  if(NOT LIBZMQ_FOUND)
+    message(FATAL_ERROR "libzmq not found!")
+  endif()
+endif()
 
 #find_package(CURL)
 #if(NOT CURL_FOUND)
@@ -253,6 +254,9 @@ message("------------------------------- Targets -------------------------------
 
 include_directories(common ${CHAIN_SRC_ROOT}/src ${CHAIN_SRC_ROOT}/src/config ${secp256k1_DIR}/include ${univalue_DIR}/include ${leveldb_DIR}/include
                     ${OPENSSL_INCLUDE_DIR} ${Boost_INCLUDE_DIRS} ${LIBEVENT_INCLUDE_DIR})
+if(ZMQ)
+include_directories(${LIBZMQ_INCLUDE_DIR})
+endif()
 set(THIRD_LIBRARIES ${BITCOIN_LIBRARIES} ${OPENSSL_CRYPTO_LIBRARY} ${OPENSSL_SSL_LIBRARY} ${univalue_LIBRARIES} ${leveldb_LIBRARIES} ${Boost_LIBRARIES}
                     ${LIBZMQ_LIBRARIES} ${LIBEVENT_LIB} ${LIBEVENT_PTHREADS_LIB} ${secp256k1_LIBRARIES} ${PTHREAD_LIBRARIES})
 
