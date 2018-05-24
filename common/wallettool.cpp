@@ -334,10 +334,11 @@ void NewAddress(int argc, char* argv[])
 void FindAddressHelp()
 {
     cout << "Command \"findaddress\" example :" << endl << endl
-        << "newaddress \"target\" ..." << endl << endl;
+        << "newaddress IsCase \"target\" ..." << endl
+		<< "newaddress true \"example\""<< endl;
 }
 
-void _getaddress(const vector <string> * vTarget,const int index, int * result)
+void _getaddress(const vector <string> * vTarget,const int & index, const bool & bIsCase, int * result)
 {
 	//cout << "thread " << index << " start" << endl;
     while(0 == *result)
@@ -356,8 +357,8 @@ void _getaddress(const vector <string> * vTarget,const int index, int * result)
         
         for(auto var : (*vTarget))
         {
-			//bool bfind = figCase ? (-1 != ci_find_substr(addrPro, var)) : (addrPro.find(var) != string::npos);
-            if(addrPro.find(var) != string::npos)
+			bool bfind = bIsCase ? (-1 != ci_find_substr(addrPro, var)) : (addrPro.find(var) != string::npos);
+            if(bfind)
             {
                 cout << endl << "Task " << index << " get target." << endl
 					<< "privkey : " << CBitcoinSecret(secret).ToString() << endl
@@ -371,7 +372,7 @@ void _getaddress(const vector <string> * vTarget,const int index, int * result)
 
 void FindAddress(int argc, char* argv[])
 {
-    if(argc < cmdindex+2)
+    if(argc < cmdindex+3)
     {
         FindAddressHelp();
         return;
@@ -380,9 +381,10 @@ void FindAddress(int argc, char* argv[])
     pwalletMain = new CWallet();
 	AssertLockHeld(pwalletMain->cs_wallet); // mapKeyMetadata
     bool fCompressed = true;
+	bool fIsCase = atob(argv[cmdindex + 1]);
 
     vector <string> vTarget;
-    for(int i = cmdindex+1; i < argc; i++)
+    for(int i = cmdindex+2; i < argc; i++)
         vTarget.push_back(argv[i]);
 
     // Compressed public keys were introduced in version 0.6.0
@@ -398,7 +400,7 @@ void FindAddress(int argc, char* argv[])
 
     for (int i = 0; i < icpu; ++i)
     {
-        threads.push_back(std::thread(_getaddress, &vTarget, i, &iresult));
+        threads.push_back(std::thread(_getaddress, &vTarget, i, fIsCase,  &iresult));
     }
     for (auto &t : threads)
     {
