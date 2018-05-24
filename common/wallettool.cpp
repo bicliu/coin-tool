@@ -357,7 +357,7 @@ void _getaddress(const vector <string> * vTarget,const int & index, const bool &
         
         for(auto var : (*vTarget))
         {
-			bool bfind = bIsCase ? (-1 != ci_find_substr(addrPro, var)) : (addrPro.find(var) != string::npos);
+			bool bfind = !bIsCase ? (-1 != ci_find_substr(addrPro, var)) : (addrPro.find(var) != string::npos);
             if(bfind)
             {
                 cout << endl << "Task " << index << " get target." << endl
