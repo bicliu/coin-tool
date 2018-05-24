@@ -120,6 +120,9 @@ if (CHAIN_TYPE STREQUAL "ULORD")
     "${CHAIN_SRC_ROOT}/src/crypto/libbitcoin_crypto.a"
     "${CHAIN_SRC_ROOT}/src/hello/libbitcoin_hello.a"
   )
+  if (ZMQ)
+    list(APPEND BITCOIN_LIBRARIES  "${CHAIN_SRC_ROOT}/src/libbitcoin_zmq.a")
+  endif()
 endif()
 
 list(GET BITCOIN_LIBRARIES 0 BITCOIN_LIBRARIE)
