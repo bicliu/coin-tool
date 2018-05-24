@@ -8,3 +8,4 @@ cmake-build-debug/
 /data/
 /src/bitcoin/
 chainsrc/*
+.DS_Store

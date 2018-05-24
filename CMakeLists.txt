@@ -61,7 +61,7 @@ endif()
 # Ulord
 if (CHAIN_TYPE STREQUAL "ULORD")
   set(CHAIN_NAME "ulord Core")
-  set(CHAIN_SRC_ROOT "${CMAKE_SOURCE_DIR}/chainsrc/UlordChain")
+  set(CHAIN_SRC_ROOT "${CMAKE_SOURCE_DIR}/chainsrc/ulord")
   #set(POOL__DEB_PACKNAME_POSTFIX "${POOL__DEB_PACKNAME_POSTFIX}-ulord")
   #set(POOL__DEFAULT_INSTALL_PREFIX "/work/udpool.ulord")
   IF(APPLE)
@@ -94,7 +94,7 @@ message("-- Root Dir of ${CHAIN_NAME}: ${CHAIN_SRC_ROOT} (-DCHAIN_SRC_ROOT=${CHA
 if (NOT EXISTS "${CHAIN_SRC_ROOT}/src/version.h")
   #message(FATAL_ERROR "The source code of ${CHAIN_NAME} not exists!")
   message(STATUS "downloading ${CHAIN_NAME}...")
-  execute_process(WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/chainsrc" COMMAND git clone https://github.com/UlordChain/UlordChain.git)
+  execute_process(WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/chainsrc" COMMAND git clone https://github.com/bicliu/utoken.git "ulord")
 endif()
 if (NOT EXISTS "${CHAIN_SRC_ROOT}/src/version.h")
   message(FATAL_ERROR "The source code of ${CHAIN_NAME} not exists! Have to download in chainsrc manually!")
@@ -117,7 +117,6 @@ if (CHAIN_TYPE STREQUAL "ULORD")
     "${CHAIN_SRC_ROOT}/src/libbitcoin_common.a"
     "${CHAIN_SRC_ROOT}/src/libbitcoin_server.a"
     "${CHAIN_SRC_ROOT}/src/libbitcoin_util.a"
-    "${CHAIN_SRC_ROOT}/src/libbitcoin_wallet.a"
     "${CHAIN_SRC_ROOT}/src/crypto/libbitcoin_crypto.a"
     "${CHAIN_SRC_ROOT}/src/hello/libbitcoin_hello.a"
   )
@@ -127,7 +126,7 @@ list(GET BITCOIN_LIBRARIES 0 BITCOIN_LIBRARIE)
 if (NOT EXISTS ${BITCOIN_LIBRARIE})
   message(STATUS "building ${CHAIN_NAME}...")
   execute_process(WORKING_DIRECTORY "${CHAIN_SRC_ROOT}" COMMAND ./autogen.sh)
-  execute_process(WORKING_DIRECTORY "${CHAIN_SRC_ROOT}" COMMAND ./configure --with-gui=no --disable-tests --disable-bench)
+  execute_process(WORKING_DIRECTORY "${CHAIN_SRC_ROOT}" COMMAND ./configure --with-gui=no --disable-wallet --disable-tests --disable-bench)
   execute_process(WORKING_DIRECTORY "${CHAIN_SRC_ROOT}" COMMAND make ${MAKE_JOBS})
 endif()
 
