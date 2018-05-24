@@ -334,8 +334,8 @@ void NewAddress(int argc, char* argv[])
 void FindAddressHelp()
 {
     cout << "Command \"findaddress\" example :" << endl << endl
-        << "newaddress IsCase \"target\" ..." << endl
-		<< "newaddress true \"example\""<< endl;
+        << "findaddress IsCase \"target\" ..." << endl
+		<< "findaddress true \"example\""<< endl;
 }
 
 void _getaddress(const vector <string> * vTarget,const int & index, const bool & bIsCase, int * result)
