@@ -334,17 +334,21 @@ void NewAddress(int argc, char* argv[])
 void FindAddressHelp()
 {
     cout << "Command \"findaddress\" example :" << endl << endl
-        << "newaddress \"target\" ..." << endl << endl;
+        << "findaddress IsCase \"target\" ..." << endl
+		<< "findaddress true \"example\""<< endl;
 }
 
-void _getaddress(const vector <string> * vTarget,const int index, int * result)
+void _getaddress(const vector <string> * vTarget,const int & index, const bool & bIsCase, int * result)
 {
 	//cout << "thread " << index << " start" << endl;
+	CKey secret;
+	CPubKey pubkey;
+	string addrPro;
+	uint32_t imatch = 0;
     while(0 == *result)
     {
-        CKey secret;
         secret.MakeNewKey(true);
-        CPubKey pubkey = secret.GetPubKey();
+        pubkey = secret.GetPubKey();
         
         if(!secret.VerifyPubKey(pubkey))
         {
@@ -352,26 +356,32 @@ void _getaddress(const vector <string> * vTarget,const int index, int * result)
             return;
         }
 
-        string addrPro = CBitcoinAddress(pubkey.GetID()).ToString();
-        
+        addrPro = CBitcoinAddress(pubkey.GetID()).ToString();
+        imatch = 0;
         for(auto var : (*vTarget))
         {
-			//bool bfind = figCase ? (-1 != ci_find_substr(addrPro, var)) : (addrPro.find(var) != string::npos);
-            if(addrPro.find(var) != string::npos)
+			bool bfind = !bIsCase ? (-1 != ci_find_substr(addrPro, var)) : (addrPro.find(var) != string::npos);
+            if(bfind)
             {
-                cout << endl << "Task " << index << " get target." << endl
-					<< "privkey : " << CBitcoinSecret(secret).ToString() << endl
-                	<< "address : " << addrPro << endl << endl;
-                (*result)++;
-                return;
+				imatch++;
+				if(vTarget->size() == imatch)
+				{
+                	cout << endl << "Task " << index << " get target." << endl
+						<< "privkey : " << CBitcoinSecret(secret).ToString() << endl
+                		<< "address : " << addrPro << endl << endl;
+                	(*result)++;
+                	return;
+				}
             }
+			else
+				break;
         }
     }
 }
 
 void FindAddress(int argc, char* argv[])
 {
-    if(argc < cmdindex+2)
+    if(argc < cmdindex+3)
     {
         FindAddressHelp();
         return;
@@ -380,9 +390,10 @@ void FindAddress(int argc, char* argv[])
     pwalletMain = new CWallet();
 	AssertLockHeld(pwalletMain->cs_wallet); // mapKeyMetadata
     bool fCompressed = true;
+	bool fIsCase = atob(argv[cmdindex + 1]);
 
     vector <string> vTarget;
-    for(int i = cmdindex+1; i < argc; i++)
+    for(int i = cmdindex+2; i < argc; i++)
         vTarget.push_back(argv[i]);
 
     // Compressed public keys were introduced in version 0.6.0
@@ -398,7 +409,7 @@ void FindAddress(int argc, char* argv[])
 
     for (int i = 0; i < icpu; ++i)
     {
-        threads.push_back(std::thread(_getaddress, &vTarget, i, &iresult));
+        threads.push_back(std::thread(_getaddress, &vTarget, i, fIsCase,  &iresult));
     }
     for (auto &t : threads)
     {
