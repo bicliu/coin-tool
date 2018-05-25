@@ -13,6 +13,46 @@
 
 using namespace std;
 
+int iDebugRank;
+static boost::mutex* mutexDebugLog = NULL;
+
+boost::filesystem::path GetCoinToolDir()
+{
+    namespace fs = boost::filesystem;
+    // Windows < Vista: C:\Documents and Settings\Username\Application Data\CoinTools
+    // Windows >= Vista: C:\Users\Username\AppData\Roaming\CoinTools
+    // Mac: ~/Library/Application Support/CoinTools
+    // Unix: ~/.cointools
+#ifdef WIN32
+    // Windows
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "CoinTools";
+#else
+    fs::path pathRet;
+    char* pszHome = getenv("HOME");
+    if (pszHome == NULL || strlen(pszHome) == 0)
+        pathRet = fs::path("/");
+    else
+        pathRet = fs::path(pszHome);
+#ifdef MAC_OSX
+    // Mac
+    return pathRet / "Library/Application Support/CoinTools";
+#else
+    // Unix
+    return pathRet / ".cointools";
+#endif
+#endif
+}
+
+void SetFilePath(const std::string & filename)
+{
+    mapArgs["-datadir"] = GetCoinToolDir().string();
+
+    boost::filesystem::path pathFile (GetCoinToolDir() / filename);
+    mapArgs["-conf"] = pathFile.string();
+
+    cout << "Info: Using config file " << GetConfigFile().string() << endl;
+}
+
 static std::string GetTimestampStr(const std::string &str, bool *fStartedNewLine)
 {
     string strStamped;
@@ -51,6 +91,16 @@ static std::string GetThreadNameStr(const std::string &str, bool *fStartedNewLin
 int PrintStr(const std::string &str)
 {
     int ret = 0; // Returns total number of characters written
+
+    ret = fwrite(str.data(), 1, str.size(), stdout);
+    fflush(stdout);
+    
+    return ret;
+}
+
+int WriteStr(const std::string &str)
+{
+    int ret = 0; // Returns total number of characters written
     static bool fStartedNewLine = true;
 
     std::string strThreadLogged = GetThreadNameStr(str, &fStartedNewLine);
@@ -61,11 +111,45 @@ int PrintStr(const std::string &str)
     else
         fStartedNewLine = false;
 
-    // print to console
-    ret = fwrite(strTimestamped.data(), 1, strTimestamped.size(), stdout);
-    fflush(stdout);
+    boost::call_once(&DebugPrintInit, BOOST_ONCE_INIT);
+    boost::mutex::scoped_lock scoped_lock(*mutexDebugLog);
+
+    // buffer if we haven't opened the log yet
+    if (fileout == NULL) {
+        assert(vMsgsBeforeOpenLog);
+        ret = strTimestamped.length();
+        vMsgsBeforeOpenLog->push_back(strTimestamped);
+    }
+    else
+    {
+        // reopen the log file, if requested
+        if (fReopenDebugLog) {
+            fReopenDebugLog = false;
+            boost::filesystem::path pathDebug = GetCoinToolDir() / "debug.log";
+            if (freopen(pathDebug.string().c_str(),"a",fileout) != NULL)
+                setbuf(fileout, NULL); // unbuffered
+        }
+
+        ret = FileWriteStr(strTimestamped, fileout);
+    }
     
     return ret;
+}
+
+int LogShow(const int debug, const char* format, ...)
+{
+    char buf[100];
+    memset(buf, 0, 100);
+    va_list args;
+    va_start(args,format);
+    vsprintf(buf,format,args);
+    va_end(args);
+
+    if(0 == debug)
+        return PrintStr(string(buf, buf + strlen(buf)));
+    if(iDebugRank == debug)
+        return WriteStr(string(buf, buf + strlen(buf)));
+    return 0;
 }
 
 void showvector(const std::vector<unsigned char>& vch)
@@ -109,44 +193,7 @@ int showreturn(const char* format, ...)
     return -1;
 }
 
-boost::filesystem::path GetCoinToolDir()
-{
-    namespace fs = boost::filesystem;
-    // Windows < Vista: C:\Documents and Settings\Username\Application Data\CoinTools
-    // Windows >= Vista: C:\Users\Username\AppData\Roaming\CoinTools
-    // Mac: ~/Library/Application Support/CoinTools
-    // Unix: ~/.cointools
-#ifdef WIN32
-    // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "CoinTools";
-#else
-    fs::path pathRet;
-    char* pszHome = getenv("HOME");
-    if (pszHome == NULL || strlen(pszHome) == 0)
-        pathRet = fs::path("/");
-    else
-        pathRet = fs::path(pszHome);
-#ifdef MAC_OSX
-    // Mac
-    return pathRet / "Library/Application Support/CoinTools";
-#else
-    // Unix
-    return pathRet / ".cointools";
-#endif
-#endif
-}
-
-void SetFilePath(const std::string & filename)
-{
-    mapArgs["-datadir"] = GetCoinToolDir().string();
-
-    boost::filesystem::path pathFile (GetCoinToolDir() / filename);
-    mapArgs["-conf"] = pathFile.string();
-
-    cout << "Info: Using config file " << GetConfigFile().string() << endl;
-}
-
-void SetParams()
+void InitSys()
 {
     if(GetBoolArg("-testnet", false))
 	{
@@ -158,6 +205,13 @@ void SetParams()
         SelectParams(CBaseChainParams::MAIN);
 		printf("Info: select MAIN net!\n");
 	}
+    
+    if (mapArgs.count("-debug"))
+		iDebugRank = atoi(mapArgs["-debug"]);
+	else
+		iDebugRank = 0;
+
+    mutexDebugLog = new boost::mutex();
 }
 
 /** Interpret string as boolean, for argument parsing */

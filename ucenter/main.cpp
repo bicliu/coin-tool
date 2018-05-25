@@ -7,7 +7,7 @@ bool InitUCenter()
     SetFilePath("ucenter.conf");
 	ReadConfigFile(mapArgs, mapMultiArgs);
 
-    SetParams();
+    InitSys();
 	ECC_Start();
 	ECCVerifyHandle globalVerifyHandle;
 }

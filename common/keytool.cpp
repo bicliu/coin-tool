@@ -200,10 +200,16 @@ void PrivKey(int argc, char* argv[])
         cout << "Error: privkey <" << strprivkey << "> getpubkey failed!" << endl;
         return;
     }
-    cout << "private key <" << CBitcoinSecret(privkey).ToString() << ">" << endl << "{" << endl
+    /*cout << "private key <" << CBitcoinSecret(privkey).ToString() << ">" << endl << "{" << endl
         << "get publickey <" << HexStr(retpubkey).c_str() << "> \naddress " 
-        << CBitcoinAddress(retpubkey.GetID()).ToString()  << endl << endl
-        << "}" << endl;
+        << CBitcoinAddress(retpubkey.GetID()).ToString()  << endl
+        << "}" << endl;*/
+    LogShow(0, "private key <%s>\n
+                {\n
+                public key <%s>\n
+                address <%s>\n
+                }\n",
+                CBitcoinSecret(privkey).ToString().c_str(), HexStr(retpubkey).c_str(), CBitcoinAddress(retpubkey.GetID()).ToString().c_str());
     return;
 }
 

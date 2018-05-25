@@ -44,7 +44,7 @@ int main(int argc, char* argv[])
 	SetFilePath("tool.conf");
 	ReadConfigFile(mapArgs, mapMultiArgs);
 
-	SetParams();
+	InitSys();
 	ECC_Start();
 	globalVerifyHandle.reset(new ECCVerifyHandle());
 

@@ -16,10 +16,11 @@ int PrintStr(const std::string &str);
 bool showerror(const char* format, ...);
 int showreturn(const char* format, ...);
 std::string GetRankString(int index);
+int LogShow(const int debug, const char* format, ...);
 
 /*Init funcs*/
 void SetFilePath(const std::string & filename);
-void SetParams();
+void InitSys();
 bool ReadFile(std::map<std::string, std::string>& mapSettingsRet,
               std::map<std::string, std::vector<std::string> >& mapMultiSettingsRet,
               const std::string & strfile);
