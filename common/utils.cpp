@@ -15,6 +15,8 @@ using namespace std;
 
 int iDebugRank;
 static boost::mutex* mutexDebugLog = NULL;
+static FILE* fileoutput = NULL;
+static boost::once_flag debugShowInitFlag = BOOST_ONCE_INIT;
 
 boost::filesystem::path GetCoinToolDir()
 {
@@ -98,6 +100,13 @@ int PrintStr(const std::string &str)
     return ret;
 }
 
+static void DebugShowInit()
+{
+    assert(mutexDebugLog == NULL);
+    mutexDebugLog = new boost::mutex();
+    //vMsgsBeforeOpenLog = new list<string>;
+}
+
 int WriteStr(const std::string &str)
 {
     int ret = 0; // Returns total number of characters written
@@ -111,35 +120,25 @@ int WriteStr(const std::string &str)
     else
         fStartedNewLine = false;
 
-    boost::call_once(&DebugPrintInit, BOOST_ONCE_INIT);
+    boost::call_once(&DebugShowInit, debugShowInitFlag);
     boost::mutex::scoped_lock scoped_lock(*mutexDebugLog);
 
     // buffer if we haven't opened the log yet
-    if (fileout == NULL) {
-        assert(vMsgsBeforeOpenLog);
-        ret = strTimestamped.length();
-        vMsgsBeforeOpenLog->push_back(strTimestamped);
+    if (fileoutput == NULL) {
+		boost::filesystem::path pathDebug = GetDataDir() / "debug.log";
+	    fileoutput = fopen(pathDebug.string().c_str(), "a");
+    	if (fileoutput) setbuf(fileoutput, NULL); // unbuffered
     }
-    else
-    {
-        // reopen the log file, if requested
-        if (fReopenDebugLog) {
-            fReopenDebugLog = false;
-            boost::filesystem::path pathDebug = GetCoinToolDir() / "debug.log";
-            if (freopen(pathDebug.string().c_str(),"a",fileout) != NULL)
-                setbuf(fileout, NULL); // unbuffered
-        }
 
-        ret = FileWriteStr(strTimestamped, fileout);
-    }
+	ret = fwrite(strTimestamped.data(), 1, strTimestamped.size(), fileoutput);
     
     return ret;
 }
 
 int LogShow(const int debug, const char* format, ...)
 {
-    char buf[100];
-    memset(buf, 0, 100);
+    char buf[1000];
+    memset(buf, 0, 1000);
     va_list args;
     va_start(args,format);
     vsprintf(buf,format,args);
@@ -210,8 +209,6 @@ void InitSys()
 		iDebugRank = atoi(mapArgs["-debug"]);
 	else
 		iDebugRank = 0;
-
-    mutexDebugLog = new boost::mutex();
 }
 
 /** Interpret string as boolean, for argument parsing */
