@@ -198,9 +198,9 @@ void PrivKey(int argc, char* argv[])
     if(!GetKeysFromSecret(strprivkey, privkey, retpubkey))
     {
         cout << "Error: privkey <" << strprivkey << "> getpubkey failed!" << endl;
-        continue;
+        return;
     }
-    cout << "private key <" << CBitcoinSecret(secret).ToString() << ">" << endl << "{" << endl
+    cout << "private key <" << CBitcoinSecret(privkey).ToString() << ">" << endl << "{" << endl
         << "get publickey <" << HexStr(retpubkey).c_str() << "> \naddress " 
         << CBitcoinAddress(retpubkey.GetID()).ToString()  << endl << endl
         << "}" << endl;
