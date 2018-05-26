@@ -13,7 +13,8 @@
 
 using namespace std;
 
-int iDebugRank;
+set<int> g_sDebuglist;
+set<int> g_sLoglist;
 static boost::mutex* mutexDebugLog = NULL;
 static FILE* fileoutput = NULL;
 static boost::once_flag debugShowInitFlag = BOOST_ONCE_INIT;
@@ -146,7 +147,9 @@ int LogShow(const int debug, const char* format, ...)
 
     if(0 == debug)
         return PrintStr(string(buf, buf + strlen(buf)));
-    if(iDebugRank == debug)
+    if(g_sDebuglist.find(debug) != g_sDebuglist.end())
+        return PrintStr(string(buf, buf + strlen(buf)));
+    if(g_sLoglist.find(debug) != g_sLoglist.end())
         return WriteStr(string(buf, buf + strlen(buf)));
     return 0;
 }
@@ -206,9 +209,16 @@ void InitSys()
 	}
     
     if (mapArgs.count("-debug"))
-		iDebugRank = atoi(mapArgs["-debug"]);
-	else
-		iDebugRank = 0;
+	{
+		for(string str : mapMultiArgs["-debug"])
+			g_sDebuglist.insert(atoi(mapArgs["-debug"]));
+	}
+
+    if (mapArgs.count("-log"))
+	{
+		for(string str : mapMultiArgs["-log"])
+			g_sLoglist.insert(atoi(mapArgs["-log"]));
+	}
 }
 
 /** Interpret string as boolean, for argument parsing */
