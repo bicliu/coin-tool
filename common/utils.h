@@ -16,7 +16,7 @@ int PrintStr(const std::string &str);
 bool showerror(const char* format, ...);
 int showreturn(const char* format, ...);
 std::string GetRankString(int index);
-int LogShow(const int debug, const char* format, ...);
+int ToolLog(const int debug, const char* format, ...);
 
 /*Init funcs*/
 void SetFilePath(const std::string & filename);

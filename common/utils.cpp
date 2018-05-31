@@ -136,7 +136,7 @@ int WriteStr(const std::string &str)
     return ret;
 }
 
-int LogShow(const int debug, const char* format, ...)
+int ToolLog(const int debug, const char* format, ...)
 {
     char buf[1000];
     memset(buf, 0, 1000);
