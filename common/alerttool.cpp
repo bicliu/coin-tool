@@ -189,3 +189,8 @@ void SendAlertHandle(int argc, char* argv[])
 	if(ReadCurrentFile(mapArgs, mapMultiArgs, argv[cmdindex+1]))
 		SendAlert();
 }
+
+void ShowVersion(int argc, char* argv[])
+{
+	printf("Protocol Version: %d\nClient Version: %s\n", PROTOCOL_VERSION, FormatSubVersion(CLIENT_NAME, CLIENT_VERSION, std::vector<std::string>()).c_str());
+}

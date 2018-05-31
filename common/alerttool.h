@@ -3,4 +3,5 @@
 
 bool SendAlert();
 void SendAlertHandle(int argc, char* argv[]);
+void ShowVersion(int argc, char* argv[]);
 #endif

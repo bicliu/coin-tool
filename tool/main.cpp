@@ -37,6 +37,7 @@ void RegisterCmd()
 	mapCommand.insert(make_pair("genesis", &GenesisLookFor));
 	mapCommand.insert(make_pair("findaddress", &FindAddress));
 	mapCommand.insert(make_pair("privkey", &PrivKey));
+	mapCommand.insert(make_pair("version", &ShowVersion));
 }
 
 int main(int argc, char* argv[])
