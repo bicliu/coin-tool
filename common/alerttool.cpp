@@ -2,6 +2,7 @@
 #include "alert.h"
 #include "net.h"
 #include "addrman.h"
+#include "clientversion.h"
 
 using namespace std;
 
