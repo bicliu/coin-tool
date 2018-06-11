@@ -83,13 +83,13 @@ void RewardHandle()
 		cout << "    height        MinerSubsidy              Budget    MasternodePayment     FoundersReward        BlockSubsidy" << endl;
 		for(string str : mapMultiArgs["-height"])
 		{
-			bool IsSuper = CSuperblockManager::IsSuperblockTriggered(h);
 			int h = atoi(str);
+			bool IsSuper = CSuperblockManager::IsSuperblockTriggered(h);
 			cout << setw(10) << h
 				<< setw(20) << GetMinerSubsidy(h, Params().GetConsensus()) / COIN
-				<< setw(20) << IsSuper ? GetBudget(h, Params().GetConsensus()) / COIN : 0
+				<< setw(20) << (IsSuper ? GetBudget(h, Params().GetConsensus()) / COIN : 0)
 				<< setw(20) << GetMasternodePayment(h) / COIN
-				<< setw(20) << IsSuper ? GetFoundersReward(h, Params().GetConsensus()) / COIN : 0
+				<< setw(20) << (IsSuper ? GetFoundersReward(h, Params().GetConsensus()) / COIN : 0)
 				<< setw(20) << GetBlockSubsidy(h, Params().GetConsensus()) / COIN << endl;
 		}
 	}
