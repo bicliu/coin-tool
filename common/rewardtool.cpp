@@ -20,6 +20,7 @@ void AddReward(const CAmount value, CAmount & coin, CAmount & small)
 
 void RewardStatistics(int iyears, int isum)
 {
+	const Consensus::Params cp = Params().GetConsensus();
 	CAmount aSumMr = 0, asmrsmall = 0;
 	CAmount aSumBd = 0, asbdsmall = 0;
 	CAmount aSumMn = 0, asmnsmall = 0;
@@ -40,16 +41,17 @@ void RewardStatistics(int iyears, int isum)
 		for (int h = iHl; h < iHh; h ++)
 		{
 			if(1 == h)
-				AddReward(GetMinerSubsidy(h, Params().GetConsensus()), aFounders, aFoundersmall);
+				AddReward(GetMinerSubsidy(h, cp), aFounders, aFoundersmall);
 			else
-				AddReward(GetMinerSubsidy(h, Params().GetConsensus()), aMiner, aMinersmall);
+				AddReward(GetMinerSubsidy(h, cp), aMiner, aMinersmall);
 
 			AddReward(GetMasternodePayment(h), aMnode, aMnodesmall);
 			if(CSuperblockManager::IsSuperblockTriggered(h))
 			{
-				AddReward(GetFoundersReward(h, Params().GetConsensus()), aFounders, aFoundersmall);
+				AddReward(GetFoundersReward(h, cp), aFounders, aFoundersmall);
 				//if(CSuperblockManager::IsSuperblockVoteTriggered(h))
-				AddReward(GetBudget(h, Params().GetConsensus()), aBud, aBudsmall);
+				if(h >= cp.nMasternodePaymentsStartBlock)
+					AddReward(GetBudget(h, cp), aBud, aBudsmall);
 			}
 		}
 		aBlocks += (aMiner + aBud + aMnode + aFounders);
@@ -120,7 +122,8 @@ void BlockReward(int argc, char* argv[])
 
 	if(CSuperblockManager::IsSuperblockTriggered(h))
 	{
-		budget = GetBudget(h, Params().GetConsensus());
+		if(h >= Params().GetConsensus().nMasternodePaymentsStartBlock)
+			budget = GetBudget(h, Params().GetConsensus());
 		founders = GetFoundersReward(h, Params().GetConsensus());
 	}
 	miner = GetMinerSubsidy(h, Params().GetConsensus());
