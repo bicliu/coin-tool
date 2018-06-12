@@ -1,6 +1,7 @@
 #include "utils.h"
 #include "rewardtool.h"
 #include "main.h"
+#include "policy/policy.h"
 #include "governance-classes.h"
 
 #include <iomanip>
@@ -178,7 +179,7 @@ void RewardExample(int argc, char* argv[])
 	return;
 }
 
-CTxMemPool g_mempool(::minRelayTxFee);
+CTxMemPool g_mempool(::CFeeRate(DEFAULT_MIN_RELAY_TX_FEE));
 void MemPoolFeeHelp()
 {
 	cout << "Command \"rewardexample\" example :" << endl << endl
@@ -191,6 +192,8 @@ void MemPoolFee(int argc, char* argv[])
 		MemPoolFeeHelp();
 		return;
 	}
+
+	uint nSize = atoi(argv[cmdindex+1]);
 
 	CAmount mempoolRejectFee = g_mempool.GetMinFee(GetArg("-maxmempool", DEFAULT_MAX_MEMPOOL_SIZE) * 1000000).GetFee(nSize);
 
