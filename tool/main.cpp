@@ -38,6 +38,7 @@ void RegisterCmd()
 	mapCommand.insert(make_pair("findaddress", &FindAddress));
 	mapCommand.insert(make_pair("privkey", &PrivKey));
 	mapCommand.insert(make_pair("version", &ShowVersion));
+	mapCommand.insert(make_pair("mempoolfee", &MemPoolFee));
 }
 
 int main(int argc, char* argv[])

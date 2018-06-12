@@ -177,3 +177,23 @@ void RewardExample(int argc, char* argv[])
 	RewardHandle();
 	return;
 }
+
+CTxMemPool g_mempool(::minRelayTxFee);
+void MemPoolFeeHelp()
+{
+	cout << "Command \"rewardexample\" example :" << endl << endl
+        << "rewardexample filename" << endl << endl;
+}
+void MemPoolFee(int argc, char* argv[])
+{
+	if(argc < cmdindex+2)
+	{
+		MemPoolFeeHelp();
+		return;
+	}
+
+	CAmount mempoolRejectFee = g_mempool.GetMinFee(GetArg("-maxmempool", DEFAULT_MAX_MEMPOOL_SIZE) * 1000000).GetFee(nSize);
+
+	cout << "Min MemPoolFee is " << mempoolRejectFee << endl;
+	return;
+}
