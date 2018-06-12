@@ -3,6 +3,7 @@
 #include "main.h"
 #include "policy/policy.h"
 #include "governance-classes.h"
+#include "txmempool.h"
 
 #include <iomanip>
 
