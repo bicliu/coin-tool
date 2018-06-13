@@ -180,7 +180,7 @@ void RewardExample(int argc, char* argv[])
 	return;
 }
 
-CTxMemPool g_mempool(::CFeeRate(DEFAULT_MIN_RELAY_TX_FEE));
+//CTxMemPool g_mempool(::CFeeRate(DEFAULT_MIN_RELAY_TX_FEE));
 void MemPoolFeeHelp()
 {
 	cout << "Command \"rewardexample\" example :" << endl << endl
@@ -195,9 +195,12 @@ void MemPoolFee(int argc, char* argv[])
 	}
 
 	uint nSize = atoi(argv[cmdindex+1]);
+	//CTxMemPool * pmempool = new CTxMemPool(::minRelayTxFee);
+	std::vector<uint256> vNoSpendsRemaining;
+    mempool.TrimToSize(GetArg("-maxmempool", DEFAULT_MAX_MEMPOOL_SIZE) * 1000000, &vNoSpendsRemaining);
 
-	CAmount mempoolRejectFee = g_mempool.GetMinFee(GetArg("-maxmempool", DEFAULT_MAX_MEMPOOL_SIZE) * 1000000).GetFee(nSize);
+	CAmount mempoolRejectFee = mempool.GetMinFee(GetArg("-maxmempool", DEFAULT_MAX_MEMPOOL_SIZE) * 1000000).GetFee(nSize);
 
-	cout << "Min MemPoolFee is " << mempoolRejectFee << endl;
+	cout << "Min MemPoolFee is (" << mempoolRejectFee << " == 0 ? " << ::minRelayTxFee.GetFee(nSize) << " : " << mempoolRejectFee << " )"<< endl << "Free Priority is > " << AllowFreeThreshold() << endl;
 	return;
 }
