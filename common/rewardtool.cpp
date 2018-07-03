@@ -204,3 +204,12 @@ void MemPoolFee(int argc, char* argv[])
 	cout << "Min MemPoolFee is (" << mempoolRejectFee << " == 0 ? " << ::minRelayTxFee.GetFee(nSize) << " : " << mempoolRejectFee << " )"<< endl << "Free Priority is > " << AllowFreeThreshold() << endl;
 	return;
 }
+
+void GetTust(int argc, char* argv[])
+{
+	CAmount value;
+	CTxOut instance;
+	value = instance.GetDustThreshold(CFeeRate(DEFAULT_MIN_RELAY_TX_FEE));
+
+	cout << "Transaction out value should bigger than " << value << endl;
+}
