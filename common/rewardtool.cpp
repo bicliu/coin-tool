@@ -183,8 +183,8 @@ void RewardExample(int argc, char* argv[])
 //CTxMemPool g_mempool(::CFeeRate(DEFAULT_MIN_RELAY_TX_FEE));
 void MemPoolFeeHelp()
 {
-	cout << "Command \"rewardexample\" example :" << endl << endl
-        << "rewardexample filename" << endl << endl;
+	cout << "Command \"mempoolfee\" example :" << endl << endl
+        << "mempoolfee size" << endl << endl;
 }
 void MemPoolFee(int argc, char* argv[])
 {
@@ -198,6 +198,7 @@ void MemPoolFee(int argc, char* argv[])
 	//CTxMemPool * pmempool = new CTxMemPool(::minRelayTxFee);
 	std::vector<uint256> vNoSpendsRemaining;
     mempool.TrimToSize(GetArg("-maxmempool", DEFAULT_MAX_MEMPOOL_SIZE) * 1000000, &vNoSpendsRemaining);
+	//LimitMempoolSize(mempool, GetArg("-maxmempool", DEFAULT_MAX_MEMPOOL_SIZE) * 1000000, GetArg("-mempoolexpiry", DEFAULT_MEMPOOL_EXPIRY) * 60 * 60);
 
 	CAmount mempoolRejectFee = mempool.GetMinFee(GetArg("-maxmempool", DEFAULT_MAX_MEMPOOL_SIZE) * 1000000).GetFee(nSize);
 
@@ -213,3 +214,54 @@ void GetTust(int argc, char* argv[])
 
 	cout << "Transaction out value should bigger than " << value << endl;
 }
+
+void CalcMemFeeHelp()
+{
+    cout << "Command \"calcmemfee\" example :" << endl << endl
+        << "calcmemfee size" << endl << endl;
+}
+void CalcMemFee(int argc, char* argv[])
+{
+	if(argc < cmdindex+2)
+    {
+        MemPoolFeeHelp();
+        return;
+    }
+
+	uint nSize = atoi(argv[cmdindex+1]);
+
+	int64_t vartime = 10;
+	double varbasefee = 1;
+	double halflife = CTxMemPool::ROLLING_FEE_HALFLIFE;
+	double qurterRollingMiniFeeRate = varbasefee / pow(2.0, vartime/(halflife/4));
+	double halfRollingMiniFeeRate = varbasefee / pow(2.0, vartime/(halflife/2));
+	CFeeRate minTxFee = CFeeRate(DEFAULT_MIN_RELAY_TX_FEE);
+	CAmount maxFee = minTxFee.GetFee(nSize) * 10000;
+	cout << "rollingMinimumFeeRate should biger than " << (minTxFee.GetFeePerK() / 2) << ", also rate have to more than " << minTxFee.ToString() << endl;
+	cout << "****** for qurter ******" << endl;
+	while(CFeeRate(qurterRollingMiniFeeRate).GetFee(nSize) < maxFee)
+	{
+		varbasefee += 1;
+		qurterRollingMiniFeeRate = varbasefee / pow(2.0, vartime/(halflife/4));
+		if(qurterRollingMiniFeeRate >= (minTxFee.GetFeePerK() / 2))
+		{
+			cout << "MiniFee is " << qurterRollingMiniFeeRate << ", lastminifee is " << varbasefee << ", maxfee is " << maxFee << endl;
+			cout << "rate is " << CFeeRate(qurterRollingMiniFeeRate).ToString() << endl;
+			break;
+		}
+	}
+	cout << "****** for half ******" << endl;
+	varbasefee = 1;
+	while(CFeeRate(halfRollingMiniFeeRate).GetFee(nSize) < maxFee)
+    {
+        varbasefee += 1;
+        halfRollingMiniFeeRate = varbasefee / pow(2.0, vartime/(halflife/2));
+        if(halfRollingMiniFeeRate >= (minTxFee.GetFeePerK() / 2))
+        {
+            cout << "MiniFee is " << halfRollingMiniFeeRate << ", lastminifee is " << varbasefee << ", maxfee is " << maxFee << endl;
+            cout << "rate is " << CFeeRate(halfRollingMiniFeeRate).ToString() << endl;
+            break;
+        }
+    }
+}
+
