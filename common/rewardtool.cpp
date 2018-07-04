@@ -218,11 +218,11 @@ void GetTust(int argc, char* argv[])
 void CalcMemFeeHelp()
 {
     cout << "Command \"calcmemfee\" example :" << endl << endl
-        << "calcmemfee size" << endl << endl;
+        << "calcmemfee size time" << endl << endl;
 }
 void CalcMemFee(int argc, char* argv[])
 {
-	if(argc < cmdindex+2)
+	if(argc < cmdindex+3)
     {
         MemPoolFeeHelp();
         return;
@@ -230,7 +230,7 @@ void CalcMemFee(int argc, char* argv[])
 
 	uint nSize = atoi(argv[cmdindex+1]);
 
-	int64_t vartime = 10;
+	int64_t vartime = atoi(argv[cmdindex+2]);
 	double varbasefee = 1;
 	double halflife = CTxMemPool::ROLLING_FEE_HALFLIFE;
 	double qurterRollingMiniFeeRate = varbasefee / pow(2.0, vartime/(halflife/4));
