@@ -3,6 +3,7 @@
 #include "alerttool.h"
 #include "keytool.h"
 #include "genesis.h"
+#include "mempool.h"
 
 #include <iomanip>
 
@@ -38,9 +39,10 @@ void RegisterCmd()
 	mapCommand.insert(make_pair("findaddress", &FindAddress));
 	mapCommand.insert(make_pair("privkey", &PrivKey));
 	mapCommand.insert(make_pair("version", &ShowVersion));
-	mapCommand.insert(make_pair("mempoolfee", &MemPoolFee));
+	//mapCommand.insert(make_pair("mempoolfee", &MemPoolFee));
 	mapCommand.insert(make_pair("getdust", &GetTust));
-	mapCommand.insert(make_pair("calcmemfee", &CalcMemFee));
+	//mapCommand.insert(make_pair("calcmemfee", &CalcMemFee));
+	mapCommand.insert(make_pair("getmempoolinfo", &GetMemPoolInfo));
 }
 
 int main(int argc, char* argv[])
