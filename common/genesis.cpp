@@ -257,5 +257,5 @@ void GetRPCAuthorization(int argc, char* argv[])
 
     string strRPCUserColonPass = rpcuser + ":" + rpcpsw;
 
-    cout << endl << "Basic " << EncodeBase64(strRPCUserColonPass)) << endl;
+    cout << endl << "Basic " << EncodeBase64(strRPCUserColonPass) << endl;
 }
