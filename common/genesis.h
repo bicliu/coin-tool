@@ -3,5 +3,5 @@
 
 void GenesisLookFor(int argc, char* argv[]);
 void GetTimeHandle(int argc, char* argv[]);
-void GetRPCAuthorization(int argc, char* argv[])
+void GetRPCAuthorization(int argc, char* argv[]);
 #endif
