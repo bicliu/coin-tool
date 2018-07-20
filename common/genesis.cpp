@@ -237,3 +237,25 @@ void GetTimeHandle(int argc, char* argv[])
 		cout << "Time is " << DateTimeStrFormat("%Y-%m-%d %H:%M:%S", tnow) << endl
 			<< "<" << tnow << ">,<" << tmnow << ">" << endl;;
 }
+
+void GetRpcHelp()
+{
+    cout << "Command \"getrpc\" example :" << endl << endl
+        << "getrpc rpcuser rpcpassword ..." << endl
+		<< "getrpc \"thgy\" \"123\""<< endl;
+}
+
+void GetRPCAuthorization(int argc, char* argv[])
+{
+    if(argc < cmdindex+3)
+    {
+        GetRpcHelp();
+        return;
+    }
+    string rpcuser = argv[cmdindex + 1];
+    string rpcpsw = argv[cmdindex + 2];
+
+    string strRPCUserColonPass = rpcuser + ":" + rpcpsw;
+
+    cout << endl << "Basic " << EncodeBase64(strRPCUserColonPass)) << endl;
+}
