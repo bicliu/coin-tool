@@ -235,7 +235,7 @@ void GetTimeHandle(int argc, char* argv[])
     int64_t tnow = GetTime();
 		int64_t tmnow = GetTimeMicros();
 		cout << "Time is " << DateTimeStrFormat("%Y-%m-%d %H:%M:%S", tnow) << endl
-			<< "<" << tnow << ">,<" << tmnow << ">" << endl;;
+			<< "<" << tnow << ">,<" << tmnow << ">,<" << GetTimeMillis() << ">" << endl;;
 }
 
 void GetRpcHelp()

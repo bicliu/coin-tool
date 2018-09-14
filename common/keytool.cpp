@@ -24,6 +24,7 @@ bool MakeNewKey(bool fCompressed)
     else
         cout << "uncompressed pubkey : " << HexStr(pubkey).c_str() << endl;
 
+	cout << "pubkey2 : " << pubkey.GetID().ToString() << endl;
 	cout << "address : " << CBitcoinAddress(pubkey.GetID()).ToString() << endl << endl;
 
     return true;
